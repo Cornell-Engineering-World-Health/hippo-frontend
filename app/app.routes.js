@@ -1,0 +1,5 @@
+/*
+
+APP ROUTES handle all the routes and the route configuration.
+
+*/
