@@ -1,0 +1,24 @@
+{
+  "name": "hippo-frontend",
+  "version": "1.0.0",
+  "description": "HIPAA Videochat frontend",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard && node my-tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cornell-Engineering-World-Health/hippo-frontend.git"
+  },
+  "author": "EWH",
+  "bugs": {
+    "url": "https://github.com/Cornell-Engineering-World-Health/hippo-frontend/issues"
+  },
+  "homepage": "https://github.com/Cornell-Engineering-World-Health/hippo-frontend#readme",
+  "dependencies": {
+    "jquery": "^3.1.1"
+  },
+  "devDependencies": {
+    "standard": "^8.6.0"
+  }
+}

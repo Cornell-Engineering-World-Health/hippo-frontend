@@ -1,0 +1,13 @@
+Acts as reusable components or partials of the site
+
+Contain the individual features that your app will have.
+Example: directives that you will want to reuse on multiple pages.
+
+Example folder structure
+
+---------- sidebar/
+--------------- sidebarDirective.js
+--------------- sidebarView.html
+---------- article/
+--------------- articleDirective.js
+--------------- articleView.html
