@@ -4,7 +4,7 @@
   "description": "HIPAA Videochat frontend",
   "main": "index.js",
   "scripts": {
-    "test": "standard && node my-tests.js"
+    "test": "standard && mocha"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,11 @@
     "jquery": "^3.1.1"
   },
   "devDependencies": {
+    "mocha": "^3.2.0",
     "standard": "^8.6.0"
+  },
+  "standard" : {
+    "global": ["describe", "it", "angular"],
+    "env": ["mocha"]
   }
 }
