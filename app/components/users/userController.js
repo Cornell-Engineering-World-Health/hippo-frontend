@@ -1,4 +1,4 @@
-app.module('app.module', ['userService']).controller('userController', function ($scope, users) {
+angular.module('app.module', ['userService']).controller('userController', function ($scope, users) {
   $scope.users = users
 
   $scope.addUser = function () {
