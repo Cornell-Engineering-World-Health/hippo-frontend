@@ -16,14 +16,21 @@
   },
   "homepage": "https://github.com/Cornell-Engineering-World-Health/hippo-frontend#readme",
   "dependencies": {
-    "jquery": "^3.1.1"
+    "jquery": "^3.1.1",
+    "opentok": "^2.5.0"
   },
   "devDependencies": {
     "mocha": "^3.2.0",
     "standard": "^8.6.0"
   },
-  "standard" : {
-    "global": ["describe", "it", "angular"],
-    "env": ["mocha"]
+  "standard": {
+    "global": [
+      "describe",
+      "it",
+      "angular"
+    ],
+    "env": [
+      "mocha"
+    ]
   }
 }
