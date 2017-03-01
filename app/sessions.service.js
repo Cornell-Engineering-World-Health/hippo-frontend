@@ -1,4 +1,4 @@
-(function () {
+app.factory(function () {
   'use strict';
      angular.module('app', [
         'app.core.services',
@@ -15,26 +15,29 @@
             return response.data  
           })
       }
+      return service
     }
     /*given a session_id generates a new token for that session*/
     getNewToken.$inject ['$http']
     function getNewToken ($http, session_id) {
-     var service =  {
+      var service =  {
         return $http.get('/videos/' + session_id)
           .then(function (response) {
             return response.data  
           })
       }
+      return service
     }
     /*deletes session with given session_name*/
     deleteSession.$inject ['$http']
     function deleteSession ($http, session_name){
       var service = {
         return $http.delete('/videos/' + session_name)
-        .then( function (response{
+        .then( function (response){
           return response.data
         })
       }
+      return service
     } 
    
-}) ();
+})
