@@ -1,9 +1,4 @@
-app.factory(function () {
-  'use strict';
-     angular.module('app', [
-        'app.core.services',
-        'app.core.directives'
-    ]);
+angular.module('app').factory(function () {
     
     /*given a caller_id and callee_id creates a openTok Session accesible to both users*/
     createSession.$inject ['$http']
@@ -13,6 +8,9 @@ app.factory(function () {
         return $http.post('/videos/' + caller_id +'/users/' + callee_id, body)
           .then(function (response) {
             return response.data  
+          })
+          .catch(function(error){
+            console.error('Failure to create session using the following IDs ' + response.data)
           })
       }
       return service
@@ -25,6 +23,10 @@ app.factory(function () {
           .then(function (response) {
             return response.data  
           })
+          .catch(function(error){
+            console.error('Failure get session by ID ' + response.data)
+          })
+
       }
       return service
     }
@@ -35,6 +37,9 @@ app.factory(function () {
         return $http.delete('/videos/' + session_name)
         .then( function (response){
           return response.data
+        })
+        .catch(function(error){
+          console.error('Failure to delete session with ID ' + response.data)
         })
       }
       return service
