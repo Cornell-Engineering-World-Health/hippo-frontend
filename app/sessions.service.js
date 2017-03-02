@@ -1,3 +1,4 @@
+// PUT INTO VIDEO SERVICE
 (function () {
   'use strict';
 
@@ -29,7 +30,7 @@
             console.error('Failed to get token. Error: ' + error.data);
           })
       },
-      // TODO: why are we not using session_id.
+      // TODO: why are we not using session_name.
       deleteSession: function(session_name) {
         return $http.delete('/videos/' + session_name)
           .then( function (response){
