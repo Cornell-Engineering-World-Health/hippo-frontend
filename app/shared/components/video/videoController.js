@@ -1,7 +1,12 @@
-app.controller('VideoController', [
-    '$scope',
-    'sessionFactory',
-    function($scope, sessionFactory){
+(function(){
+    'use stict';
+
+    angular
+        .module('app.video', [])
+        .controller('VideoController', VideoController);
+    VideoController.$inject = ['$scope', '$log','sessionFactory']
+
+    function VideoController($scope, $log, sessionFactory){
 
     // Create the session
     $scope.newSession = function(sessionData) {
@@ -52,6 +57,7 @@ app.controller('VideoController', [
                 console.log('Published to stream...')
             }
         }
+    })
     }
-
-}])
+])
+}
