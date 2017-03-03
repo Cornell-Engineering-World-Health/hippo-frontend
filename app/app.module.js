@@ -10,6 +10,7 @@ APP MODULE handle the setup of app, load in angular dependencies, etc.
     angular.module('app', [
         'app.core.services',
         'app.core.directives',
+        'ngRoute',
         'app.video',
         'opentokjs'
     ]);

@@ -1,11 +1,11 @@
 
-var OpenTok = require('opentok')
+// var OpenTok = require('opentok')
 
 (function(){
     'use stict';
 
     angular
-        .module('app.video', [])
+        .module('app', [])
         .controller('VideoController', VideoController);
     VideoController.$inject = ['$scope', '$log','sessionFactory','opentok']
 
