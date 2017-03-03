@@ -1,0 +1,56 @@
+<html ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hippo-Frontend</title>
+
+  <!-- STYLES -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+
+  <!-- SCRIPTS -->
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
+  <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+  <script src="videoController.js"></script>
+  <script src="../../sessions.service.js"></script>
+
+</head>
+<body ng-controller="VideoController as video">
+  <div class="container">
+    <div class="col-md-3 col-sm-3"></div>
+    <div class="col-md-6 col-sm-6">
+    <!-- Video Area -->
+      <div class="videoContainer">
+        <div id="otEmbedContainer"></div>
+        <!-- create end function on controller scope -->
+        <p><a href="#" class="btn btn-danger" id="end-call" ng-click="??end()??">End call</a></p>
+      </div>
+
+      <div id="publisher"></div>
+      <div id="publisher1"></div>
+
+      <div id="subscribers"></div>
+      <div id="subscribers2"></div>
+    </div>
+    <div class="col-md-3 col-sm-3"></div>
+
+    <div id="otEmbedContainer" style="width:800px; height:640px"></div> <script src="https://tokbox.com/embed/embed/ot-embed.js?embedId=5748617b-18d4-478b-81db-4cec2a42638b"></script>
+  </div>
+
+  <script type="text/ng-template" id="/calls.html">
+    <div id="callTable">
+          <h3>Make a call</h3>
+                 <div ng-repeat="user in ??USER?? | filter: { streaming: 'true' }">
+
+          <div class="pure-form">
+
+          <h2>{{$index + 1}}. {{user.firstName}}&nbsp;{{user.lastName}}
+          <a href="#" class="btn btn-success" id="callto-id" data={{user.streamId}} value="{{user.streamId}}" ng-click="CallUser(user.streamId)">Call</a></h2>
+        </div>
+
+      </div>
+    </div>
+  </script>
+
+</body>
+
+</html>
