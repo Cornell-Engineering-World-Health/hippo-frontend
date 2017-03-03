@@ -5,7 +5,11 @@
     .module('app.video', [])
     .controller('VideoController', VideoController);
 
-  VideoController.$inject = ['$scope', '$log', 'sessionFactory'];
+  VideoController.$inject = [
+    '$scope',
+    '$log',
+    'sessionFactory'
+    'opentok'];
 
   function VideoController($scope, $log, sessionFactory) {
     var video = this;
