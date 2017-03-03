@@ -1,4 +1,6 @@
 
+var OpenTok = require('opentok')
+
 (function(){
     'use stict';
 
@@ -8,9 +10,9 @@
     VideoController.$inject = ['$scope', '$log','sessionFactory','opentok']
 
     function VideoController($scope, $log, sessionFactory, opentok){
-
+        opentokObj = new OpenTok(apiKey, apiSecret)
         // Create the session
-        $scope.newSession = function(sessionData) {
+        newSession = function(sessionData) {
             var resp = createSession(sessionData) //error handling
             $scope.sessionID = resp.sessionID
             $scope.session = opentok.initSession($scope.sessionID)
@@ -18,7 +20,7 @@
 
 
         // Connect to session
-        $scope.connectToSession = function() {
+        connectToSession = function() {
             $scope.token = getNewToken($scope.sessionID)
             $scope.session.connect($scope.token, function(error) {
                 if (error) {
@@ -28,6 +30,11 @@
                     console.log('Connected to session', $scope.sessionID)
                 }
             })
+        }
+
+        $scope.createVideo = function() {
+            newSession()
+            connectToSession()
         }
 
         // Create publisher
