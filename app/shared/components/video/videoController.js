@@ -1,35 +1,66 @@
-(function () {
-  'use strict';
 
-  angular
-    .module('app.video', [])
-    .controller('VideoController', VideoController);
+(function(){
+    'use stict';
 
-  VideoController.$inject = [
-    '$scope',
-    '$log',
-    'sessionFactory'
-    'opentok'];
+    angular
+        .module('app.video', [])
+        .controller('VideoController', VideoController);
+    VideoController.$inject = ['$scope', '$log','sessionFactory','opentok']
 
-  function VideoController($scope, $log, sessionFactory, opentok) {
-    var video = this;
+    function VideoController($scope, $log, sessionFactory, opentok){
 
-
-    video.clientConnected = false;
-
-    function conversationStarted(conversation) {
-      // When a participant disconnects, note in log
-      conversation.on('participantDisconnected', function (participant) {
-        // Delete session from DB
-        sessionFactory.delete(session_name)
-          .success(function(data) {
-            $scope.res = data;
-          });
-
-        $scope.$apply(function () {
-          video.log = 'Participant "' + participant.identity + '" disconnected';
-        });
-      });
+    // Create the session
+    $scope.newSession = function(sessionData) {
+        var resp = createSession(sessionData) //error handling
+        $scope.sessionID = resp.sessionID
+        $scope.session = opentok.initSession($scope.sessionID)
     }
-  }
-})()
+
+
+    // Connect to session
+    $scope.connectToSession = function() {
+        $scope.token = getNewToken($scope.sessionID)
+        $scope.session.connect($scope.token, function(error) {
+            if (error) {
+                console.log('[ERROR] Connect to session error', error)
+            }
+            else {
+                console.log('Connected to session', $scope.sessionID)
+            }
+        }
+    }
+
+    // Create publisher
+    $scope.createPublisher = function() {
+        // hard-coded properites for now
+        var targetElement = 'publisher'
+        var properties = {  insertMode: 'append',
+                            width: '100%',
+                            height: '100%' }
+        return opentok.initPublisher(targetElement, properties, function(error){
+            if(error) {
+                console.log('[ERROR] Initializing publisher error', error)
+            } else {
+                console.log('Initialized publisher...')
+            }
+        })
+    }
+
+    $scope.publisher = createPublisher()
+
+    // Publish
+    $scope.publishToSession= function() {
+        $scope.session.publish($scope.publisher, function() {
+            if(error) {
+                console.log('[ERROR] Publishing to session error', error)
+            }
+            else {
+                console.log('Published to stream...')
+            }
+        }
+    })
+      
+      
+    }
+])
+}
