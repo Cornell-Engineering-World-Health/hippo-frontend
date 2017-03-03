@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.min.js"></script>
+  <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+</head>
+<body ng-app="myApp" class="ng-scope">
+  <script type="text/ng-template" id="home.html">
+    <div class="container">
+      <div class="col-md-3 col-sm-3"></div>
+      <div class="col-md-6 col-sm-6">
+        <div class="videoContainer">
+          <p><a href="#" class="btn btn-success" id="start-call" ng-click="createVideo()">Start call</a></p>
+          <div id="otEmbedContainer" ></div>
+          <p><a href="#" class="btn btn-danger" id="end-call" ng-click="endSession()">End call</a></p>
+        </div>
+
+        <div id="publisher"></div>
+        <div id="publisher1"></div>
+
+        <div id="subscribers"></div>
+        <div id="subscribers2"></div>
+      </div>
+      </div>
+      <div class="col-md-3 col-sm-3"></div>
+    </div>
+  </script>
+  <script type="text/ng-template" id="oneMore.html">
+    other view
+  </script>
+
+
+  <div ng-controller="VideoController" class="ng-scope">
+    <ul>
+
+      <li><a href="#/home">home</a></li>
+      <li><a href="#/oneMore">oneMore</a></li>
+
+    </ul>
+    <ng-view><span class="ng-scope">
+      Introduction to angular.js
+    </span></ng-view>
+  </div>
+
+<script type="text/javascript">
+  //<![CDATA[
+
+var app = angular.module( "myApp", [
+  'ngRoute'] );
+
+app.config( function ( $routeProvider ) {
+  $routeProvider
+    .when( '/home', { templateUrl: 'home.html' } )
+    .when( '/oneMore', { templateUrl: 'oneMore.html' } )
+
+    .otherwise( { redirectTo: '/home' } );
+});
+app.factory('opentok', function ($window) {
+  if($window.opentok){
+      $window._thirdParty = $window._thirdParty || {}
+      $window._thirdParty.opentok = $window.opentok
+      try { delete $window.opentok } catch (error) {$window.opentok = undefined }
+  }
+  var Opentok = $window._thirdParty.opentok
+
+  return new Opentok(45786882, aafd067184ed09d50dd472d8808afb733568599b)
+})
+app.factory('sessionFactory', ['$http', function($http) {
+  var service = {
+    createSession: function(sessionData) {
+      // TODO: why are we exposing this in post url; no need
+      return $http.post('/videos/' + sessionData.caller_id + '/users/' + sessionData.callee_id, sessionData)
+        .then(function(response) {
+          return alert("success");
+        })
+        .catch(function(error) {
+          console.error('Failed post. Error: ' + error.data);
+        })
+    },
+    getNewToken: function(session_name) {
+      return $http.get('/videos/' + session_name)
+        .then(function (response) {
+          return response.data
+        })
+        .catch(function(error) {
+          console.error('Failed to get token. Error: ' + error.data);
+        })
+    },
+    // TODO: why are we not using session_name.
+    deleteSession: function(session_name) {
+      return $http.delete('/videos/' + session_name)
+        .then( function (response){
+          return response.data
+        })
+        .catch(function(error) {
+          console.error('Failed to delete session. Error: ' + error.data);
+        })
+    }
+  };
+  return service;
+}])
+
+app.controller('VideoController', ['$scope', '$log','sessionFactory','$window', function($scope, $log, sessionFactory, $window) {
+        var Opentok = $window.opentok
+        console.log(Opentok)
+        var opentok = new Opentok("45786882", "aafd067184ed09d50dd472d8808afb733568599b")
+
+        // Create the session
+        newSession = function(sessionData) {
+            var resp = createSession(sessionData) //error handling
+            $scope.sessionID = resp.sessionID
+            $scope.session = opentok.initSession($scope.sessionID)
+        }
+
+
+        // Connect to session
+        connectToSession = function() {
+            $scope.token = getNewToken($scope.sessionID)
+            $scope.session.connect($scope.token, function(error) {
+                if (error) {
+                    console.log('[ERROR] Connect to session error', error)
+                }
+                else {
+                    console.log('Connected to session', $scope.sessionID)
+                }
+            })
+        }
+
+        $scope.createVideo = function() {
+            console.log("inVideo")
+            newSession()
+            connectToSession()
+        }
+
+        // Create publisher
+        $scope.createPublisher = function() {
+            // hard-coded properites for now
+            var targetElement = 'publisher'
+            var properties = {  insertMode: 'append',
+                                width: '100%',
+                                height: '100%' }
+            return opentok.initPublisher(targetElement, properties, function(error){
+                if(error) {
+                    console.log('[ERROR] Initializing publisher error', error)
+                } else {
+                    console.log('Initialized publisher...')
+                }
+            })
+        }
+
+        $scope.publisher = createPublisher()
+
+        // Publish
+        $scope.publishToSession = function() {
+            $scope.session.publish($scope.publisher, function() {
+                if(error) {
+                    console.log('[ERROR] Publishing to session error', error)
+                }
+                else {
+                    console.log('Published to stream...')
+                }
+            })
+        }
+
+        $scope.endSession = function() {
+            $scope.session.disconnect()
+            $scope.session.on("sessionDisconnected", function (event) {
+              // The event is defined by the SessionDisconnectEvent class
+              if (event.reason == "networkDisconnected") {
+                alert("Your network connection terminated.")
+              }
+              // LOGIC TO CHANGE VIEW GOES HERE
+              // Can also add connectionDestroyed
+              // Need to define session_name
+            });
+            sessionFactory.delete(session_name)
+              .success(function(data) {
+                $scope.res = data;
+              });
+        }
+    }])
+
+//]]>
+
+
+</script>
+
+
+</body>
+
+</html>
