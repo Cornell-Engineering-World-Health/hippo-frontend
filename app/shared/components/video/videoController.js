@@ -1,16 +1,15 @@
-
-var OpenTok = require('opentok')
-
 (function(){
-    'use stict';
+    'use strrct';
 
     angular
         .module('app.video', [])
         .controller('VideoController', VideoController);
-    VideoController.$inject = ['$scope', '$log','sessionFactory','opentok']
+    VideoController.$inject = ['$scope', '$log','sessionFactory','$window']
 
-    function VideoController($scope, $log, sessionFactory, opentok){
-        opentokObj = new OpenTok(apiKey, apiSecret)
+    function VideoController($scope, $log, sessionFactory, $window){
+        var Opentok = $window.opentok
+        var opentok = new Opentok(45786882, aafd067184ed09d50dd472d8808afb733568599b)
+
         // Create the session
         newSession = function(sessionData) {
             var resp = createSession(sessionData) //error handling
