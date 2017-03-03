@@ -1,4 +1,7 @@
-angular.module('opentokjs', [
+(function () {
+    'use strict'
+
+    angular.module('opentokjs', [
         'app.core.services',
         'app.core.directives',
     ])
@@ -8,7 +11,8 @@ angular.module('opentokjs', [
             $window._thirdParty.opentok = $window.opentok
             try { delete $window.opentok } catch (error) {$window.opentok = undefined }
         }
-        var opentok = $window._thirdParty.opentok
-        return opentok
-    })
+        var Opentok = $window._thirdParty.opentok
 
+        return new Opentok(apiKey, apiSecret)
+    })
+})
