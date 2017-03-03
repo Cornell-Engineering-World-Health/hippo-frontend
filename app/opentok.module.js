@@ -13,6 +13,6 @@
         }
         var Opentok = $window._thirdParty.opentok
 
-        return new Opentok(apiKey, apiSecret)
+        return new Opentok(45786882, aafd067184ed09d50dd472d8808afb733568599b)
     })
 })
