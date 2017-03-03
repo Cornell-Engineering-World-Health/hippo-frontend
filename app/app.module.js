@@ -11,6 +11,6 @@ APP MODULE handle the setup of app, load in angular dependencies, etc.
         'app.core.services',
         'app.core.directives',
         'app.video',
-        'opentok.module'
+        'opentokjs'
     ]);
 })();
