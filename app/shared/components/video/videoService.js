@@ -3,7 +3,7 @@
   'use strict';
 
   angular
-    .module('app.core.services', [])
+    .module('app', [])
     .factory('sessionFactory', sessionFactory);
 
   sessionFactory.$inject = ['$http'];
