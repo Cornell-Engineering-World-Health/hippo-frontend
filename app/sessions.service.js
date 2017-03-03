@@ -1,58 +1,46 @@
-// PUT INTO VIDEO SERVICE
 (function () {
-  'use strict';
+  'use strict'
 
   angular
     .module('app.core.services', [])
-    .factory('sessionFactory', sessionFactory);
+    .factory('sessionFactory', sessionFactory)
 
-  sessionFactory.$inject = ['$http'];
+  sessionFactory.$inject = ['$http']
+  var baseURL = 'https://ewh-hippo.herokuapp.com/api'
 
-  /*given a caller_id and callee_id creates a openTok Session accesible to both users*/
-  function sessionFactory($http) {
+  /* given a caller_id and callee_id creates a openTok Session accesible to both users */
+  function sessionFactory ($http) {
     var service = {
-      createSession: function(sessionData) {
+      createSession: function (sessionData) {
         // TODO: why are we exposing this in post url; no need
-        return $http.post('/videos/' + sessionData.caller_id + '/users/' + sessionData.callee_id, sessionData)
-          .then(function(response) {
-            return alert("success");
+        return $http.post(baseURL + '/videos/' + sessionData.caller_id + '/users/' + sessionData.callee_id, sessionData)
+          .then(function (response) {
+            return alert('success')
           })
-          .catch(function(error) {
-            console.error('Failed post. Error: ' + error.data);
+          .catch(function (error) {
+            console.error('Failed post. Error: ' + error.data)
           })
       },
-      getNewToken: function(session_name) {
-        return $http.get('/videos/' + session_name)
+      getNewToken: function (sessionName) {
+        return $http.get(baseURL + '/videos/' + sessionName)
           .then(function (response) {
             return response.data
           })
-          .catch(function(error) {
-            console.error('Failed to get token. Error: ' + error.data);
+          .catch(function (error) {
+            console.error('Failed to get token. Error: ' + error.data)
           })
       },
-      // TODO: why are we not using session_name.
-      deleteSession: function(session_name) {
-        return $http.delete('/videos/' + session_name)
-          .then( function (response){
+      deleteSession: function (sessionName) {
+        return $http.delete(baseURL + '/videos/' + sessionName)
+          .then(function (response) {
             return response.data
           })
-          .catch(function(error) {
-            console.error('Failed to delete session. Error: ' + error.data);
+          .catch(function (error) {
+            console.error('Failed to delete session. Error: ' + error.data)
           })
       }
-    };
-    return service;
+    }
+    return service
   }
-})();
-
-
-
-
-
-
-
-
-
-
-
+})()
 
