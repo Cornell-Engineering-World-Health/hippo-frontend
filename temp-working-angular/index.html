@@ -9,13 +9,12 @@
 
 <!-- SCRIPTS -->
   <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
-  <script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.min.js"></script>
   <script src="node_modules/opentok-layout-js/opentok-layout.js" type="text/javascript" charset="utf-8"></script>
   <script src="node_modules/opentok-angular/opentok-angular.js" type="text/javascript" charset="utf-8"></script>
 </head>
-<!-- <body ng-app="myApp" class="ng-scope"> -->
+
 <body ng-app="myApp">
 
 </body>
@@ -33,19 +32,6 @@
           </ot-publisher>
       </ot-layout>
   </div>
-
-<!--   <body ng-app="demo">
-  <div ng-controller="MyCtrl">
-      <ot-layout props="{animate:true}">
-          <ot-subscriber ng-repeat="stream in streams"
-              stream="stream"
-              props="{style: {nameDisplayMode: 'off'}}">
-          </ot-subscriber>
-          <ot-publisher id="publisher"
-              props="{style: {nameDisplayMode: 'off'}, resolution: '1280x720', frameRate: 30}">
-          </ot-publisher>
-      </ot-layout>
-  </div> -->
 
   <script type="text/ng-template" id="home.html">
     <div class="container">
@@ -67,28 +53,12 @@
       <div class="col-md-3 col-sm-3"></div>
     </div>
 
-
-
   </script>
   <script type="text/ng-template" id="oneMore.html">
     other view
   </script>
 
-
-<!--   <div ng-controller="VideoController" class="ng-scope">
-    <ul>
-
-      <li><a href="#/home">home</a></li>
-      <li><a href="#/oneMore">oneMore</a></li>
-
-    </ul>
-    <ng-view><span class="ng-scope">
-      Introduction to angular.js
-    </span></ng-view>
-  </div> -->
-
 <script type="text/javascript">
-  //<![CDATA[
 
 angular.module('demo', ['opentok'])
   .controller('MyCtrl', ['$scope', 'OTSession', 'apiKey', 'sessionId', 'token', function($scope, OTSession, apiKey, sessionId, token) {
@@ -96,24 +66,16 @@ angular.module('demo', ['opentok'])
       OTSession.init(apiKey, sessionId, token);
       $scope.streams = OTSession.streams;
   }]).value({
-      apiKey: 'YOUR_APIKEY',
+      apiKey: 'YOUR_API_KEY',
       sessionId: 'YOUR_SESSION_ID',
       token: 'YOUR_TOKEN'
   });
 
-var app = angular.module( "myApp", ['opentok', 'ngRoute'] );
+var app = angular.module( "myApp", ['opentok'] );
 
-app.config( function ( $routeProvider ) {
-  $routeProvider
-    .when( '/home', { templateUrl: 'home.html' } )
-    .when( '/oneMore', { templateUrl: 'oneMore.html' } )
-
-    .otherwise( { redirectTo: '/home' } );
-});
 app.factory('sessionFactory', ['$http', function($http) {
   var service = {
     createSession: function(sessionData) {
-      // TODO: why are we exposing this in post url; no need
       return $http.post('/videos/' + sessionData.caller_id + '/users/' + sessionData.callee_id, sessionData)
         .then(function(response) {
           return alert("success");
@@ -131,7 +93,6 @@ app.factory('sessionFactory', ['$http', function($http) {
           console.error('Failed to get token. Error: ' + error.data);
         })
     },
-    // TODO: why are we not using session_name.
     deleteSession: function(session_name) {
       return $http.delete('/videos/' + session_name)
         .then( function (response){
@@ -145,97 +106,86 @@ app.factory('sessionFactory', ['$http', function($http) {
   return service;
 }])
 
-// app.controller('VideoController', ['$scope', '$log','sessionFactory','OTSession', function($scope, $log, sessionFactory, OTSession) {
-app.controller('VideoController', ['$scope', '$log','OTSession', 'sessionFactory', function($scope, $log, OTSession, sessionFactory) {
-        console.log('OTSESSION: ', OTSession)
-        // var Opentok = OTSession.init("45786882", "aafd067184ed09d50dd472d8808afb733568599b")
+app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSession', function($scope, $http, $window, $log, OTSession, sessionFactory) {
 
-        OTSession.init("45786882", "aafd067184ed09d50dd472d8808afb733568599b", 0);
-        $scope.streams = OTSession.streams;
+  //OTSession.init("45786882" ,"aafd067184ed09d50dd472d8808afb733568599b",0);
 
-        // var opentok = new Opentok("45786882", "aafd067184ed09d50dd472d8808afb733568599b")
+  console.log(OTSession)
+  $scope.streams = OTSession.streams;
+  $scope.connections = OTSession.connections;
+  $scope.publishing = false;
+  $scope.archiveId = null;
+  $scope.archiving = false;
+  $scope.connected = false;
+  $scope.reconnecting = false;
+  $scope.leaving = false;
 
-        // Create the session
-        newSession = function(sessionData) {
-            var resp = createSession(sessionData) //error handling
-            $scope.sessionID = resp.sessionID
-            $scope.session = opentok.initSession($scope.sessionID)
-        }
+  $scope.getVideo = function() {
+    if ($scope.session) {
+      $scope.session.disconnect();
+    }
 
-
-        // Connect to session
-        connectToSession = function() {
-            $scope.token = getNewToken($scope.sessionID)
-            $scope.session.connect($scope.token, function(error) {
-                if (error) {
-                    console.log('[ERROR] Connect to session error', error)
-                }
-                else {
-                    console.log('Connected to session', $scope.sessionID)
-                }
-            })
-        }
-
-        $scope.createVideo = function() {
-            console.log("inVideo")
-            newSession()
-            connectToSession()
-        }
-
-        // Create publisher
-        createPublisher = function() {
-            // hard-coded properites for now
-            var targetElement = 'publisher'
-            var properties = {  insertMode: 'append',
-                                width: '100%',
-                                height: '100%' }
-            return opentok.initPublisher(targetElement, properties, function(error){
-                if(error) {
-                    console.log('[ERROR] Initializing publisher error', error)
-                } else {
-                    console.log('Initialized publisher...')
-                }
-            })
-        }
-
-        $scope.publisher = createPublisher()
-
-        // Publish
-        $scope.publishToSession = function() {
-            $scope.session.publish($scope.publisher, function() {
-                if(error) {
-                    console.log('[ERROR] Publishing to session error', error)
-                }
-                else {
-                    console.log('Published to stream...')
-                }
-            })
-        }
-
-        $scope.endSession = function() {
-            $scope.session.disconnect()
-            $scope.session.on("sessionDisconnected", function (event) {
-              // The event is defined by the SessionDisconnectEvent class
-              if (event.reason == "networkDisconnected") {
-                alert("Your network connection terminated.")
+    OTSession.init(45786882, '1_MX40NTc2MjMwMn5-MTQ4ODY1NjQ3NTI2NH5mRVFwa1hYNzUzOS9mRmdYc2h4WGljdDJ-UH4', 'T1==cGFydG5lcl9pZD00NTc2MjMwMiZzaWc9NGJlODVmNWQzNjkzYTFjNDkxNmIxZjYzMmJkNmY1NDUzMDVlYzRmNDpzZXNzaW9uX2lkPTFfTVg0ME5UYzJNak13TW41LU1UUTRPRFkxTmpRM05USTJOSDVtUlZGd2ExaFlOelV6T1M5bVJtZFljMmg0V0dsamRESi1VSDQmY3JlYXRlX3RpbWU9MTQ4ODY1NjQ3NSZub25jZT0wLjk5Nzg3OTMyNDY3Mzc5MTQmcm9sZT1wdWJsaXNoZXImZXhwaXJlX3RpbWU9MTQ4ODc0Mjg3NQ==', function(err, session) {
+      if (err) {
+        $scope.$broadcast('otError', {message: 'initialize session error'});
+        return;
+      }
+      $scope.session = session;
+    
+      var connectDisconnect = function(connected) {
+            $scope.$apply(function() {
+              $scope.connected = connected;
+              $scope.reconnecting = false;
+              if (!connected) {
+                $scope.publishing = false;
               }
-              // LOGIC TO CHANGE VIEW GOES HERE
-              // Can also add connectionDestroyed
-              // Need to define session_name
             });
-            sessionFactory.delete(session_name)
-              .success(function(data) {
-                $scope.res = data;
-              });
-        }
-    }])
+      }
 
-//]]>
+      var reconnecting = function(isReconnecting) {
+        $scope.$apply(function() {
+          $scope.reconnecting = isReconnecting;
+        });
+      };
+      if ((session.is && session.is('connected')) || session.connected) {
+        connectDisconnect(true);
+      }
+      $scope.session.on('sessionConnected', connectDisconnect.bind($scope.session, true));
+      $scope.session.on('sessionDisconnected', connectDisconnect.bind($scope.session, false));
+      $scope.session.on('archiveStarted archiveStopped', function(event) {
+        // event.id is the archiveId
+        $scope.$apply(function() {
+          $scope.archiveId = event.id;
+          $scope.archiving = (event.type === 'archiveStarted');
+        });
+      });
+      $scope.session.on('sessionReconnecting', reconnecting.bind($scope.session, true));
+      $scope.session.on('sessionReconnected', reconnecting.bind($scope.session, false));
+    });    
+    $scope.publishing = true;
+  }
 
+  $scope.$on('$destroy', function() {
+    if ($scope.session && $scope.connected) {
+      $scope.session.disconnect();
+      $scope.connected = false;
+    }
+    $scope.session = null;
+  });
+
+  $scope.changeRoom = function() {
+    if (!$scope.leaving) {
+      $scope.leaving = true;
+      $scope.session.disconnect();
+      
+      $scope.session.on('sessionDisconnected', function() {
+        console.log('Session disconnected.')
+      });
+    }
+  };
+
+}])
 
 </script>
-
-
 </body>
-
 </html>
