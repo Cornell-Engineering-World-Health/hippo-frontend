@@ -60,55 +60,9 @@
 
 <script type="text/javascript">
 
-angular.module('demo', ['opentok'])
-  .controller('MyCtrl', ['$scope', 'OTSession', 'apiKey', 'sessionId', 'token', function($scope, OTSession, apiKey, sessionId, token) {
-      console.log(OTSession)
-      OTSession.init(apiKey, sessionId, token);
-      $scope.streams = OTSession.streams;
-  }]).value({
-      apiKey: 'YOUR_API_KEY',
-      sessionId: 'YOUR_SESSION_ID',
-      token: 'YOUR_TOKEN'
-  });
-
 var app = angular.module( "myApp", ['opentok'] );
 
-app.factory('sessionFactory', ['$http', function($http) {
-  var service = {
-    createSession: function(sessionData) {
-      return $http.post('/videos/' + sessionData.caller_id + '/users/' + sessionData.callee_id, sessionData)
-        .then(function(response) {
-          return alert("success");
-        })
-        .catch(function(error) {
-          console.error('Failed post. Error: ' + error.data);
-        })
-    },
-    getNewToken: function(session_name) {
-      return $http.get('/videos/' + session_name)
-        .then(function (response) {
-          return response.data
-        })
-        .catch(function(error) {
-          console.error('Failed to get token. Error: ' + error.data);
-        })
-    },
-    deleteSession: function(session_name) {
-      return $http.delete('/videos/' + session_name)
-        .then( function (response){
-          return response.data
-        })
-        .catch(function(error) {
-          console.error('Failed to delete session. Error: ' + error.data);
-        })
-    }
-  };
-  return service;
-}])
-
 app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSession', function($scope, $http, $window, $log, OTSession, sessionFactory) {
-
-  //OTSession.init("45786882" ,"aafd067184ed09d50dd472d8808afb733568599b",0);
 
   console.log(OTSession)
   $scope.streams = OTSession.streams;
@@ -183,7 +137,6 @@ app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSess
       });
     }
   };
-
 }])
 
 </script>
