@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1">
+        <!-- STYLES -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+
+
+      <!-- SCRIPTS -->
+        <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+        <script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.min.js"></script>
+        <script src="node_modules/opentok-layout-js/opentok-layout.js" type="text/javascript" charset="utf-8"></script>
+        <script src="node_modules/opentok-angular/opentok-angular.js" type="text/javascript" charset="utf-8"></script>
+        <title>Hippo-Frontend</title>
+    </head>
+    <body ng-controller="VideoController">
+        <div id="wrapper">
+        div.
+            <p><a href="#" class="btn btn-success" id="start-call" ng-click="getVideo()">Start call</a></p>
+            <p><a href="#" class="btn btn-danger" id="end-call" ng-click="endVideo()">End call</a></p>
+            <ot-layout props="{animate:true}">
+              <ot-subscriber ng-repeat="stream in streams"
+                  stream="stream"
+                  session="session"
+                  props="{style: {nameDisplayMode: 'off'}}">
+              </ot-subscriber>
+          </ot-layout>
+          <div id="facePublisher" ng-if="publishing" draggable="true">
+            <ot-publisher id="facePublisher">
+            </ot-publisher>
+            <mute-video publisher-id="facePublisher" mute-publisher></mute-video>
+          </div>
+        </div>
+
+    </body>
+</html>
