@@ -29,6 +29,19 @@
       </ot-layout>
   </div>
 
+<!--   <body ng-app="demo">
+  <div ng-controller="MyCtrl">
+      <ot-layout props="{animate:true}">
+          <ot-subscriber ng-repeat="stream in streams"
+              stream="stream"
+              props="{style: {nameDisplayMode: 'off'}}">
+          </ot-subscriber>
+          <ot-publisher id="publisher"
+              props="{style: {nameDisplayMode: 'off'}, resolution: '1280x720', frameRate: 30}">
+          </ot-publisher>
+      </ot-layout>
+  </div> -->
+
   <script type="text/ng-template" id="home.html">
     <div class="container">
       <div class="col-md-3 col-sm-3"></div>
@@ -83,7 +96,7 @@ angular.module('demo', ['opentok'])
       token: 'YOUR_TOKEN'
   });
 
-var app = angular.module( "myApp", ['opentok'] );
+var app = angular.module( "myApp", ['opentok', 'ngRoute'] );
 
 app.config( function ( $routeProvider ) {
   $routeProvider
@@ -92,16 +105,6 @@ app.config( function ( $routeProvider ) {
 
     .otherwise( { redirectTo: '/home' } );
 });
-app.factory('opentok', ['$window', function ($window) {
-  if($window.opentok){
-      $window._thirdParty = $window._thirdParty || {}
-      $window._thirdParty.opentok = $window.opentok
-      try { delete $window.opentok } catch (error) {$window.opentok = undefined }
-  }
-  var Opentok = $window._thirdParty.opentok
-
-  return new Opentok(45786882, aafd067184ed09d50dd472d8808afb733568599b)
-}])
 app.factory('sessionFactory', ['$http', function($http) {
   var service = {
     createSession: function(sessionData) {
@@ -138,8 +141,8 @@ app.factory('sessionFactory', ['$http', function($http) {
 }])
 
 // app.controller('VideoController', ['$scope', '$log','sessionFactory','OTSession', function($scope, $log, sessionFactory, OTSession) {
-app.controller('VideoController', ['$scope', '$log', 'sessionFactory','OTSession', function($scope, $log, OTSession) {
-        console.log(OTSession)
+app.controller('VideoController', ['$scope', '$log','OTSession', 'sessionFactory', function($scope, $log, OTSession, sessionFactory) {
+        console.log('OTSESSION: ', OTSession)
         // var Opentok = OTSession.init("45786882", "aafd067184ed09d50dd472d8808afb733568599b")
 
         OTSession.init("45786882", "aafd067184ed09d50dd472d8808afb733568599b", 0);
