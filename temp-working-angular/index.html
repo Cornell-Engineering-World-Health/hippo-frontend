@@ -2,12 +2,33 @@
 <html>
 <head>
   <title></title>
+
+<!-- STYLES -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+
+
+<!-- SCRIPTS -->
+  <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+  <script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.min.js"></script>
-  <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+  <script src="node_modules/opentok-layout-js/opentok-layout.js" type="text/javascript" charset="utf-8"></script>
+  <script src="node_modules/opentok-angular/opentok-angular.js" type="text/javascript" charset="utf-8"></script>
 </head>
-<body ng-app="myApp" class="ng-scope">
+<!-- <body ng-app="myApp" class="ng-scope"> -->
+<body ng-app="myApp">
+  <div ng-controller="VideoController">
+      <ot-layout props="{animate:true}">
+          <ot-subscriber ng-repeat="stream in streams"
+              stream="stream"
+              props="{style: {nameDisplayMode: 'off'}}">
+          </ot-subscriber>
+          <ot-publisher id="publisher"
+              props="{style: {nameDisplayMode: 'off'}, resolution: '1280x720', frameRate: 30}">
+          </ot-publisher>
+      </ot-layout>
+  </div>
+
   <script type="text/ng-template" id="home.html">
     <div class="container">
       <div class="col-md-3 col-sm-3"></div>
@@ -27,13 +48,16 @@
       </div>
       <div class="col-md-3 col-sm-3"></div>
     </div>
+
+
+
   </script>
   <script type="text/ng-template" id="oneMore.html">
     other view
   </script>
 
 
-  <div ng-controller="VideoController" class="ng-scope">
+<!--   <div ng-controller="VideoController" class="ng-scope">
     <ul>
 
       <li><a href="#/home">home</a></li>
@@ -43,13 +67,23 @@
     <ng-view><span class="ng-scope">
       Introduction to angular.js
     </span></ng-view>
-  </div>
+  </div> -->
 
 <script type="text/javascript">
   //<![CDATA[
 
-var app = angular.module( "myApp", [
-  'ngRoute'] );
+angular.module('demo', ['opentok'])
+  .controller('MyCtrl', ['$scope', 'OTSession', 'apiKey', 'sessionId', 'token', function($scope, OTSession, apiKey, sessionId, token) {
+      console.log(OTSession)
+      OTSession.init(apiKey, sessionId, token);
+      $scope.streams = OTSession.streams;
+  }]).value({
+      apiKey: 'YOUR_APIKEY',
+      sessionId: 'YOUR_SESSION_ID',
+      token: 'YOUR_TOKEN'
+  });
+
+var app = angular.module( "myApp", ['opentok'] );
 
 app.config( function ( $routeProvider ) {
   $routeProvider
@@ -58,7 +92,7 @@ app.config( function ( $routeProvider ) {
 
     .otherwise( { redirectTo: '/home' } );
 });
-app.factory('opentok', function ($window) {
+app.factory('opentok', ['$window', function ($window) {
   if($window.opentok){
       $window._thirdParty = $window._thirdParty || {}
       $window._thirdParty.opentok = $window.opentok
@@ -67,7 +101,7 @@ app.factory('opentok', function ($window) {
   var Opentok = $window._thirdParty.opentok
 
   return new Opentok(45786882, aafd067184ed09d50dd472d8808afb733568599b)
-})
+}])
 app.factory('sessionFactory', ['$http', function($http) {
   var service = {
     createSession: function(sessionData) {
@@ -103,10 +137,15 @@ app.factory('sessionFactory', ['$http', function($http) {
   return service;
 }])
 
-app.controller('VideoController', ['$scope', '$log','sessionFactory','$window', function($scope, $log, sessionFactory, $window) {
-        var Opentok = $window.opentok
-        console.log(Opentok)
-        var opentok = new Opentok("45786882", "aafd067184ed09d50dd472d8808afb733568599b")
+// app.controller('VideoController', ['$scope', '$log','sessionFactory','OTSession', function($scope, $log, sessionFactory, OTSession) {
+app.controller('VideoController', ['$scope', '$log', 'sessionFactory','OTSession', function($scope, $log, OTSession) {
+        console.log(OTSession)
+        // var Opentok = OTSession.init("45786882", "aafd067184ed09d50dd472d8808afb733568599b")
+
+        OTSession.init("45786882", "aafd067184ed09d50dd472d8808afb733568599b", 0);
+        $scope.streams = OTSession.streams;
+
+        // var opentok = new Opentok("45786882", "aafd067184ed09d50dd472d8808afb733568599b")
 
         // Create the session
         newSession = function(sessionData) {
@@ -136,7 +175,7 @@ app.controller('VideoController', ['$scope', '$log','sessionFactory','$window', 
         }
 
         // Create publisher
-        $scope.createPublisher = function() {
+        createPublisher = function() {
             // hard-coded properites for now
             var targetElement = 'publisher'
             var properties = {  insertMode: 'append',

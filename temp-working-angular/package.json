@@ -20,6 +20,10 @@
       "it",
       "angular"
     ],
+    "keywords": [
+      "opentok",
+      "angular"
+    ],
     "env": [
       "mocha"
     ]
