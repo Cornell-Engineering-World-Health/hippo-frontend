@@ -13,6 +13,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.min.js"></script>
   <script src="node_modules/opentok-layout-js/opentok-layout.js" type="text/javascript" charset="utf-8"></script>
   <script src="node_modules/opentok-angular/opentok-angular.js" type="text/javascript" charset="utf-8"></script>
+  <script src="app.js" type="text/javascript" charset="utf-8"></script>
 </head>
 
 
@@ -54,87 +55,5 @@
     other view
   </script>
 
-<script type="text/javascript">
-
-var app = angular.module( "myApp", ['opentok', 'ngRoute'] );
-
-app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSession', function($scope, $http, $window, $log, OTSession, sessionFactory) {
-
-  console.log(OTSession)
-  $scope.streams = OTSession.streams;
-  $scope.connections = OTSession.connections;
-  $scope.publishing = false;
-  $scope.archiveId = null;
-  $scope.archiving = false;
-  $scope.connected = false;
-  $scope.reconnecting = false;
-  $scope.leaving = false;
-
-  $scope.getVideo = function() {
-    if ($scope.session) {
-      $scope.session.disconnect();
-    }
-
-    OTSession.init(45786882, '1_MX40NTc2MjMwMn5-MTQ4ODY1NjQ3NTI2NH5mRVFwa1hYNzUzOS9mRmdYc2h4WGljdDJ-UH4', 'T1==cGFydG5lcl9pZD00NTc2MjMwMiZzaWc9NGJlODVmNWQzNjkzYTFjNDkxNmIxZjYzMmJkNmY1NDUzMDVlYzRmNDpzZXNzaW9uX2lkPTFfTVg0ME5UYzJNak13TW41LU1UUTRPRFkxTmpRM05USTJOSDVtUlZGd2ExaFlOelV6T1M5bVJtZFljMmg0V0dsamRESi1VSDQmY3JlYXRlX3RpbWU9MTQ4ODY1NjQ3NSZub25jZT0wLjk5Nzg3OTMyNDY3Mzc5MTQmcm9sZT1wdWJsaXNoZXImZXhwaXJlX3RpbWU9MTQ4ODc0Mjg3NQ==', function(err, session) {
-      if (err) {
-        $scope.$broadcast('otError', {message: 'initialize session error'});
-        return;
-      }
-      $scope.session = session;
-
-      var connectDisconnect = function(connected) {
-            $scope.$apply(function() {
-              $scope.connected = connected;
-              $scope.reconnecting = false;
-              if (!connected) {
-                $scope.publishing = false;
-              }
-            });
-      }
-
-      var reconnecting = function(isReconnecting) {
-        $scope.$apply(function() {
-          $scope.reconnecting = isReconnecting;
-        });
-      };
-      if ((session.is && session.is('connected')) || session.connected) {
-        connectDisconnect(true);
-      }
-      $scope.session.on('sessionConnected', connectDisconnect.bind($scope.session, true));
-      $scope.session.on('sessionDisconnected', connectDisconnect.bind($scope.session, false));
-      $scope.session.on('archiveStarted archiveStopped', function(event) {
-        // event.id is the archiveId
-        $scope.$apply(function() {
-          $scope.archiveId = event.id;
-          $scope.archiving = (event.type === 'archiveStarted');
-        });
-      });
-      $scope.session.on('sessionReconnecting', reconnecting.bind($scope.session, true));
-      $scope.session.on('sessionReconnected', reconnecting.bind($scope.session, false));
-    });
-    $scope.publishing = true;
-  }
-
-  $scope.$on('$destroy', function() {
-    if ($scope.session && $scope.connected) {
-      $scope.session.disconnect();
-      $scope.connected = false;
-    }
-    $scope.session = null;
-  });
-
-  $scope.changeRoom = function() {
-    if (!$scope.leaving) {
-      $scope.leaving = true;
-      $scope.session.disconnect();
-
-      $scope.session.on('sessionDisconnected', function() {
-        console.log('Session disconnected.')
-      });
-    }
-  };
-}])
-
-</script>
 </body>
 </html>

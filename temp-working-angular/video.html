@@ -1,132 +1,133 @@
 <!DOCTYPE html>
 <html ng-app="myApp">
-    <head>
-        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1">
-        <!-- STYLES -->
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1">
+    <!-- STYLES -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
+
+    <!-- BOOTSTRAP SCRIPTS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 
-      <!-- SCRIPTS -->
-        <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
-        <script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.min.js"></script>
-        <script src="node_modules/opentok-layout-js/opentok-layout.js" type="text/javascript" charset="utf-8"></script>
-        <script src="node_modules/opentok-angular/opentok-angular.js" type="text/javascript" charset="utf-8"></script>
-        <title>Hippo-Frontend</title>
-    </head>
-    <body ng-controller="VideoController">
-        <div id="wrapper">
-            <p><a href="#" class="btn btn-success" id="start-call" ng-click="getVideo()">Start call</a></p>
-            <p><a href="#" class="btn btn-danger" id="end-call" ng-click="endVideo()">End call</a></p>
-            <!-- FROM DEMO -->
-            <!-- <ot-layout props="{animate:true}">
-                <ot-subscriber ng-repeat="stream in streams"
-                    stream="stream"
-                    props="{style: {nameDisplayMode: 'off'}}">
-                </ot-subscriber>
-                <ot-publisher id="publisher"
-                    props="{style: {nameDisplayMode: 'off'}, resolution: '1280x720', frameRate: 30}">
-                </ot-publisher>
-            </ot-layout> -->
-            <!-- END DEMO -->
-            <ot-layout props="{animate:true}">
-              <ot-subscriber ng-repeat="stream in streams"
-                stream="stream"
-                session="session"
-                props="{style: {nameDisplayMode: 'off'}}">
-              </ot-subscriber>
-          </ot-layout>
-          <div id="facePublisher" ng-if="publishing" draggable="true">
-            <ot-publisher id="facePublisher">
-            </ot-publisher>
-            <mute-video publisher-id="facePublisher" mute-publisher></mute-video>
-          </div>
+  <!-- SCRIPTS -->
+    <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+    <script src="node_modules/jquery/dist/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.min.js"></script>
+    <script src="node_modules/opentok-layout-js/opentok-layout.js" type="text/javascript" charset="utf-8"></script>
+    <script src="node_modules/opentok-angular/opentok-angular.js" type="text/javascript" charset="utf-8"></script>
+    <script src="app.js" type="text/javascript" charset="utf-8"></script>
+
+    <title>Hippo-Frontend</title>
+
+    <!-- DISGUSTING -->
+    <style type="text/css">
+      .navbar-header img {
+        height: 30px;
+        width: 30px;
+        display: inline-block;
+        float: left;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        margin-left: 22px;
+        margin-right: 12px;
+        transform: scale(1.7);
+      }
+      .contentContainer {
+        padding-top: 60px;
+      }
+      ot-subscriber {
+        /*margin: 40px;*/
+      }
+      .btnGroup {
+        padding: 40px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <nav class="navbar navbar-default navbar-fixed-top">
+            <div class='container-fluid'>
+                  <!-- Brand and toggle get grouped for better mobile display -->
+              <div class='navbar-header'>
+                <img src='hippo.png'/>
+                <a class='navbar-brand page-scroll bold' href='#/home'>Hippo-Frontend</a>
+              </div>
+                  <!-- /.navbar-collapse -->
+              <!-- <a class="navbar-brand" href="#">
+                <img src="hippo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                Hippo-Frontend
+              </a> -->
+            </div>
+          </nav>
         </div>
-<script type="text/javascript">
+      </div>
+      <div class="row contentContainer">
+        <div class="col-md-12 col-sm-12">
+          <ng-view><span class="ng-scope"></span></ng-view>
+        </div>
+      </div>
+    </div>
+  </body>
 
-var app = angular.module( "myApp", ['opentok', 'ngRoute'] );
+  <script type="text/ng-template" id="index.html">
+    <div ng-controller="UserController">
+      <h1>Upcomming Calls</h1>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Session Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="session in userSessions | orderBy:'session.datetime'">
+            <td>{{session.datetime | date:'MMMM dd HH:mm:ss'}}</td>
+            <td><a href="#/videocall">{{session.name}}</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </script>
 
-app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSession', function($scope, $http, $window, $log, OTSession, sessionFactory) {
-
-  console.log(OTSession)
-  $scope.streams = OTSession.streams;
-  $scope.connections = OTSession.connections;
-  $scope.publishing = false;
-  $scope.archiveId = null;
-  $scope.archiving = false;
-  $scope.connected = false;
-  $scope.reconnecting = false;
-  $scope.leaving = false;
-
-  $scope.getVideo = function() {
-    if ($scope.session) {
-      $scope.session.disconnect();
-    }
-
-    OTSession.init('45786882', '1_MX40NTc4Njg4Mn5-MTQ4ODY1ODQ4MDEwMn5SZW5Rd1RlTlpKNGkzcWtBaEFpYjNMNmd-fg', "T1==cGFydG5lcl9pZD00NTc4Njg4MiZzaWc9ODRhOTMyZmM2YjI4MWJkOTBiODAwMDliOGNlOTg5M2NiYTBkZWI3NzpzZXNzaW9uX2lkPTFfTVg0ME5UYzROamc0TW41LU1UUTRPRFkxT0RRNE1ERXdNbjVTWlc1UmQxUmxUbHBLTkdremNXdEJhRUZwWWpOTU5tZC1mZyZjcmVhdGVfdGltZT0xNDg4NjU4NDk0Jm5vbmNlPTAuNTU5OTQzMzk5Njg5MzcxMiZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNDkxMjQ2ODkz", function(err, session) {
-      if (err) {
-        $scope.$broadcast('otError', {message: 'initialize session error'});
-        return;
-      }
-      $scope.session = session;
-
-      var connectDisconnect = function(connected) {
-            $scope.$apply(function() {
-              $scope.connected = connected;
-              $scope.reconnecting = false;
-              if (!connected) {
-                $scope.publishing = false;
-              }
-            });
-      }
-
-      var reconnecting = function(isReconnecting) {
-        $scope.$apply(function() {
-          $scope.reconnecting = isReconnecting;
-        });
-      };
-      if ((session.is && session.is('connected')) || session.connected) {
-        connectDisconnect(true);
-      }
-      $scope.session.on('sessionConnected', connectDisconnect.bind($scope.session, true));
-      $scope.session.on('sessionDisconnected', connectDisconnect.bind($scope.session, false));
-      $scope.session.on('archiveStarted archiveStopped', function(event) {
-        // event.id is the archiveId
-        $scope.$apply(function() {
-          $scope.archiveId = event.id;
-          $scope.archiving = (event.type === 'archiveStarted');
-        });
-      });
-      $scope.session.on('sessionReconnecting', reconnecting.bind($scope.session, true));
-      $scope.session.on('sessionReconnected', reconnecting.bind($scope.session, false));
-    });
-    $scope.publishing = true;
-  }
-
-  $scope.$on('$destroy', function() {
-    if ($scope.session && $scope.connected) {
-      $scope.session.disconnect();
-      $scope.connected = false;
-    }
-    $scope.session = null;
-  });
-
-  $scope.endVideo = function() {
-    console.log("in ending Video")
-    if (!$scope.leaving) {
-      $scope.leaving = true;
-      $scope.session.disconnect();
-
-      $scope.session.on('sessionDisconnected', function() {
-        console.log('Session disconnected.')
-      });
-    }
-  };
-}])
-
-</script>
-    </body>
+  <script type="text/ng-template" id="video.html">
+    <div ng-controller="VideoController">
+      <div id="wrapper" class="text-center">
+        <div class="btnGroup">
+          <span><a href="#/videocall" class="btn btn-success" id="start-call" ng-click="getVideo()">Start call</a></span>
+          <span><a href="#/videocall" class="btn btn-danger" id="end-call" ng-click="endVideo()">End call</a></span>
+        </div>
+        <!-- FROM DEMO -->
+        <!-- <ot-layout props="{animate:true}">
+            <ot-subscriber ng-repeat="stream in streams"
+                stream="stream"
+                props="{style: {nameDisplayMode: 'off'}}">
+            </ot-subscriber>
+            <ot-publisher id="publisher"
+                props="{style: {nameDisplayMode: 'off'}, resolution: '1280x720', frameRate: 30}">
+            </ot-publisher>
+        </ot-layout> -->
+        <!-- END DEMO -->
+        <ot-layout props="{animate:true}">
+          <ot-subscriber style="width: 792px; height: 594px;" ng-repeat="stream in streams"
+            stream="stream"
+            session="session"
+            props="{style: {nameDisplayMode: 'off'}}">
+          </ot-subscriber>
+        </ot-layout>
+        <div id="facePublisher" ng-if="publishing" draggable="true">
+          <ot-publisher style="width: 792px; height: 594px;" id="facePublisher">
+          </ot-publisher>
+          <mute-video publisher-id="facePublisher" mute-publisher></mute-video>
+        </div>
+      </div>
+    </div>
+  </script>
 </html>
