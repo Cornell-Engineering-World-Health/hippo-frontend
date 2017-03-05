@@ -1,43 +1,39 @@
-<html ng-app="app">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hippo-Frontend</title>
+  <title></title>
 
-  <!-- STYLES -->
+<!-- STYLES -->
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 
-  <!-- SCRIPTS -->
+
+<!-- SCRIPTS -->
+  <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.min.js"></script>
-  <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
-  <!-- <script src="app/app.module.js"></script> -->
-  <!-- <script src="app/shared/components/video/videoService.js"></script> -->
-  <script src="app/shared/components/video/videoController.js"></script>
-
+  <script src="node_modules/opentok-layout-js/opentok-layout.js" type="text/javascript" charset="utf-8"></script>
+  <script src="node_modules/opentok-angular/opentok-angular.js" type="text/javascript" charset="utf-8"></script>
+  <script src="app.js" type="text/javascript" charset="utf-8"></script>
 </head>
-<body ng-app="app">
 
-  <div ng-controller="VideoController" class="ng-scope">
-    <ul>
 
-      <li><a href="#/home">home</a></li>
-      <li><a href="#/oneMore">oneMore</a></li>
-
-    </ul>
-    <ng-view><span class="ng-scope">
-      Introduction to angular.js
-    </span></ng-view>
+<body ng-app="myApp">
+  <div ng-controller="VideoController">
+      <ot-layout props="{animate:true}">
+          <ot-subscriber ng-repeat="stream in streams"
+              stream="stream"
+              props="{style: {nameDisplayMode: 'off'}}">
+          </ot-subscriber>
+          <ot-publisher id="publisher"
+              props="{style: {nameDisplayMode: 'off'}, resolution: '1280x720', frameRate: 30}">
+          </ot-publisher>
+      </ot-layout>
   </div>
 
-
-
-  <!-- Index -->
-  <script type="text/ng-template" id="index.html">
+  <script type="text/ng-template" id="home.html">
     <div class="container">
       <div class="col-md-3 col-sm-3"></div>
       <div class="col-md-6 col-sm-6">
-      <!-- Video Area -->
         <div class="videoContainer">
           <p><a href="#" class="btn btn-success" id="start-call" ng-click="createVideo()">Start call</a></p>
           <div id="otEmbedContainer" ></div>
@@ -50,27 +46,14 @@
         <div id="subscribers"></div>
         <div id="subscribers2"></div>
       </div>
-      <div class="col-md-3 col-sm-3"></div>
-
-      <!-- <div id="otEmbedContainer" style="width:800px; height:640px"></div> <script src="https://tokbox.com/embed/embed/ot-embed.js?embedId=5748617b-18d4-478b-81db-4cec2a42638b"></script> -->
-    </div>
-  </script>
-
-  <script type="text/ng-template" id="/calls.html">
-    <div id="callTable">
-          <h3>Make a call</h3>
-                 <div ng-repeat="user in ??USER?? | filter: { streaming: 'true' }">
-
-          <div class="pure-form">
-
-          <h2>{{$index + 1}}. {{user.firstName}}&nbsp;{{user.lastName}}
-          <a href="#" class="btn btn-success" id="callto-id" data={{user.streamId}} value="{{user.streamId}}" ng-click="CallUser(user.streamId)">Call</a></h2>
-        </div>
-
       </div>
+      <div class="col-md-3 col-sm-3"></div>
     </div>
+
+  </script>
+  <script type="text/ng-template" id="oneMore.html">
+    other view
   </script>
 
 </body>
-
 </html>
