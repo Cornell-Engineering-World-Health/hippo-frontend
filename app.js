@@ -87,27 +87,30 @@ app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSess
   $scope.reconnecting = false
   $scope.leaving = false
 
-  $scope.getVideo = function () {
+  var apiKey = '45786882'
+
+  $scope.getVideoByName = function (session_name) {
     if ($scope.session) {
       $scope.session.disconnect()
     }
-    OTSession.init('45786882', '1_MX40NTc4Njg4Mn5-MTQ4ODY1ODQ4MDEwMn5SZW5Rd1RlTlpKNGkzcWtBaEFpYjNMNmd-fg', 'T1==cGFydG5lcl9pZD00NTc4Njg4MiZzaWc9ODRhOTMyZmM2YjI4MWJkOTBiODAwMDliOGNlOTg5M2NiYTBkZWI3NzpzZXNzaW9uX2lkPTFfTVg0ME5UYzROamc0TW41LU1UUTRPRFkxT0RRNE1ERXdNbjVTWlc1UmQxUmxUbHBLTkdremNXdEJhRUZwWWpOTU5tZC1mZyZjcmVhdGVfdGltZT0xNDg4NjU4NDk0Jm5vbmNlPTAuNTU5OTQzMzk5Njg5MzcxMiZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNDkxMjQ2ODkz', function (err, session) {
-     /* var createJson = {'caller_id': 8, 'calling_id': 9}
-      var createPromise = sessionFactory.createSession(createJson).then(function (result) {
-        console.log(result)
-        var newTokenPromise = sessionFactory.getNewToken(result.data.name).then(function (result_token) {
+    var newTokenPromise = sessionFactory.getNewToken(session_name)
+      .then(function (result_token) {
           console.log(result_token)
-        })
-        var deletePromise = sessionFactory.deleteSession(result.data.name).then(function (result_delete) {
-          console.log(result_delete)
-        })
-      }) */
+          $scope.session_data = result_token
+          //return result_token
+    })
 
-      if (err) {
+    console.log($scope.session_data)
+    OTSession.init(apiKey, $scope.session_data.sessionId, $scope.session_data.tokenId, function(err, session) {
+      if(err) {
+        console.log('sessionId: ' + newTokenPromise.sessionId + ' tokenId: ' + newTokenPromise.tokenId)
         $scope.$broadcast('otError', {message: 'initialize session error'})
         return
       }
+      
       $scope.session = session
+      $scope.sessionName = session_name
+
       var connectDisconnect = function (connected) {
         $scope.$apply(function () {
           $scope.connected = connected
@@ -117,28 +120,33 @@ app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSess
           }
         })
       }
+
       var reconnecting = function (isReconnecting) {
         $scope.$apply(function () {
           $scope.reconnecting = isReconnecting
         })
       }
+
       if ((session.is && session.is('connected')) || session.connected) {
         connectDisconnect(true)
       }
+
       $scope.session.on('sessionConnected', connectDisconnect.bind($scope.session, true))
       $scope.session.on('sessionDisconnected', connectDisconnect.bind($scope.session, false))
-      $scope.session.on('archiveStarted archiveStopped', function (event) {
-        // event.id is the archiveId
-        $scope.$apply(function () {
-          $scope.archiveId = event.id
-          $scope.archiving = (event.type === 'archiveStarted')
-        })
-      })
+      // $scope.session.on('archiveStarted archiveStopped', function (event) {
+      //   // event.id is the archiveId
+      //   $scope.$apply(function () {
+      //     $scope.archiveId = event.id
+      //     $scope.archiving = (event.type === 'archiveStarted')
+      //   })
+      // })
       $scope.session.on('sessionReconnecting', reconnecting.bind($scope.session, true))
       $scope.session.on('sessionReconnected', reconnecting.bind($scope.session, false))
     })
+
     $scope.publishing = true
   }
+
   $scope.$on('$destroy', function () {
     if ($scope.session && $scope.connected) {
       $scope.session.disconnect()
@@ -146,6 +154,8 @@ app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSess
     }
     $scope.session = null
   })
+
+  // Ends and Deletes the scope's session
   $scope.endVideo = function () {
     console.log('in ending Video')
     if (!$scope.leaving) {
@@ -153,6 +163,11 @@ app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSess
       $scope.session.disconnect()
       $scope.session.on('sessionDisconnected', function () {
         console.log('Session disconnected.')
+      })
+
+    sessionFactory.deleteSession($scope.sessionName)
+      .then(function (result_delete) {
+        console.log(result_delete.data)
       })
     }
   }
