@@ -74,8 +74,9 @@ app.controller('UserController', ['$scope', '$log', '$http', 'sessionFactory', f
   $scope.userSessions = $scope.getAllSessionsForUser(8)
 }])
 
-// app.controller('VideoController', ['$scope', '$log','sessionFactory','OTSession', function($scope, $log, sessionFactory, OTSession) {
-app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSession', 'sessionFactory', function ($scope, $http, $window, $log, OTSession, sessionFactory) {
+app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSession', 'sessionFactory', 
+  function ($scope, $http, $window, $log, OTSession, sessionFactory) {
+  
   console.log(OTSession)
   $scope.streams = OTSession.streams
   $scope.connections = OTSession.connections
