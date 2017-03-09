@@ -5,18 +5,23 @@ angular.module('myApp')
         .then(function() {
           console.log('You have successfully signed in!');
           print($scope.user)
+          console.log($scope.user)
           $location.path('/');
         })
         .catch(function(error) {
           console.log(error.data.message, error.status);
         })
-    }
+    } // WILL NOT NEED ABOVE
     $scope.authenticate = function(provider) {
       console.log(provider)
       $auth.authenticate(provider)
         .then(function() {
           console.log('You have successfully signed in with ' + provider);
-          $location.path('/');
+          $location.path('/').replace()
+          // $scope.$apply()
+          // $scope.$apply(function() {
+          //   $location.path('/');
+          // })
         })
         .catch(function(error) {
           if (error.message) {
