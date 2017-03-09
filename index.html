@@ -5,21 +5,7 @@
 
   <!-- STYLES -->
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-
-  <style type="text/css">
-    .navbar-header img {
-      height: 30px;
-      width: 30px;
-      display: inline-block;
-      float: left;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      margin-left: 22px;
-      margin-right: 12px;
-      transform: scale(1.7);
-    }
-  </style>
-
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 
@@ -34,27 +20,33 @@
                 <img src='hippo.png'/>
                 <a class='navbar-brand page-scroll bold' href='/#/home'>Hippo-Frontend</a>
               </div>
-              <ul class="nav navbar-nav">
-                <li ng-if="isAuthenticated()"><a href="/#/profile">Profile</a></li>
-              </ul>
               <ul ng-if="!isAuthenticated()" class="nav navbar-nav pull-right">
                 <li><a href="/#/login">Login</a></li>
                 <li><a href="/#/signup">Sign up</a></li>
               </ul>
               <ul ng-if="isAuthenticated()" class="nav navbar-nav pull-right">
+                <li ng-if="isAuthenticated()"><a href="/#/profile">Profile</a></li>
                 <li><a href="/#/logout">Logout</a></li>
               </ul>
             </div>
           </nav>
         </div>
       </div>
-      <div class="row contentContainer">
-        <div class="col-md-12 col-sm-12">
-          <ng-view></ng-view>
-        </div>
+      <div class="row">
+        <ng-view>
+        </ng-view>
       </div>
     </div>
 
+
+<!-- <div class="col-md-12 col-sm-12">
+              <div class="jumbotron">
+                <h2>Hello, {{user.name}}!</h2>
+                <p>You are currently logged in.</p>
+                <p><a class="btn btn-primary btn-lg" href="/#/video" role="button">Go to Sessions</a></p>
+                <p><a class="btn btn-primary btn-lg" href="/#/logout" role="button">Logout</a></p>
+              </div>
+            </div> -->
 
 
 

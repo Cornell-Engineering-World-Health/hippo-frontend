@@ -44,7 +44,7 @@ app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
     })
     .state('home', {
       url: '/',
-      templateUrl: 'partials/login.html',
+      templateUrl: 'index.html',
       controller: 'LoginCtrl',
       resolve: {
         skipIfLoggedIn: skipIfLoggedIn

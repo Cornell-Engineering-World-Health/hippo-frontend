@@ -4,6 +4,7 @@ angular.module('myApp')
       $auth.login($scope.user)
         .then(function() {
           console.log('You have successfully signed in!');
+          print($scope.user)
           $location.path('/');
         })
         .catch(function(error) {
