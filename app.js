@@ -82,14 +82,13 @@ app.controller('UserController', ['$scope', '$log', '$http', 'sessionFactory', f
             return error.data
         })
   }
-  // Hard coded for user 8 until OAth integration, but isn't working
+  // Hard coded for user 8 
   $scope.userSessions = $scope.getAllSessionsForUser(8)
 }])
 
 app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSession', 'sessionFactory', 
   function ($scope, $http, $window, $log, OTSession, sessionFactory) {
   
-  //console.log(OTSession)
   $scope.streams = OTSession.streams
   $scope.connections = OTSession.connections
   $scope.publishing = false
@@ -100,7 +99,11 @@ app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSess
   $scope.leaving = false
   $scope.deleted = false
 
-  var apiKey = '45786882'
+  // Wrap in VideoService?
+  $http.get('./config.json').success(function(data) {
+    console.log(data)
+    $scope.apiKey = data.apiKey;
+  });
 
   $scope.getVideoByName = function (session_name) {
     if ($scope.session) {
@@ -111,7 +114,7 @@ app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSess
       .then(function (result_token) {
         console.log(result_token)
 
-        OTSession.init(apiKey, result_token.sessionId, result_token.tokenId, function(err, session) {
+        OTSession.init($scope.apiKey, result_token.sessionId, result_token.tokenId, function(err, session) {
           if(err) {
             console.log('sessionId: ' + result_token.sessionId + ' tokenId: ' + result_token.tokenId)
             $scope.$broadcast('otError', {message: 'initialize session error'})
@@ -161,23 +164,16 @@ app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSess
     $scope.session = null
   })
 
-  // Ends and Deletes the scope's session from user calls
   $scope.endVideo = function () {
     console.log('in ending Video')
     if (!$scope.leaving) {
       $scope.leaving = true
-      $scope.session.disconnect()
+      $scope.session.disconnect() //Disconnects and unpublishes
 
       $scope.session.on('sessionDisconnected', function () {
         console.log('Session disconnected.')
 
       sessionFactory.deleteSession($scope.sessionName)
-
-        //   .then(function (result_delete) {
-        //     console.log(result_delete.data)
-        //     return result_delete
-        // })
-
       })
     }
   }
