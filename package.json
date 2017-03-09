@@ -11,6 +11,10 @@
     "url": "https://github.com/Cornell-Engineering-World-Health/hippo-frontend/issues"
   },
   "dependencies": {
+    "cors": "^2.8.1",
+    "express-jwt": "^5.1.0",
+    "jwt-simple": "^0.5.1",
+    "mongoose": "^4.8.6",
     "opentok": "^2.5.0"
   },
   "devDependencies": {

@@ -1,0 +1,35 @@
+/*************************************/
+/************** NAV BAR **************/
+/*************************************/
+.navbar-header img {
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  float: left;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 22px;
+  margin-right: 12px;
+  transform: scale(1.7);
+}
+
+
+/*************************************/
+/************ LOGIN VIEW *************/
+/*************************************/
+
+.loginContainer {
+  padding-top: 100px;
+}
+
+/*************************************/
+/************ VIDEO VEIW *************/
+/*************************************/
+
+.contentContainer {
+  padding-top: 60px;
+}
+
+.btnGroup {
+  padding: 40px;
+}
