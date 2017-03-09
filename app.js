@@ -10,15 +10,66 @@
 //   });
 
 
-var app = angular.module( "myApp", ['opentok', 'ngRoute'] );
+var app = angular.module( "myApp", ['opentok', 'ui.router', 'satellizer'] );
 
-app.config( function ( $routeProvider ) {
-  $routeProvider
-    .when( '/video', { templateUrl: 'index.html' } )
-    .when( '/', { templateUrl: 'index.html' } )
-    .when( '/home', { templateUrl: 'index.html' } )
-    .when( '/videocall', { templateUrl: 'video.html' } )
+app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
+  var skipIfLoggedIn = ['$q', '$auth', function($q, $auth) {
+      var deferred = $q.defer();
+      if ($auth.isAuthenticated()) {
+        deferred.reject();
+      } else {
+        deferred.resolve();
+      }
+      return deferred.promise;
+    }]
+
+    var loginRequired = ['$q', '$location', '$auth', function($q, $location, $auth) {
+      var deferred = $q.defer();
+      if ($auth.isAuthenticated()) {
+        deferred.resolve();
+      } else {
+        $location.path('/login');
+      }
+      return deferred.promise;
+    }]
+
+  $stateProvider
+    .state('login', {
+      url: '/login',
+      templateUrl: 'partials/login.html',
+      controller: 'LoginCtrl',
+      resolve: {
+        skipIfLoggedIn: skipIfLoggedIn
+      }
+    })
+    .state('home', {
+      url: '/',
+      templateUrl: 'partials/login.html',
+      controller: 'LoginCtrl',
+      resolve: {
+        skipIfLoggedIn: skipIfLoggedIn
+      }
+    })
+    .state('logout', {
+      url: '/logout',
+      template: null,
+      controller: 'LogoutCtrl'
+    })
+    .state('video', {
+      url: '/video',
+      templateUrl: 'partials/video.html',
+      controller: 'VideoController'
+    })
+    $urlRouterProvider.otherwise('/');
+    // .when( '/video', { templateUrl: 'index.html' } )
+    // .when( '/', { templateUrl: 'index.html' } )
+    // .when( '/home', { templateUrl: 'index.html' } )
+    // .when( '/videocall', { templateUrl: 'video.html' } )
     // .otherwise( { redirectTo: '/video' } );
+
+    $authProvider.google({
+      clientId: '711259324524-36d8oudk6g40g1ioel59hhegcjd3n5t1.apps.googleusercontent.com'
+    });
 });
 app.factory('sessionFactory', ['$http', function($http) {
   var service = {

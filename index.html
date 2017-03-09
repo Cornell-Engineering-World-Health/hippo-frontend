@@ -1,24 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title></title>
+  <title>Hippo-Frontend</title>
 
-<!-- STYLES -->
+  <!-- STYLES -->
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
 
+  <style type="text/css">
+    .navbar-header img {
+      height: 30px;
+      width: 30px;
+      display: inline-block;
+      float: left;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      margin-left: 22px;
+      margin-right: 12px;
+      transform: scale(1.7);
+    }
+  </style>
 
-<!-- SCRIPTS -->
-  <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.min.js"></script>
-  <script src="node_modules/opentok-layout-js/opentok-layout.js" type="text/javascript" charset="utf-8"></script>
-  <script src="node_modules/opentok-angular/opentok-angular.js" type="text/javascript" charset="utf-8"></script>
-  <script src="app.js" type="text/javascript" charset="utf-8"></script>
 </head>
 
 
 <body ng-app="myApp">
-  <div ng-controller="VideoController">
+  <div class="container">
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <nav ng-controller="NavbarCtrl" class="navbar navbar-default navbar-fixed-top">
+            <div class='container-fluid'>
+                  <!-- Brand and toggle get grouped for better mobile display -->
+              <div class='navbar-header'>
+                <img src='hippo.png'/>
+                <a class='navbar-brand page-scroll bold' href='/#/home'>Hippo-Frontend</a>
+              </div>
+              <ul class="nav navbar-nav">
+                <li ng-if="isAuthenticated()"><a href="/#/profile">Profile</a></li>
+              </ul>
+              <ul ng-if="!isAuthenticated()" class="nav navbar-nav pull-right">
+                <li><a href="/#/login">Login</a></li>
+                <li><a href="/#/signup">Sign up</a></li>
+              </ul>
+              <ul ng-if="isAuthenticated()" class="nav navbar-nav pull-right">
+                <li><a href="/#/logout">Logout</a></li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div class="row contentContainer">
+        <div class="col-md-12 col-sm-12">
+          <ng-view></ng-view>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+<!--   <div ng-controller="VideoController">
       <ot-layout props="{animate:true}">
           <ot-subscriber ng-repeat="stream in streams"
               stream="stream"
@@ -28,32 +69,25 @@
               props="{style: {nameDisplayMode: 'off'}, resolution: '1280x720', frameRate: 30}">
           </ot-publisher>
       </ot-layout>
-  </div>
+  </div> -->
 
-  <script type="text/ng-template" id="home.html">
-    <div class="container">
-      <div class="col-md-3 col-sm-3"></div>
-      <div class="col-md-6 col-sm-6">
-        <div class="videoContainer">
-          <p><a href="#" class="btn btn-success" id="start-call" ng-click="createVideo()">Start call</a></p>
-          <div id="otEmbedContainer" ></div>
-          <p><a href="#" class="btn btn-danger" id="end-call" ng-click="endSession()">End call</a></p>
-        </div>
+  <div ui-view></div>
 
-        <div id="publisher"></div>
-        <div id="publisher1"></div>
+  <!-- THIRD PARTY -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.min.js"></script>
+  <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+  <script src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <script src="node_modules/opentok-layout-js/opentok-layout.js"></script>
+  <script src="node_modules/opentok-angular/opentok-angular.js"></script>
+  <script src="node_modules/satellizer/dist/satellizer.js"></script>
+  <!-- <script src="app.js"></script> -->
 
-        <div id="subscribers"></div>
-        <div id="subscribers2"></div>
-      </div>
-      </div>
-      <div class="col-md-3 col-sm-3"></div>
-    </div>
-
-  </script>
-  <script type="text/ng-template" id="oneMore.html">
-    other view
-  </script>
+  <!-- APPLICATION CODE -->
+  <script src="/app.js"></script>
+  <script src="/controllers/login.js"></script>
+  <script src="/controllers/logout.js"></script>
+  <script src="/controllers/navbar.js"></script>
 
 </body>
 </html>
