@@ -8,6 +8,7 @@ app.config(function ($routeProvider) {
     .when('/videocall', { templateUrl: 'video.html' })
     // .otherwise( { redirectTo: '/video' } );
 })
+
 app.factory('sessionFactory', ['$http', function ($http) {
   var baseURL = 'https://ewh-hippo.herokuapp.com/api'
   var service = {
@@ -27,7 +28,7 @@ app.factory('sessionFactory', ['$http', function ($http) {
           return response.data
         })
         .catch(function (error) {
-          console.error('Failed to get token. Error: ' + error.data)
+          console.error('Failed to get token for session ' + session_name + '. Error: ' + error.data)
         })
     },
     deleteSession: function (session_name) {
@@ -39,9 +40,20 @@ app.factory('sessionFactory', ['$http', function ($http) {
           console.error('Failed to delete session. Error: ' + error.data)
         })
     }
-  }
+      // try {
+      //   $http.delete(baseURL + '/videos/' + session_name)
+      // }
+      // catch (error) {
+      //   if(error.status == '404') {
+      //       console.log('Session already deleted.')
+      //       return
+      //   }
+      //   console.error('Failed to delete session ' + session_name + '. Error: ' + error.data)
+      // }
+    }
   return service
-}])
+  }
+])
 
 app.controller('UserController', ['$scope', '$log', '$http', 'sessionFactory', function ($scope, $log, $http, sessionFactory) {
 
@@ -77,7 +89,7 @@ app.controller('UserController', ['$scope', '$log', '$http', 'sessionFactory', f
 app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSession', 'sessionFactory', 
   function ($scope, $http, $window, $log, OTSession, sessionFactory) {
   
-  console.log(OTSession)
+  //console.log(OTSession)
   $scope.streams = OTSession.streams
   $scope.connections = OTSession.connections
   $scope.publishing = false
@@ -86,6 +98,7 @@ app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSess
   $scope.connected = false
   $scope.reconnecting = false
   $scope.leaving = false
+  $scope.deleted = false
 
   var apiKey = '45786882'
 
@@ -148,19 +161,23 @@ app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSess
     $scope.session = null
   })
 
-  // Ends and Deletes the scope's session
+  // Ends and Deletes the scope's session from user calls
   $scope.endVideo = function () {
     console.log('in ending Video')
     if (!$scope.leaving) {
       $scope.leaving = true
       $scope.session.disconnect()
+
       $scope.session.on('sessionDisconnected', function () {
         console.log('Session disconnected.')
-      })
 
-    sessionFactory.deleteSession($scope.sessionName)
-      .then(function (result_delete) {
-        console.log(result_delete.data)
+      sessionFactory.deleteSession($scope.sessionName)
+
+        //   .then(function (result_delete) {
+        //     console.log(result_delete.data)
+        //     return result_delete
+        // })
+
       })
     }
   }
