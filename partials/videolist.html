@@ -1,0 +1,17 @@
+<div ng-controller="UserCtrl">
+  <h1>Upcoming Calls</h1>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Session Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="session in userSessions | orderBy:'session.datetime'">
+        <td>{{session.datetime | date:'MMMM dd HH:mm:ss'}}</td>
+        <td><a href="#/videocall">{{session.name}}</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

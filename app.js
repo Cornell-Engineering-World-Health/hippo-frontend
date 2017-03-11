@@ -55,11 +55,17 @@ app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
       template: null,
       controller: 'LogoutCtrl'
     })
+    .state('videolist', {
+      url: '/user',
+      templateUrl: 'partials/videolist.html',
+      controller: 'UserCtrl'
+    }) 
     .state('video', {
-      url: '/video',
+      url: '/videocall',
       templateUrl: 'partials/video.html',
       controller: 'VideoCtrl'
     })
+   
     $urlRouterProvider.otherwise('/');
     // .when( '/video', { templateUrl: 'index.html' } )
     // .when( '/', { templateUrl: 'index.html' } )
