@@ -32,8 +32,11 @@ app.factory('sessionFactory', ['$http', function ($http) {
         })
     },
     deleteSession: function (session_name) {
-      return $http.delete(baseURL + '/videos/' + session_name)
+      $http.delete(baseURL + '/videos/' + session_name)
         .then(function (response) {
+          //if(response.status == '200') {
+            console.log(response.data.message)
+          //}
           return response.data
         })
         .catch(function (error) {
@@ -41,15 +44,15 @@ app.factory('sessionFactory', ['$http', function ($http) {
         })
     }
       // try {
-      //   $http.delete(baseURL + '/videos/' + session_name)
+      //   var deleted = $http.delete(baseURL + '/videos/' + session_name)
       // }
       // catch (error) {
-      //   if(error.status == '404') {
-      //       console.log('Session already deleted.')
-      //       return
-      //   }
-      //   console.error('Failed to delete session ' + session_name + '. Error: ' + error.data)
+      //   if(error.status == '200') { console.log('Session already deleted.') }
+      //   else {console.error('Failed to delete session ' + session_name + '. Error: ' + error.data)}
+      //   return
       // }
+      // return deleted.data
+
     }
   return service
   }
