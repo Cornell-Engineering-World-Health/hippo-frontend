@@ -1,6 +1,6 @@
-app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService', 
+app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService',
   function ($scope, $http, $window, $log, OTSession, VideoService) {
-  
+
   $scope.streams = OTSession.streams
   $scope.connections = OTSession.connections
   $scope.publishing = false
@@ -32,7 +32,7 @@ app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSess
             $scope.$broadcast('otError', {message: 'initialize session error'})
             return
           }
-          
+
           $scope.session = session
           $scope.sessionName = session_name
 
@@ -65,7 +65,7 @@ app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSess
 
         $scope.publishing = true
         return result_token
-      })   
+      })
   }
 
   $scope.$on('$destroy', function () {
