@@ -1,0 +1,31 @@
+<div ng-controller="VideoCtrl">
+  <div id="wrapper" class="text-center">
+    <div class="btnGroup">
+      <span><a href="#/videocall" class="btn btn-success" id="start-call" ng-click="getVideo()">Start call</a></span>
+      <span><a href="#/videocall" class="btn btn-danger" id="end-call" ng-click="endVideo()">End call</a></span>
+    </div>
+    <!-- FROM DEMO -->
+    <!-- <ot-layout props="{animate:true}">
+        <ot-subscriber ng-repeat="stream in streams"
+            stream="stream"
+            props="{style: {nameDisplayMode: 'off'}}">
+        </ot-subscriber>
+        <ot-publisher id="publisher"
+            props="{style: {nameDisplayMode: 'off'}, resolution: '1280x720', frameRate: 30}">
+        </ot-publisher>
+    </ot-layout> -->
+    <!-- END DEMO -->
+    <ot-layout props="{animate:true}">
+      <ot-subscriber style="width: 792px; height: 594px;" ng-repeat="stream in streams"
+        stream="stream"
+        session="session"
+        props="{style: {nameDisplayMode: 'off'}}">
+      </ot-subscriber>
+    </ot-layout>
+    <div id="facePublisher" ng-if="publishing" draggable="true">
+      <ot-publisher style="width: 792px; height: 594px;" id="facePublisher">
+      </ot-publisher>
+      <mute-video publisher-id="facePublisher" mute-publisher></mute-video>
+    </div>
+  </div>
+</div>
