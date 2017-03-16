@@ -166,6 +166,7 @@ app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSess
   console.log(OTSession)
   $scope.streams = OTSession.streams;
   $scope.connections = OTSession.connections;
+  $scope.publishers = OTSession.publishers;
   $scope.publishing = false;
   $scope.archiveId = null;
   $scope.archiving = false;
@@ -213,6 +214,20 @@ app.controller('VideoController', ['$scope', '$http', '$window', '$log', 'OTSess
     });
     $scope.publishing = true;
   }
+
+  $scope.toggleVideo() = function() { 
+    for(var publisher in $scope.publishers) {
+      var stream = publisher.stream
+      if(stream.hasVideo) {
+        publisher.publishVideo(false)
+      }
+      else {
+       publisher.publishVideo(true)
+      }
+    }
+  }
+
+
   $scope.$on('$destroy', function() {
     if ($scope.session && $scope.connected) {
       $scope.session.disconnect();

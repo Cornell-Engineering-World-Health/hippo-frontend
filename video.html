@@ -103,6 +103,7 @@
         <div class="btnGroup">
           <span><a href="#/videocall" class="btn btn-success" id="start-call" ng-click="getVideo()">Start call</a></span>
           <span><a href="#/videocall" class="btn btn-danger" id="end-call" ng-click="endVideo()">End call</a></span>
+		  <span><button class="btn btn-danger" id="toggle-video" ng-click="toggleVideo()">Toggle Video</button></span>
         </div>
         <!-- FROM DEMO -->
         <!-- <ot-layout props="{animate:true}">
@@ -126,7 +127,7 @@
           <ot-publisher style="width: 792px; height: 594px;" id="facePublisher">
           </ot-publisher>
           <mute-video publisher-id="facePublisher" mute-publisher></mute-video>
-        </div>
+        </div>     
       </div>
     </div>
   </script>
