@@ -99,6 +99,18 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
       $scope.leaving = true
       $scope.session.disconnect() //Disconnects and unpublishes
       $scope.connected = false
+      var record = {}
+
+      $scope.session.on('streamDestroyed', function (event) {
+        console.log('Stream + ' event.stream.name + ' destroyed.')
+        record["reason"] = event.reason
+        record["creationtime"] = event.stream.creationTime
+        record["frameRate"] = event.stream.frameRate
+        record["hasAudio"] = event.stream.hasAudio
+        record["videoDimensions"] = event.stream.videoDimensions
+        record["videoType"] = event.stream.videoType
+        
+      })
 
       // When YOU disconnect, the Session object dispatches a sessionDisconnected event
       $scope.session.on('sessionDisconnected', function () {
