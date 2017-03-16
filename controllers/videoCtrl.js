@@ -70,6 +70,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
       })
   }
 
+  // For when all streams have disconnected and html goes away?
   $scope.$on('$destroy', function () {
     if ($scope.session && $scope.connected) {
       $scope.session.disconnect()
@@ -83,12 +84,18 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
     if (!$scope.leaving) {
       $scope.leaving = true
       $scope.session.disconnect() //Disconnects and unpublishes
+      $scope.connected = false
 
+      // When YOU disconnect, the Session object dispatches a sessionDisconnected event
       $scope.session.on('sessionDisconnected', function () {
         console.log('Session disconnected.')
 
       VideoService.deleteSession($scope.sessionName)
       })
+
+      $scope.session = null
     }
   }
+
+
 }])
