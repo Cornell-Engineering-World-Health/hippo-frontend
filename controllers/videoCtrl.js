@@ -19,7 +19,9 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
 
   $scope.getVideoByName = function (session_name) {
     if ($scope.session) {
-      $scope.session.disconnect()
+      console.log('You are already connected.')
+      //$scope.session.disconnect()
+      return
     }
 
     VideoService.getNewToken(session_name)
