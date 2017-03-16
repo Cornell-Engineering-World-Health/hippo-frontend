@@ -10,6 +10,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
   $scope.reconnecting = false
   $scope.leaving = false
   $scope.deleted = false
+  $scope.connectionCount = 0
 
   // Wrap in VideoService?
   $http.get('./config.json').success(function(data) {
@@ -54,7 +55,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
             })
           }
 
-          if ((session.is && session.is('connected')) || session.connected) {
+          if (($scope.session.is && $scope.session.is('connected')) || $scope.session.connected) {
             connectDisconnect(true)
           }
 
@@ -63,6 +64,19 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
 
           $scope.session.on('sessionReconnecting', reconnecting.bind($scope.session, true))
           $scope.session.on('sessionReconnected', reconnecting.bind($scope.session, false))
+
+          $scope.session.on({
+            connectionCreated: function (event) {
+              $scope.connectionCount++;
+              console.log('Client ' + event.connection.connectionId + ' connected. ' + $scope.connectionCount + ' connections total.');
+              
+            },
+            connectionDestroyed: function (event) {
+              $scope.connectionCount--;
+              console.log('Client ' + event.connection.connectionId + ' disconnected for reason: ' + event.reason + '. ' + $scope.connectionCount + ' connections total.');
+            }
+          })
+
         })
 
         $scope.publishing = true
@@ -89,8 +103,8 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
       // When YOU disconnect, the Session object dispatches a sessionDisconnected event
       $scope.session.on('sessionDisconnected', function () {
         console.log('Session disconnected.')
-
-      VideoService.deleteSession($scope.sessionName)
+        if ($scope.connectionCount == 1) // last one leaving session
+          VideoService.deleteSession($scope.sessionName)
       })
 
       $scope.session = null
