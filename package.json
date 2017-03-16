@@ -21,6 +21,7 @@
     "anguler-ui-router": "^0.4.2"
   },
   "devDependencies": {
+    "angular-ui-router": "^0.4.2",
     "connect": "^3.6.0",
     "opentok-angular": "^1.2.3",
     "opentok-layout-js": "^0.5.1",
