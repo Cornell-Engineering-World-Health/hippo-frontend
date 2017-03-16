@@ -3,6 +3,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
 
   $scope.streams = OTSession.streams
   $scope.connections = OTSession.connections
+  $scope.publishers = OTSession.publishers
   $scope.publishing = false
   $scope.archiveId = null
   $scope.archiving = false
@@ -69,11 +70,42 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
             connectionCreated: function (event) {
               $scope.connectionCount++;
               console.log('Client ' + event.connection.connectionId + ' connected. ' + $scope.connectionCount + ' connections total.');
-              
+
             },
             connectionDestroyed: function (event) {
               $scope.connectionCount--;
               console.log('Client ' + event.connection.connectionId + ' disconnected for reason: ' + event.reason + '. ' + $scope.connectionCount + ' connections total.');
+            }
+          })
+
+          // Listen for publisher connection errors
+          var getPublisher = function() {
+            return $scope.publishers.filter(function (el) {
+              //Assumes DOM element called publisher...
+              var publisherElem = document.getElementById('publisher')
+              return el.id === publisherElem.id //is this unique?
+            })
+          }
+
+          var publisher = getPublisher()
+          publisher.on({
+            streamCreated: function(event) {
+
+            },
+            streamDestroyed: function(event) {
+              if (event.reason === 'networkDisconnected') {
+                console.log('Stream ' + event.stream.name + ' destroyed by network disconnect.')
+                
+                var record = {}
+                record["reason"] = event.reason
+                record["creationtime"] = event.stream.creationTime
+                record["frameRate"] = event.stream.frameRate
+                record["hasAudio"] = event.stream.hasAudio
+                record["videoDimensions"] = event.stream.videoDimensions
+                record["videoType"] = event.stream.videoType
+
+                // Send to backend? Or reconnect?
+            }
             }
           })
 
@@ -99,22 +131,11 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
       $scope.leaving = true
       $scope.session.disconnect() //Disconnects and unpublishes
       $scope.connected = false
-      var record = {}
-
-      $scope.session.on('streamDestroyed', function (event) {
-        console.log('Stream + ' event.stream.name + ' destroyed.')
-        record["reason"] = event.reason
-        record["creationtime"] = event.stream.creationTime
-        record["frameRate"] = event.stream.frameRate
-        record["hasAudio"] = event.stream.hasAudio
-        record["videoDimensions"] = event.stream.videoDimensions
-        record["videoType"] = event.stream.videoType
-        
-      })
 
       // When YOU disconnect, the Session object dispatches a sessionDisconnected event
-      $scope.session.on('sessionDisconnected', function () {
+      $scope.session.on('sessionDisconnected', function (event) {
         console.log('Session disconnected.')
+        var reason = event.reason
         if ($scope.connectionCount == 1) // last one leaving session
           VideoService.deleteSession($scope.sessionName)
       })
