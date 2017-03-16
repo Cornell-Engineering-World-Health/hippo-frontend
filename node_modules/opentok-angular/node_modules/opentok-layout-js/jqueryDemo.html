@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Flex Box Layout</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .auto-size-children {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+      }
+      .auto-size-children > * {
+        background-color: grey;
+        border: 1px solid white;
+        transition-property: all;
+        transition-duration: 0.5s;
+      }
+    </style>
+    <script src="flex-box-layout.js" charset="utf-8"></script>
+    <script src="bower_components/jquery/dist/jquery.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <div class="auto-size-children">
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+    </div>
+    <script>
+      var getCSSNumber = function (elem, prop) {
+          var cssStr = $(elem).css(prop);
+          return cssStr ? parseInt(cssStr, 10) : 0;
+      };
+      $.fn.autoSizeChildren = function () {
+        var elem = this;
+        var children = $(elem).find('>*');
+        var dims = getBestDimensions(9/16, 3/2, children.length, $(elem).width(), $(elem).height());
+        children.each(function () {
+          var actualWidth = dims.targetWidth - getCSSNumber(this, "paddingLeft") -
+            getCSSNumber(this, "paddingRight") -
+            getCSSNumber(this, "marginLeft") -
+            getCSSNumber(this, "marginRight") -
+            getCSSNumber(this, "borderLeft") -
+            getCSSNumber(this, "borderRight");
+          var actualHeight = dims.targetHeight - getCSSNumber(this, "paddingTop") -
+            getCSSNumber(this, "paddingBottom") -
+            getCSSNumber(this, "marginTop") -
+            getCSSNumber(this, "marginBottom") -
+            getCSSNumber(this, "borderTop") -
+            getCSSNumber(this, "borderBottom");
+
+          $(this).width(actualWidth).height(actualHeight);
+        });
+      };
+      $(window).on('resize', function () {
+        $('.auto-size-children').autoSizeChildren();
+      });
+      $('.auto-size-children').autoSizeChildren();
+    </script>
+  </body>
+</html>
