@@ -1,7 +1,7 @@
 <div ng-controller="VideoCtrl">
   <div id="wrapper" class="text-center">
     <div class="btnGroup">
-      <span><a href="#/videocall" class="btn btn-success" id="start-call" ng-click="getVideoByName('jellyfish493')">Start call</a></span>
+      <span><a href="#/videocall" class="btn btn-success" id="start-call" ng-click="getVideoByName('cobra268')">Start call</a></span>
       <span><a href="#/videocall" class="btn btn-danger" id="end-call" ng-click="endVideo()">End call</a></span>
     </div>
     <!-- FROM DEMO -->
@@ -23,7 +23,7 @@
       </ot-subscriber>
     </ot-layout>
     <div id="facePublisher" ng-if="publishing" draggable="true">
-      <ot-publisher id="facePublisher">
+      <ot-publisher id="facePublisher" style="width: 792px; height: 594px">
       </ot-publisher>
       <mute-video publisher-id="facePublisher" mute-publisher></mute-video>
     </div>
