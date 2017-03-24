@@ -18,7 +18,8 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', function ($scope, $log, $
   $scope.getAllSessionsForUser = function(user_id) {
       $http.get(baseURL + '/users/' + user_id)
         .then(function (response) {
-            return response.data.calls
+            console.log(response)
+            $scope.userSessions = response.data.calls
         })
         .catch(function (error) {
             console.log('Failed to get sessions for user ' + user_id + '. Error: ' + error.data)
@@ -26,5 +27,5 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', function ($scope, $log, $
         })
   }
   // Hard coded for user 8
-  $scope.userSessions = $scope.getAllSessionsForUser(135141)
+  $scope.getAllSessionsForUser(21)
 }])

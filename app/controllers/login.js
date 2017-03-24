@@ -4,7 +4,6 @@ angular.module('myApp')
       $auth.login($scope.user)
         .then(function() {
           console.log('You have successfully signed in!');
-          print($scope.user)
           console.log($scope.user)
           $location.path('/');
         })
@@ -13,7 +12,6 @@ angular.module('myApp')
         })
     } // WILL NOT NEED ABOVE
     $scope.authenticate = function(provider) {
-      console.log(provider)
       $auth.authenticate(provider)
         .then(function() {
           console.log('You have successfully signed in with ' + provider);
