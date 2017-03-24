@@ -59,21 +59,21 @@ app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
       url: '/user',
       templateUrl: 'partials/videolist.html',
       controller: 'UserCtrl'
-    }) 
+    })
     .state('video', {
       url: '/videocall',
       templateUrl: 'partials/video.html',
       controller: 'VideoCtrl'
     })
-   
+
     $urlRouterProvider.otherwise('/');
     // .when( '/video', { templateUrl: 'index.html' } )
     // .when( '/', { templateUrl: 'index.html' } )
     // .when( '/home', { templateUrl: 'index.html' } )
     // .when( '/videocall', { templateUrl: 'video.html' } )
     // .otherwise( { redirectTo: '/video' } );
-
+    $authProvider.baseUrl = "https://ewh-hippo.herokuapp.com"
     $authProvider.google({
-      clientId: '711259324524-36d8oudk6g40g1ioel59hhegcjd3n5t1.apps.googleusercontent.com'
+      clientId: '789185821228-jkliab3iscephfdr47h9184kn1bh2t1j.apps.googleusercontent.com'
     });
 });
