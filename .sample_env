@@ -1,5 +1,5 @@
-OPENTOK_KEY=api_key_here
-OPENTOK_SECRET_KEY=secret_key_here
+OPENTOK_KEY=45786882
+OPENTOK_SECRET_KEY=aafd067184ed09d50dd472d8808afb733568599b
 BASE_URL=http://localhost:3000
 
 DB_MONGODB_URL=mongodb://localhost:27017/hippo
