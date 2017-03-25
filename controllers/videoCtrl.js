@@ -59,7 +59,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               $scope.reconnecting = false
               if (!connected) {
                 $scope.publishing = false
-                console.log('My session disconnected.')
+                console.log('sessionDisconnected.')
                 connectDisconnectJSON['eventType'] = "sessionDisconnected"
                 SocketService.emit('sessionDisconnected', connectDisconnectJSON)
                 
@@ -67,7 +67,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               else {
                 SocketService.emit('sessionConnected', connectDisconnectJSON)
                 connectDisconnectJSON['eventType'] = "sessionConnected"
-                console.log('My session connected.')
+                console.log('sessionConnected.')
               }
             }
             )
@@ -96,11 +96,13 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
           $scope.session.on({
             connectionCreated: function (event) {
               $scope.connectionCount++;
-              //console.log('Client ' + event.connection.connectionId + ' connected. ' + $scope.connectionCount + ' connections total.');
+              console.log('connectionCreated Client ' + event.connection.connectionId + ' connected. ' 
+                + $scope.connectionCount + ' connections total. userId = ' + $scope.userId);
             },
             connectionDestroyed: function (event) {
               $scope.connectionCount--;
-              //console.log('Client ' + event.connection.connectionId + ' disconnected for reason: ' + event.reason + '. ' + $scope.connectionCount + ' connections total.');
+              console.log('connectionCreated Client ' + event.connection.connectionId + ' disconnected for reason: '
+                 + event.reason + '. ' + $scope.connectionCount + ' connections total. userId = ' + $scope.userId);
             },
             streamCreated: function(event) {
               // TODO: LOG TO BACKEND

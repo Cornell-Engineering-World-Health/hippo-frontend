@@ -3,7 +3,7 @@ app.factory('SocketService', ['$rootScope', '$http', function ($rootScope, $http
   if ($rootScope.socket == null) {
 
     console.log('just before socket creation')
-    $rootScope.socket = io.connect('10.128.152.111:3000', { transports: ['websocket', 'polling', 'flashsocket'] })
+    $rootScope.socket = io.connect('https://ewh-hippo.herokuapp.com/', { transports: ['websocket', 'polling', 'flashsocket'] })
 
     var userEmail = ""
     $http.get('https://ewh-hippo.herokuapp.com/api/self').success(function (data) {
