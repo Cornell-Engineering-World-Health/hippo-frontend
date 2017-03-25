@@ -44,33 +44,57 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
           $scope.session = session
           $scope.sessionName = session_name
 
-          var connectDisconnect = function (connected) {
-            // TODO: LOG TO BACKEND with userId 
-            var d = new Date()
-            var time = d.getTime()
-            var connectDisconnectJSON = {}
-            connectDisconnectJSON['sessionName'] = $scope.sessionName
-            connectDisconnectJSON['timestamp'] = time
-            connectDisconnectJSON['userId'] = $scope.userId
-            var d = new Date()
+          
 
+          // var connect = function (connected) {
+          //   $scope.$apply(function () {
+          //     $scope.connected = connected
+          //     $scope.reconnecting = false
+          //     console.log('sessionConnected.')
+          //   })
+          // }
+
+          // var disconnect = function (connected, event) {
+          //   $scope.$apply(function () {
+          //     $scope.connected = connected
+          //     $scope.reconnecting = false
+              
+          //     $scope.publishing = false
+          //     console.log('sessionDisconnected.')
+          //     console.log(event)
+              // var d = new Date()
+              // var time = d.getTime()
+              // var sessionDisconnectedJSON = {}
+              // sessionDisconnectedJSON['eventType'] = "sessionDisconnected"
+              // sessionDisconnectedJSON['sessionName'] = $scope.sessionName
+              // sessionDisconnectedJSON['timestamp'] = time
+              // sessionDisconnectedJSON['userId'] = $scope.userId
+              // sessionDisconnectedJSON['reason'] = event.reason
+              // SocketService.emit("sessionDisconnected", sessionDisconnectedJSON)
+              
+          //   })
+          // }
+          var connectDisconnect = function (connected) {
             $scope.$apply(function () {
               $scope.connected = connected
               $scope.reconnecting = false
               if (!connected) {
                 $scope.publishing = false
                 console.log('sessionDisconnected.')
-                connectDisconnectJSON['eventType'] = "sessionDisconnected"
-                SocketService.emit('sessionDisconnected', connectDisconnectJSON)
-                
+
+                var d = new Date()
+                var time = d.getTime()
+                var sessionDisconnectedJSON = {}
+                sessionDisconnectedJSON['eventType'] = "sessionDisconnected"
+                sessionDisconnectedJSON['sessionName'] = $scope.sessionName
+                sessionDisconnectedJSON['timestamp'] = time
+                sessionDisconnectedJSON['userId'] = $scope.userId
+                sessionDisconnectedJSON['reason'] = "clientDisconnected" 
+                SocketService.emit("sessionDisconnected", sessionDisconnectedJSON)
               }
-              else {
-                SocketService.emit('sessionConnected', connectDisconnectJSON)
-                connectDisconnectJSON['eventType'] = "sessionConnected"
+              else 
                 console.log('sessionConnected.')
-              }
-            }
-            )
+            })
           }
 
           var reconnecting = function (isReconnecting) {
@@ -90,6 +114,11 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
           $scope.session.on('sessionConnected', connectDisconnect.bind($scope.session, true))
           $scope.session.on('sessionDisconnected', connectDisconnect.bind($scope.session, false))
 
+          //   function (event) {
+          //   return disconnect.bind($scope.session, false, event)
+          // })
+            
+
           $scope.session.on('sessionReconnecting', reconnecting.bind($scope.session, true))
           $scope.session.on('sessionReconnected', reconnecting.bind($scope.session, false))
 
@@ -98,11 +127,37 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               $scope.connectionCount++;
               console.log('connectionCreated Client ' + event.connection.connectionId + ' connected. ' 
                 + $scope.connectionCount + ' connections total. userId = ' + $scope.userId);
+
+              var d = new Date()
+              var time = d.getTime()
+
+              var connectionCreatedJSON = {
+                eventType : 'connectionCreated',
+                sessionName : $scope.sessionName,
+                timestamp : time,
+                clientId : $scope.userId,
+                userConnectionId : event.connection.connectionId
+              }
+              SocketService.emit("connectionCreated", connectionCreatedJSON)
             },
             connectionDestroyed: function (event) {
               $scope.connectionCount--;
-              console.log('connectionCreated Client ' + event.connection.connectionId + ' disconnected for reason: '
+              console.log('connectionDestroyed Client ' + event.connection.connectionId + ' disconnected for reason: '
                  + event.reason + '. ' + $scope.connectionCount + ' connections total. userId = ' + $scope.userId);
+
+              var d = new Date()
+              var time = d.getTime()
+
+              var connectionDestroyedJSON = {
+                eventType : 'connectionDestroyed',
+                sessionName : $scope.sessionName,
+                timestamp : time,
+                clientId : $scope.userId,
+                userConnectionId : event.connection.connectionId,
+                reason: event.reason
+              }
+              //console.log(JSON.stringify(connectionDestroyedJSON))
+              SocketService.emit("connectionDestroyed", connectionDestroyedJSON)
             },
             streamCreated: function(event) {
               // TODO: LOG TO BACKEND
@@ -188,6 +243,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               streamDestroyedJSON['timestamp'] = time
               streamDestroyedJSON['clientId'] = $scope.userId
               streamDestroyedJSON['userConnectionId'] = event.stream.connection.connectionId
+              streamDestroyedJSON['reason'] = event.reason
               SocketService.emit('streamDestroyed', streamDestroyedJSON)
             },
             streamPropertyChanged: function(event) {
