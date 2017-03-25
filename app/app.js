@@ -67,12 +67,8 @@ app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
     })
 
     $urlRouterProvider.otherwise('/');
-    // .when( '/video', { templateUrl: 'index.html' } )
-    // .when( '/', { templateUrl: 'index.html' } )
-    // .when( '/home', { templateUrl: 'index.html' } )
-    // .when( '/videocall', { templateUrl: 'video.html' } )
-    // .otherwise( { redirectTo: '/video' } );
     $authProvider.baseUrl = "https://ewh-hippo.herokuapp.com"
+    // $authProvider.baseUrl = "http://localhost:3000"
     $authProvider.google({
       clientId: '789185821228-jkliab3iscephfdr47h9184kn1bh2t1j.apps.googleusercontent.com'
     });

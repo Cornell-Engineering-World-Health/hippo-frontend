@@ -1,16 +1,18 @@
-app.controller('UserCtrl', ['$scope', '$log', '$http', function ($scope, $log, $http) {
+app.controller('UserCtrl', ['$scope', '$log', '$http', 'User', 'UserService',
+  function ($scope, $log, $http, User, UserService) {
 
-  var baseURL = 'https://ewh-hippo.herokuapp.com/api'
-  // var baseURL = "http://10.129.1.250:3000/api"
+  var baseURL = UserService.baseUrlAPI
+  console.log(baseURL)
 
   // Returns user information for the User profile
-  $scope.getUser = function(user_id) {
-    $http.get(baseURL + '/users/' + user_id)
+  $scope.getUser = function() {
+    User.getUser()
         .then(function (response) {
-            return response.data
+          $scope.user = response.data
+          $scope.userSessions = response.data.calls
         })
         .catch(function (error) {
-            console.log('Failed to get user ' + user_id + '. Error: ' + error.data)
+            console.log(error)
             return error
         })
   }
@@ -26,5 +28,6 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', function ($scope, $log, $
             return error.data
         })
   }
-  $scope.getAllSessionsForUser(21)
+  $scope.getUser()
+  // $scope.getAllSessionsForUser(21)
 }])
