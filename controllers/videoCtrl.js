@@ -1,5 +1,5 @@
-app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService',
-  function ($scope, $http, $window, $log, OTSession, VideoService) {
+app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService', 'SocketService',
+  function ($scope, $http, $window, $log, OTSession, VideoService, SocketService) {
 
   $scope.streams = OTSession.streams
   $scope.connections = OTSession.connections
@@ -49,7 +49,6 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
             var d = new Date()
             var time = d.getTime()
             var connectDisconnectJSON = {}
-            connectDisconnectJSON['eventType'] = "sessionConnected"
             connectDisconnectJSON['sessionName'] = $scope.sessionName
             connectDisconnectJSON['timestamp'] = time
             connectDisconnectJSON['userId'] = $scope.userId
@@ -61,11 +60,13 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               if (!connected) {
                 $scope.publishing = false
                 console.log('My session disconnected.')
-                //SocketService.emit('sessionDisconnected', connectDisconnectJSON)
+                connectDisconnectJSON['eventType'] = "sessionDisconnected"
+                SocketService.emit('sessionDisconnected', connectDisconnectJSON)
                 
               }
               else {
-                //SocketService.emit('sessionConnected', connectDisconnectJSON)
+                SocketService.emit('sessionConnected', connectDisconnectJSON)
+                connectDisconnectJSON['eventType'] = "sessionConnected"
                 console.log('My session connected.')
               }
             }
@@ -122,7 +123,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               streamCreatedJSON['timestamp'] = new Date(event.stream.creationTime)
               streamCreatedJSON['clientId'] = $scope.userId
               streamCreatedJSON['userConnectionId'] = event.stream.connection.connectionId
-              //SocketService.emit('streamCreated', streamCreatedJSON)
+              SocketService.emit('streamCreated', streamCreatedJSON)
 
               var frameRateJSON = {};
               frameRateJSON['eventType'] = "frameRate"
@@ -131,7 +132,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               frameRateJSON['clientId'] = $scope.userId
               frameRateJSON['userConnectionId'] = event.stream.connection.connectionId
               frameRateJSON['frameRate'] = event.stream.frameRate
-              //SocketService.emit('frameRate', frameRateJSON)
+              SocketService.emit('frameRate', frameRateJSON)
 
               var audioJSON = {}
               audioJSON['eventType'] = "hasAudio"
@@ -140,7 +141,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               audioJSON['clientId'] = $scope.userId
               audioJSON['userConnectionId'] = event.stream.connection.connectionId
               audioJSON['hasAudio'] = event.stream.hasAudio
-              //SocketService.emit('hasAudio', audioJSON)
+              SocketService.emit('hasAudio', audioJSON)
 
               var videoJSON = {}
               videoJSON['eventType'] = "hasVideo"
@@ -149,7 +150,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               videoJSON['clientId'] = $scope.userId
               videoJSON['userConnectionId'] = event.stream.connection.connectionId
               videoJSON['hasVideo'] = event.stream.hasVideo
-              //SocketService.emit('hasVideo', videoJSON)
+              SocketService.emit('hasVideo', videoJSON)
 
               var videoDimensionsJSON = {}
               videoDimensionsJSON['eventType'] = "videoDimensions"
@@ -159,7 +160,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               videoDimensionsJSON['userConnectionId'] = event.stream.connection.connectionId
               videoDimensionsJSON['width'] = event.stream.videoDimensions.width
               videoDimensionsJSON['height'] = event.stream.videoDimensions.height
-              //SocketService.emit('videoDimensions', videoDimensionsJSON)
+              SocketService.emit('videoDimensions', videoDimensionsJSON)
 
               var videoTypeJSON = {}
               videoTypeJSON['eventType'] = "videoType"
@@ -168,7 +169,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               videoTypeJSON['clientId'] = $scope.userId
               videoTypeJSON['userConnectionId'] = event.stream.connection.connectionId
               videoTypeJSON['videoType'] = event.stream.videoType
-              //SocketService.emit('videoType', videoTypeJSON)
+              SocketService.emit('videoType', videoTypeJSON)
               
             },
             streamDestroyed: function(event) {
@@ -185,7 +186,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               streamDestroyedJSON['timestamp'] = time
               streamDestroyedJSON['clientId'] = $scope.userId
               streamDestroyedJSON['userConnectionId'] = event.stream.connection.connectionId
-              //SocketService.emit('streamDestroyed', streamDestroyedJSON)
+              SocketService.emit('streamDestroyed', streamDestroyedJSON)
             },
             streamPropertyChanged: function(event) {
               //changedProperty: hasAudio, hasVideo, videoDimensions
@@ -206,7 +207,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
                 audioJSON['clientId'] = $scope.userId
                 audioJSON['userConnectionId'] = event.stream.connection.connectionId
                 audioJSON['hasAudio'] = event.newValue
-                //SocketService.emit('hasAudio', audioJSON)
+                SocketService.emit('hasAudio', audioJSON)
               }
               else if (event.changedProperty == "hasVideo") {
                 var videoJSON = {}
@@ -216,7 +217,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
                 videoJSON['clientId'] = $scope.userId
                 videoJSON['userConnectionId'] = event.stream.connection.connectionId
                 videoJSON['hasVideo'] = event.newValue
-                //SocketService.emit('hasVideo', videoJSON)
+                SocketService.emit('hasVideo', videoJSON)
               }
               else {
                 var videoDimensionsJSON = {}
@@ -227,7 +228,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
                 videoDimensionsJSON['userConnectionId'] = event.stream.connection.connectionId
                 videoDimensionsJSON['width'] = event.newValue.videoDimensions.width
                 videoDimensionsJSON['height'] = event.stream.videoDimensions.height
-                //SocketService.emit('videoDimensions', videoDimensionsJSON)
+                SocketService.emit('videoDimensions', videoDimensionsJSON)
               }
             }
           })
