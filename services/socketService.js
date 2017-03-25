@@ -6,6 +6,9 @@ app.factory('SocketService', ['$rootScope', function ($rootScope) {
     $rootScope.socket.emit('user-online', {email: 'bje43@cornell.edu' })
     console.log($rootScope.socket)
   }
+  $rootScope.socket.on('confirmation', function (data) {
+    console.log(data.msg)
+  })
   return {
     on: function (eventName, callback) {
       $rootScope.socket.on(eventName, callback)

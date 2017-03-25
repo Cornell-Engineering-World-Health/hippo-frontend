@@ -13,7 +13,7 @@
 4 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:78:16
 4 verbose stack     at tryToString (fs.js:447:3)
 4 verbose stack     at FSReqWrap.readFileAfterClose [as oncomplete] (fs.js:434:12)
-5 verbose cwd /mnt/c/Users/bened_000/linux/EWH/test/hippo-frontend
+5 verbose cwd /mnt/c/Users/bened_000/linux/EWH/hippo-frontend
 6 error Linux 3.4.0+
 7 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "start"
 8 error node v7.6.0

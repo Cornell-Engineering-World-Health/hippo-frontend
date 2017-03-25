@@ -1,9 +1,8 @@
 app.factory('VideoService', ['$http', function($http) {
-    var baseURL = 'https://ewh-hippo.herokuapp.com/api'
-    var service = {
-      createSession: function(sessionData) {
+  var service = {
+    createSession: function(sessionData) {
       // TODO: why are we exposing this in post url; no need
-      return $http.post(baseURL + '/videos/' + sessionData.caller_id + '/users/' + sessionData.callee_id, sessionData)
+      return $http.post('/videos/' + sessionData.caller_id + '/users/' + sessionData.callee_id, sessionData)
         .then(function(response) {
           return alert("success");
         })
@@ -12,7 +11,7 @@ app.factory('VideoService', ['$http', function($http) {
         })
     },
     getNewToken: function(session_name) {
-      return $http.get(baseURL + '/videos/' + session_name)
+      return $http.get('/videos/' + session_name)
         .then(function (response) {
           return response.data
         })
@@ -22,7 +21,7 @@ app.factory('VideoService', ['$http', function($http) {
     },
     // TODO: why are we not using session_name.
     deleteSession: function(session_name) {
-      return $http.delete(baseURL + '/videos/' + session_name)
+      return $http.delete('/videos/' + session_name)
         .then( function (response){
           return response.data
         })

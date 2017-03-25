@@ -17,13 +17,10 @@
     "jwt-simple": "^0.5.1",
     "mongoose": "^4.8.6",
     "mongoose-auto-increment": "^5.0.1",
-    "opentok": "^2.5.0",
-    "angular-ui-router": "^0.4.2"
+    "opentok": "^2.5.0"
   },
   "devDependencies": {
     "connect": "^3.6.0",
-    "opentok-angular": "^1.2.3",
-    "opentok-layout-js": "^0.5.1",
     "serve-static": "^1.12.1"
   },
   "standard": {

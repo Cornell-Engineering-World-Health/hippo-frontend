@@ -1,5 +1,10 @@
-// npm start
-var connect = require('connect');
-var serveStatic = require('serve-static');
-connect().use(serveStatic(__dirname)).listen(8080);
-console.log("Server listening on: http://localhost:%s", 8080);
+var express = require('express');
+var app = express();
+
+app.set('port', (process.env.PORT || 8080));
+
+app.use(express.static(__dirname));
+
+app.listen(app.get('port'), function () {
+    console.log('Node app is running on port', app.get('port'));
+});
