@@ -1,5 +1,5 @@
 app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService', 'SocketService',
-  function ($scope, $http, $window, $log, OTSession, VideoService) {
+  function ($scope, $http, $window, $log, OTSession, VideoService, SocketService) {
     $scope.streams = OTSession.streams
     $scope.connections = OTSession.connections
     $scope.publishing = false

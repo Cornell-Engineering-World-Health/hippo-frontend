@@ -17,6 +17,7 @@
     "jwt-simple": "^0.5.1",
     "mongoose": "^4.8.6",
     "mongoose-auto-increment": "^5.0.1",
+    "ng-notify": "^0.7.1",
     "opentok": "^2.5.0"
   },
   "devDependencies": {
