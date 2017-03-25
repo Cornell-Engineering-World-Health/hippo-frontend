@@ -26,6 +26,5 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', function ($scope, $log, $
             return error.data
         })
   }
-  // Hard coded for user 8
   $scope.getAllSessionsForUser(21)
 }])
