@@ -9,29 +9,28 @@
 //       token: 'YOUR_TOKEN'
 //   });
 
+var app = angular.module('myApp', ['opentok', 'ui.router', 'satellizer', 'ngNotify'])
 
-var app = angular.module( "myApp", ['opentok', 'ui.router', 'satellizer'] );
+app.config(function ($stateProvider, $urlRouterProvider, $authProvider) {
+  var skipIfLoggedIn = ['$q', '$auth', function ($q, $auth) {
+    var deferred = $q.defer()
+    if ($auth.isAuthenticated()) {
+      deferred.reject()
+    } else {
+      deferred.resolve()
+    }
+    return deferred.promise
+  }]
 
-app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
-  var skipIfLoggedIn = ['$q', '$auth', function($q, $auth) {
-      var deferred = $q.defer();
-      if ($auth.isAuthenticated()) {
-        deferred.reject();
-      } else {
-        deferred.resolve();
-      }
-      return deferred.promise;
-    }]
-
-    var loginRequired = ['$q', '$location', '$auth', function($q, $location, $auth) {
-      var deferred = $q.defer();
-      if ($auth.isAuthenticated()) {
-        deferred.resolve();
-      } else {
-        $location.path('/login');
-      }
-      return deferred.promise;
-    }]
+  var loginRequired = ['$q', '$location', '$auth', function ($q, $location, $auth) {
+    var deferred = $q.defer()
+    if ($auth.isAuthenticated()) {
+      deferred.resolve()
+    } else {
+      $location.path('/login')
+    }
+    return deferred.promise
+  }]
 
   $stateProvider
     .state('login', {
@@ -66,14 +65,14 @@ app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
       controller: 'VideoCtrl'
     })
 
-    $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise('/')
     // .when( '/video', { templateUrl: 'index.html' } )
     // .when( '/', { templateUrl: 'index.html' } )
     // .when( '/home', { templateUrl: 'index.html' } )
     // .when( '/videocall', { templateUrl: 'video.html' } )
     // .otherwise( { redirectTo: '/video' } );
-    $authProvider.baseUrl = "https://ewh-hippo.herokuapp.com"
-    $authProvider.google({
-      clientId: '789185821228-jkliab3iscephfdr47h9184kn1bh2t1j.apps.googleusercontent.com'
-    });
-});
+  $authProvider.baseUrl = 'https://ewh-hippo.herokuapp.com'
+  $authProvider.google({
+    clientId: '789185821228-jkliab3iscephfdr47h9184kn1bh2t1j.apps.googleusercontent.com'
+  })
+})
