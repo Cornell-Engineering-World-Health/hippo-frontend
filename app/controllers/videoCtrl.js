@@ -81,11 +81,6 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
     if (!$scope.leaving) {
       $scope.leaving = true
       $scope.session.disconnect() //Disconnects and unpublishes
-
-      $scope.session.on('sessionDisconnected', function () {
-        console.log('Session disconnected.')
-
-      VideoService.deleteSession($scope.sessionName)
       })
     }
   }
