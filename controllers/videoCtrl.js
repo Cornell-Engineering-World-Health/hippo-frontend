@@ -131,9 +131,9 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
                 $scope.publishing = false
                 console.log('sessionDisconnected.')
               })
-              console.log($scope.connected)
-              console.log($scope.reconnecting)
-              console.log($scope.publishing)
+              console.log("connected = "+$scope.connected)
+              console.log("reconnecting = "+$scope.reconnecting)
+              console.log("publishing = "+$scope.publishing)
 
               var d = new Date()
               var time = d.getTime()
