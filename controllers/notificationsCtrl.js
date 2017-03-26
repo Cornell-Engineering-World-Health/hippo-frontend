@@ -5,7 +5,7 @@ app.controller('NotificationsCtrl', ['$scope', '$log', 'SocketService', function
     $scope.notifications.push(data.joiner +' has connected')
   })
   SocketService.on('participant-disconnected', function (disconnectInfo) {
-    $scope.notififcations.push('A participant has disconnected')
+    $scope.notifications.push('A participant has disconnected')
   })
   SocketService.on('confirmation', function (data) {
     //console.log(data.msg)

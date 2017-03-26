@@ -26,5 +26,5 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', function ($scope, $log, $
         })
   }
   // Hard coded for user 8 
-  $scope.userSessions = $scope.getAllSessionsForUser(8)
+  $scope.userSessions = $scope.getAllSessionsForUser(74)
 }])
