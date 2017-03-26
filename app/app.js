@@ -34,6 +34,14 @@ app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
     }]
 
   $stateProvider
+    .state('home', {
+      url: '/',
+      templateUrl: 'index.html',
+      controller: 'LoginCtrl',
+      resolve: {
+        skipIfLoggedIn: skipIfLoggedIn
+      }
+    })
     .state('login', {
       url: '/login',
       templateUrl: 'partials/login.html',
@@ -42,9 +50,9 @@ app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
         skipIfLoggedIn: skipIfLoggedIn
       }
     })
-    .state('home', {
-      url: '/',
-      templateUrl: 'index.html',
+    .state('signup', {
+      url: '/signup',
+      templateUrl: 'partials/signup.html',
       controller: 'LoginCtrl',
       resolve: {
         skipIfLoggedIn: skipIfLoggedIn
@@ -60,10 +68,20 @@ app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
       templateUrl: 'partials/videolist.html',
       controller: 'UserCtrl'
     })
+    .state('scheduleSession', {
+      url: '/schedule',
+      templateUrl: 'partials/scheduleSession.html',
+      controller: 'UserCtrl'
+    })
     .state('video', {
       url: '/videocall',
       templateUrl: 'partials/video.html',
       controller: 'VideoCtrl'
+    })
+    .state('profile', {
+      url: '/profile',
+      templateUrl: 'partials/profile.html',
+      controller: 'UserCtrl'
     })
 
     $urlRouterProvider.otherwise('/');

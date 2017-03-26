@@ -1,0 +1,30 @@
+<div class='container loginContainer'>
+    <div class='row'>
+        <div class='col-md-2 col-sm-2'></div>
+        <div class='col-md-5 col-sm-10'>
+            <h1 class='profile-heading'>
+                My Profile
+            </h1>
+        </div>
+        <div class='col-md-5 col-sm-2'>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='col-md-2 col-sm-2'></div>
+        <div class='col-md-1 col-sm-1'>
+            <img class='profImg' src='../hippo.png'>
+        </div>
+        <div id='profileContainer' class='col-md-6 col-sm-6'>
+            <form id="user_form" class="form" name="userForm">
+            <label class='update-label' for='name' class='name'>First Name</label><br>
+            <input class='long-field' id='name-field' type='text' name='name' maxlength='100' placeholder="{{user.firstName}}" /><br>
+            <label class='update-label' for='name' class='name'>Last Name</label><br>
+            <input class='long-field' id='name-field' type='text' name='name' maxlength='100' placeholder="{{user.lastName}}" /><br>
+            <label class='update-label' for='email' class='email'>Email</label><br>
+            <input class='long-field' id='email-field' type='text' name='email' placeholder='{{user.email}}' /><br/><br/>
+            <!-- <input class="btn submit-update pull-right" type="submit" name="submit" value="Save"> -->
+            </form>
+        </div>
+        <div class='col-md-3 col-sm-3'></div>
+    </div>
+</div>

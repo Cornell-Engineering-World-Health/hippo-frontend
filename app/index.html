@@ -3,9 +3,14 @@
 <head>
   <title>Hippo-Frontend</title>
 
+  <link rel="icon" type="image/x-icon" href="favicon.ico"/>
+
   <!-- STYLES -->
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+  <!-- <link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css"/> -->
+  <link rel="stylesheet" href="/node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+  <link rel="stylesheet" href="assets/css/select2.min.css"/>
+  <link rel="stylesheet" href="assets/css/style.css"/>
 </head>
 
 
@@ -21,10 +26,11 @@
                 <a class='navbar-brand page-scroll bold' href='/#/home'>Hippo-Frontend</a>
               </div>
               <ul ng-if="!isAuthenticated()" class="nav navbar-nav pull-right">
-                <li><a href="/#/login">Login</a></li>
                 <li><a href="/#/signup">Sign up</a></li>
+                <li><a href="/#/login">Login</a></li>
               </ul>
               <ul ng-if="isAuthenticated()" class="nav navbar-nav pull-right">
+                <li ng-if="isAuthenticated()"><a href="/#/user">Sessions</a></li>
                 <li ng-if="isAuthenticated()"><a href="/#/profile">Profile</a></li>
                 <li><a href="/#/logout">Logout</a></li>
               </ul>
@@ -33,8 +39,7 @@
         </div>
       </div>
       <div class="row">
-        <ng-view>
-        </ng-view>
+        <div ui-view></div>
       </div>
     </div>
 
@@ -63,9 +68,13 @@
       </ot-layout>
   </div> -->
 <!-- ifconfig inet -->
-  <div ui-view></div>
 
   <!-- THIRD PARTY -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/node_modules/moment/min/moment.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+  <script type="text/javascript" src="assets/js/select2.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular-route.min.js"></script>
   <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
@@ -77,6 +86,7 @@
 
   <!-- APPLICATION CODE -->
   <script src="/app.js"></script>
+  <script src="/directives/dateTimePicker.js"></script>
   <script src="/services/userService.js"></script>
   <script src="/services/user.js"></script>
   <script src="/services/videoService.js"></script>

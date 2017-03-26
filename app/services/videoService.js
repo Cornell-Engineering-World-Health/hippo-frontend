@@ -1,15 +1,10 @@
-app.factory('VideoService', ['$http', function($http) {
+app.factory('VideoService', ['$http', 'UserService', function($http, UserService) {
+  var baseURL = UserService.baseUrlAPI
   var service = {
     createSession: function(sessionData) {
-      // TODO: why are we exposing this in post url; no need
-      return $http.post('/videos/' + sessionData.caller_id + '/users/' + sessionData.callee_id, sessionData)
-        .then(function(response) {
-          return alert("success");
-        })
-        .catch(function(error) {
-          console.error('Failed post. Error: ' + error.data);
-        })
+      return $http.post(baseURL + '/videos', sessionData)
     },
+    // TODO: BELOW NEEDS UPDATE
     getNewToken: function(session_name) {
       return $http.get('/videos/' + session_name)
         .then(function (response) {

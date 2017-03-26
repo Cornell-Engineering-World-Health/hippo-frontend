@@ -1,9 +1,13 @@
 angular.module('myApp')
   .factory('User', ['$http', 'UserService', function($http, UserService) {
-    var url = UserService.baseUrlAPI + '/self'
+    var selfUrl = UserService.baseUrlAPI + '/self'
+    var allUrl = UserService.baseUrlAPI + '/users'
     return {
       getUser: function() {
-        return $http.get(url)
+        return $http.get(selfUrl)
+      },
+      getAllUsers: function() {
+        return $http.get(allUrl)
       }
     }
   }])

@@ -1,25 +1,27 @@
 angular.module('myApp')
-  .controller('LoginCtrl', function($scope, $location, $auth) {
+  // .controller('LoginCtrl', ['$timeout',
+  //   function($scope, $location, $auth, $timeout) {
+  // Error with dependency; but dependency needed for minification
+    .controller('LoginCtrl', function($scope, $location, $auth, $timeout) {
     $scope.login = function() {
       $auth.login($scope.user)
         .then(function() {
           console.log('You have successfully signed in!');
-          console.log($scope.user)
-          $location.path('/');
+          $timeout(function() {
+            $location.path('/user').replace()
+          })
         })
         .catch(function(error) {
           console.log(error.data.message, error.status);
         })
-    } // WILL NOT NEED ABOVE
+    }
     $scope.authenticate = function(provider) {
       $auth.authenticate(provider)
         .then(function() {
           console.log('You have successfully signed in with ' + provider);
-          $location.path('/').replace()
-          // $scope.$apply()
-          // $scope.$apply(function() {
-          //   $location.path('/');
-          // })
+          $timeout(function() {
+            $location.path('/user').replace()
+          })
         })
         .catch(function(error) {
           if (error.message) {
