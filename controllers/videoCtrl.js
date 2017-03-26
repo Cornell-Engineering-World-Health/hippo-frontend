@@ -77,24 +77,26 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
           // }
           var connectDisconnect = function (connected) {
             $scope.$apply(function () {
+              console.log("connectDisconnect: connected = "+connected)
               $scope.connected = connected
               $scope.reconnecting = false
               if (!connected) {
                 $scope.publishing = false
                 console.log('sessionDisconnected.')
 
-                var d = new Date()
-                var time = d.getTime()
-                var sessionDisconnectedJSON = {}
-                sessionDisconnectedJSON['eventType'] = "sessionDisconnected"
-                sessionDisconnectedJSON['sessionName'] = $scope.sessionName
-                sessionDisconnectedJSON['timestamp'] = time
-                sessionDisconnectedJSON['userId'] = $scope.userId
-                sessionDisconnectedJSON['reason'] = "clientDisconnected" 
-                SocketService.emit("sessionDisconnected", sessionDisconnectedJSON)
+                // var d = new Date()
+                // var time = d.getTime()
+                // var sessionDisconnectedJSON = {}
+                // sessionDisconnectedJSON['eventType'] = "sessionDisconnected"
+                // sessionDisconnectedJSON['sessionName'] = $scope.sessionName
+                // sessionDisconnectedJSON['timestamp'] = time
+                // sessionDisconnectedJSON['userId'] = $scope.userId
+                // sessionDisconnectedJSON['reason'] = "clientDisconnected" 
+                // SocketService.emit("sessionDisconnected", sessionDisconnectedJSON)
               }
               else 
                 console.log('sessionConnected.')
+
             })
           }
 
@@ -113,16 +115,36 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
           }
 
           $scope.session.on('sessionConnected', connectDisconnect.bind($scope.session, true))
-          $scope.session.on('sessionDisconnected', connectDisconnect.bind($scope.session, false))            
+          //$scope.session.on('sessionDisconnected', connectDisconnect.bind($scope.session, false))            
 
           $scope.session.on('sessionReconnecting', reconnecting.bind($scope.session, true))
           $scope.session.on('sessionReconnected', reconnecting.bind($scope.session, false))
 
           $scope.session.on({
-            // sessionDisconnected: function (event) {
-            //   console.log("sessionDisconnected for reason "+ event.reason)
-            //   connectDisconnect.bind($scope.session, false)
-            // },
+            sessionDisconnected: function (event) {
+              console.log("sessionDisconnected for reason "+ event.reason)
+              $scope.$apply(function () {
+                
+                $scope.connected = false
+                $scope.reconnecting = false
+                
+                $scope.publishing = false
+                console.log('sessionDisconnected.')
+              })
+              console.log($scope.connected)
+              console.log($scope.reconnecting)
+              console.log($scope.publishing)
+
+              var d = new Date()
+              var time = d.getTime()
+              var sessionDisconnectedJSON = {}
+              sessionDisconnectedJSON['eventType'] = "sessionDisconnected"
+              sessionDisconnectedJSON['sessionName'] = $scope.sessionName
+              sessionDisconnectedJSON['timestamp'] = time
+              sessionDisconnectedJSON['userId'] = $scope.userId
+              sessionDisconnectedJSON['reason'] = event.reason
+              SocketService.emit("sessionDisconnected", sessionDisconnectedJSON)
+            },
             connectionCreated: function (event) {
               $scope.connectionCount++;
               console.log('connectionCreated Client ' + event.connection.connectionId + ' connected. ' 
