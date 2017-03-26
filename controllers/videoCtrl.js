@@ -25,6 +25,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
   })
 
   $scope.getVideoByName = function (session_name) {
+    console.log("getVideoByName: " +$scope.session)
     if ($scope.session) {
       console.log('You are already connected.')
       return
@@ -112,17 +113,16 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
           }
 
           $scope.session.on('sessionConnected', connectDisconnect.bind($scope.session, true))
-          $scope.session.on('sessionDisconnected', connectDisconnect.bind($scope.session, false))
-
-          //   function (event) {
-          //   return disconnect.bind($scope.session, false, event)
-          // })
-            
+          $scope.session.on('sessionDisconnected', connectDisconnect.bind($scope.session, false))            
 
           $scope.session.on('sessionReconnecting', reconnecting.bind($scope.session, true))
           $scope.session.on('sessionReconnected', reconnecting.bind($scope.session, false))
 
           $scope.session.on({
+            // sessionDisconnected: function (event) {
+            //   console.log("sessionDisconnected for reason "+ event.reason)
+            //   connectDisconnect.bind($scope.session, false)
+            // },
             connectionCreated: function (event) {
               $scope.connectionCount++;
               console.log('connectionCreated Client ' + event.connection.connectionId + ' connected. ' 
@@ -307,6 +307,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
   })
 
   $scope.endVideo = function () {
+    console.log("in endVideo")
     if (!$scope.leaving) {
       $scope.leaving = true
       $scope.session.disconnect() //Disconnects and unpublishes
