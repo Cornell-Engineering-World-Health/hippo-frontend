@@ -1,11 +1,17 @@
-app.controller('UserCtrl', ['$scope', '$log', '$http', '$location', '$timeout', 'User', 'UserService', 'VideoService',
-  function ($scope, $log, $http, $location, $timeout, User, UserService, VideoService) {
+app.controller('UserCtrl', ['$scope', '$log', '$http', '$location', '$timeout', 'User', 'UserService', 'VideoService', 'UserVideoService',
+  function ($scope, $log, $http, $location, $timeout, User, UserService, VideoService, UserVideoService) {
+// app.controller('UserCtrl', ['$scope', '$log', '$http', '$location', '$timeout', 'User', 'UserService', 'VideoService',
+//   function ($scope, $log, $http, $location, $timeout, User, UserService, VideoService) {
 
   var baseURL = UserService.baseUrlAPI
   $scope.session = {
     invitedUserIds: [],
     startTime: "null",
     endTime: "null"
+  }
+
+  $scope.setSessionName = function(session_name) {
+    UserVideoService.set(session_name)
   }
 
   // Returns user information for the User profile

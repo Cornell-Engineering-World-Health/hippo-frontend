@@ -1,4 +1,21 @@
 /*************************************/
+/************** OVERALL **************/
+/*************************************/
+input:focus,
+select:focus,
+textarea:focus,
+button:focus,
+button:active,
+.btn:focus,
+.btn-default:focus,
+.btn.active.focus,
+label:focus,
+label:active, {
+  outline: none!important;
+}
+
+
+/*************************************/
 /************** NAV BAR **************/
 /*************************************/
 .navbar-header img {

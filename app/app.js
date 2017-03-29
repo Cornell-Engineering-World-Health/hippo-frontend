@@ -24,13 +24,13 @@ app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
     }]
 
     var loginRequired = ['$q', '$location', '$auth', function($q, $location, $auth) {
-      var deferred = $q.defer();
+      var deferred = $q.defer()
       if ($auth.isAuthenticated()) {
         deferred.resolve();
       } else {
-        $location.path('/login');
+        $location.path('/login')
       }
-      return deferred.promise;
+      return deferred.promise
     }]
 
   $stateProvider
@@ -89,5 +89,5 @@ app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
     // $authProvider.baseUrl = "http://localhost:3000"
     $authProvider.google({
       clientId: '789185821228-jkliab3iscephfdr47h9184kn1bh2t1j.apps.googleusercontent.com'
-    });
-});
+    })
+  })

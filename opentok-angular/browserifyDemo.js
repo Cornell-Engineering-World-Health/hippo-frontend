@@ -1,1 +1,0 @@
-var oa = require('./opentok-angular.js');

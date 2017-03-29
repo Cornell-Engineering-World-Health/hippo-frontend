@@ -1,5 +1,5 @@
-app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService', 'SocketService',
-  function ($scope, $http, $window, $log, OTSession, VideoService, SocketService) {
+app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService', 'UserVideoService', 'SocketService',
+  function ($scope, $http, $window, $log, OTSession, VideoService, UserVideoService, SocketService) {
 
   $scope.streams = OTSession.streams
   $scope.connections = OTSession.connections
@@ -15,7 +15,6 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
 
   // Wrap in VideoService?
   $http.get('./config.json').success(function(data) {
-    //console.log(data)
     $scope.apiKey = data.apiKey;
   });
 
@@ -23,6 +22,10 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
     $scope.userId = data.userId
     console.log($scope.userId)
   })
+
+  $scope.getSessionName = function() {
+    $scope.session_name = UserVideoService.get()
+  }
 
   $scope.getVideoByName = function (session_name) {
     console.log("getVideoByName: " +$scope.session)
@@ -33,7 +36,6 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
 
     VideoService.getNewToken(session_name)
       .then(function (result_token) {
-        console.log(result_token)
 
         OTSession.init($scope.apiKey, result_token.sessionId, result_token.tokenId, function(err, session) {
           if(err) {
@@ -43,36 +45,8 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
           }
 
           $scope.session = session
-          $scope.sessionName = session_name
-
-          // var connect = function (connected) {
-          //   $scope.$apply(function () {
-          //     $scope.connected = connected
-          //     $scope.reconnecting = false
-          //     console.log('sessionConnected.')
-          //   })
-          // }
-
-          // var disconnect = function (connected, event) {
-          //   $scope.$apply(function () {
-          //     $scope.connected = connected
-          //     $scope.reconnecting = false
-              
-          //     $scope.publishing = false
-          //     console.log('sessionDisconnected.')
-          //     console.log(event)
-              // var d = new Date()
-              // var time = d.getTime()
-              // var sessionDisconnectedJSON = {}
-              // sessionDisconnectedJSON['eventType'] = "sessionDisconnected"
-              // sessionDisconnectedJSON['sessionName'] = $scope.sessionName
-              // sessionDisconnectedJSON['timestamp'] = time
-              // sessionDisconnectedJSON['userId'] = $scope.userId
-              // sessionDisconnectedJSON['reason'] = event.reason
-              // SocketService.emit("sessionDisconnected", sessionDisconnectedJSON)
-              
-          //   })
-          // }
+          $scope.session_name = session_name
+          
           var connectDisconnect = function (connected) {
             $scope.$apply(function () {
               console.log("connectDisconnect: connected = "+connected)
@@ -84,7 +58,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               }
               else {
                 console.log('connectDisconnect: sessionConnected.')
-                var sessionConnectedJSON = {sessionName : $scope.sessionName}
+                var sessionConnectedJSON = {session_name : $scope.session_name}
                 SocketService.emit("sessionConnected", sessionConnectedJSON)
               }
                 
@@ -129,7 +103,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               var time = d.getTime()
               var sessionDisconnectedJSON = {
                 eventType : "sessionDisconnected",
-                sessionName : $scope.sessionName,
+                sessionName : $scope.session_name,
                 timestamp : time,
                 userId : $scope.userId,
                 reason: event.reason
@@ -146,7 +120,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
 
               var connectionCreatedJSON = {
                 eventType : 'connectionCreated',
-                sessionName : $scope.sessionName,
+                sessionName : $scope.session_name,
                 timestamp : time,
                 clientId : $scope.userId,
                 userConnectionId : event.connection.connectionId
@@ -163,7 +137,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
 
               var connectionDestroyedJSON = {
                 eventType : 'connectionDestroyed',
-                sessionName : $scope.sessionName,
+                sessionName : $scope.session_name,
                 timestamp : time,
                 clientId : $scope.userId,
                 userConnectionId : event.connection.connectionId,
@@ -188,7 +162,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
 
               var streamCreatedJSON = {
                 eventType : "streamCreated",
-                sessionName : $scope.sessionName,
+                sessionName : $scope.session_name,
                 timestamp : new Date(event.stream.creationTime),
                 clientId : $scope.userId,
                 userConnectionId : event.stream.connection.connectionId,
@@ -197,7 +171,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
 
               var frameRateJSON = {
                 eventType : "frameRate",
-                sessionName : $scope.sessionName,
+                sessionName : $scope.session_name,
                 timestamp : time,
                 clientId : $scope.userId,
                 userConnectionId : event.stream.connection.connectionId,
@@ -207,7 +181,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
 
               var audioJSON = {
                 eventType : "hasAudio",
-                sessionName : $scope.sessionName,
+                sessionName : $scope.session_name,
                 timestamp : time,
                 clientId : $scope.userId,
                 userConnectionId : event.stream.connection.connectionId,
@@ -217,7 +191,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
 
               var videoJSON = {
                 eventType : "hasVideo",
-                sessionName : $scope.sessionName,
+                sessionName : $scope.session_name,
                 timestamp : time,
                 clientId : $scope.userId,
                 userConnectionId : event.stream.connection.connectionId,
@@ -227,7 +201,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
 
               var videoDimensionsJSON = {
                 eventType : "videoDimensions",
-                sessionName : $scope.sessionName,
+                sessionName : $scope.session_name,
                 timestamp : time,
                 clientId : $scope.userId,
                 userConnectionId : event.stream.connection.connectionId,
@@ -238,7 +212,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
 
               var videoTypeJSON = {
                 eventType : "videoType",
-                sessionName : $scope.sessionName,
+                sessionName : $scope.session_name,
                 timestamp : time,
                 clientId : $scope.userId,
                 userConnectionId : event.stream.connection.connectionId,
@@ -255,7 +229,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
 
               var streamDestroyedJSON = {
                 eventType : "streamDestroyed",
-                sessionName : $scope.sessionName,
+                sessionName : $scope.session_name,
                 timestamp : time,
                 clientId : $scope.userId,
                 userConnectionId : event.stream.connection.connectionId,
@@ -274,7 +248,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               if (event.changedProperty == "hasAudio") {
                 var audioJSON = {
                   eventType : "hasAudio",
-                  sessionName : $scope.sessionName,
+                  sessionName : $scope.session_name,
                   timestamp : time,
                   clientId : $scope.userId,
                   userConnectionId : event.stream.connection.connectionId,
@@ -285,7 +259,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               else if (event.changedProperty == "hasVideo") {
                 var videoJSON = {
                   eventType : "hasAudio",
-                  sessionName : $scope.sessionName,
+                  sessionName : $scope.session_name,
                   timestamp : time,
                   clientId : $scope.userId,
                   userConnectionId : event.stream.connection.connectionId,
@@ -296,7 +270,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               else {
                 var videoDimensionsJSON = {
                   eventType : "videoDimensions",
-                  sessionName : $scope.sessionName,
+                  sessionName : $scope.session_name,
                   timestamp : time,
                   clientId : $scope.userId,
                   userConnectionId : event.stream.connection.connectionId,
@@ -338,4 +312,6 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
     }
     console.log("endVideo: leaving = "+$scope.leaving+" connected = "+$scope.connected+" session = "+$scope.session)
   }
+
+  $scope.getSessionName()
 }])
