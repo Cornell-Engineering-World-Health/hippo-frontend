@@ -21,18 +21,14 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
   $scope.getSessionName = function() {
     $scope.session_name = UserVideoService.get()
   }
-  $scope.getSessionName()
-  console.log($scope.session_name)
 
   $scope.getVideoByName = function (session_name) {
-    console.log(session_name)
     if ($scope.session) {
       $scope.session.disconnect()
     }
 
     VideoService.getNewToken(session_name)
       .then(function (result_token) {
-        console.log(result_token)
 
         OTSession.init($scope.apiKey, result_token.sessionId, result_token.tokenId, function(err, session) {
           if(err) {
@@ -91,4 +87,6 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
       $scope.session.disconnect() //Disconnects and unpublishes
     }
   }
+
+  $scope.getSessionName()
 }])

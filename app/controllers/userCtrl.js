@@ -11,7 +11,6 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$location', '$timeout', 
   }
 
   $scope.setSessionName = function(session_name) {
-    console.log("SET")
     UserVideoService.set(session_name)
   }
 
