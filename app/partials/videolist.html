@@ -1,0 +1,25 @@
+<div class="container contentContainer">
+  <div class="row">
+    <div class="col-md-12 col-sm-12">
+      <h1>Upcoming Calls</h1>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Start Time</th>
+            <th>Session Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="session in userSessions | orderBy:'session.startTime'">
+          <!-- check active data -->
+            <td>{{session.startTime | date:'MMMM dd HH:mm'}}</td>
+            <td><a ng-click="setSessionName(session.name)"" href="/#/videocall">{{session.name}}</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="btnContainer text-center">
+      <a href="/#/schedule" class="btn btn-info" role="button">Schedule A Call</a>
+      </div>
+    </div>
+  </div>
+</div>

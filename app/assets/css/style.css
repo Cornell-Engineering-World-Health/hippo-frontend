@@ -1,0 +1,93 @@
+/*************************************/
+/************** OVERALL **************/
+/*************************************/
+input:focus,
+select:focus,
+textarea:focus,
+button:focus,
+button:active,
+.btn:focus,
+.btn-default:focus,
+.btn.active.focus,
+label:focus,
+label:active, {
+  outline: none!important;
+}
+
+
+/*************************************/
+/************** NAV BAR **************/
+/*************************************/
+.navbar-header img {
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  float: left;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 22px;
+  margin-right: 12px;
+  transform: scale(1.7);
+}
+
+
+/*************************************/
+/************ LOGIN VIEW *************/
+/*************************************/
+
+.loginContainer {
+  padding-top: 100px;
+}
+
+/*************************************/
+/************ VIDEO VEIW *************/
+/*************************************/
+
+.contentContainer {
+  padding-top: 70px;
+}
+
+.btnGroup {
+  padding: 40px;
+}
+
+
+/*************************************/
+/*********** SESSION FORM ************/
+/*************************************/
+.sessionForm {
+  padding-top: 20px;
+}
+
+/*************************************/
+/*********** PROFILE VIEW ************/
+/*************************************/
+.profile-heading {
+  font-size: 24px;
+  padding: 30px 0px;
+}
+
+.profImg {
+  height: 87px;
+  width: 87px;
+  border-radius: 50%;
+  margin-top: 15px;
+}
+
+.long-field {
+  width: 100%;
+  background: rgba(255,255,255,0.50);
+  border: 2px solid #C8C8C8;
+  border-radius: 8px;
+  padding: 5px;
+}
+
+.update-label {
+  font-size: 14px;
+  color: #646464;
+  padding-top: 15px;
+}
+
+#profileContainer {
+  margin-left: 30px;
+}

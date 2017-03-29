@@ -1,0 +1,41 @@
+<div class="container contentContainer">
+  <div class="row">
+    <div class="col-md-12 col-sm-12">
+    <h1>Schedule a Session</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 col-sm-4">
+      <form class="sessionForm" method="#" name="sessionForm" ng-submit="createSession()">
+        <h4>Invite Participants</h4>
+        <select class="select-participants" multiple="multiple" ng-model="session.invitedUserIds">
+          <option ng-repeat="user in allUsers | orderBy: 'user.lastName'" value="{{user.userId}}">{{user.firstName}} {{user.lastName}}</option>
+        </select>
+        <h4>Start Time and Date</h4>
+        <div class='input-group date' id='startDatetimepicker'>
+          <input type='text' class="form-control" ng-model="session.startTime" datetimepicker required/>
+          <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div><br/>
+        <h4>End Time and Date</h4>
+        <div class='input-group date' id='endDatetimepicker'>
+          <input type='text' class="form-control" ng-model="session.endTime" datetimepicker required/>
+          <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div><br/>
+        <button type="submit" class="btn btn-info">Schedule Session</button>
+      </form>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(".select-participants").select2();
+</script>
+<script type="text/javascript">
+  $(function () {
+      $('#startDatetimepicker').datetimepicker();
+      $('#endDatetimepicker').datetimepicker();
+  });
+</script>
