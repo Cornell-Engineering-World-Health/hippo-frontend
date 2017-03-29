@@ -1,5 +1,7 @@
-app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService',
-  function ($scope, $http, $window, $log, OTSession, VideoService) {
+app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService', 'UserVideoService',
+  function ($scope, $http, $window, $log, OTSession, VideoService, UserVideoService) {
+// app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService',
+//   function ($scope, $http, $window, $log, OTSession, VideoService) {
 
   $scope.streams = OTSession.streams
   $scope.connections = OTSession.connections
@@ -13,11 +15,17 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
 
   // Wrap in VideoService?
   $http.get('./config.json').success(function(data) {
-    console.log(data)
     $scope.apiKey = data.apiKey;
   });
 
+  $scope.getSessionName = function() {
+    $scope.session_name = UserVideoService.get()
+  }
+  $scope.getSessionName()
+  console.log($scope.session_name)
+
   $scope.getVideoByName = function (session_name) {
+    console.log(session_name)
     if ($scope.session) {
       $scope.session.disconnect()
     }
