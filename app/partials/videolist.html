@@ -11,8 +11,9 @@
         </thead>
         <tbody>
           <tr ng-repeat="session in userSessions | orderBy:'session.startTime'">
+          <!-- check active data -->
             <td>{{session.startTime | date:'MMMM dd HH:mm'}}</td>
-            <td><a href="/#/videocall">{{session.name}}</a></td>
+            <td><a ng-click="setSessionName(session.name)"" href="/#/videocall">{{session.name}}</a></td>
           </tr>
         </tbody>
       </table>
