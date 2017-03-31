@@ -20,57 +20,62 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
 
   $scope.getSessionName = function() {
     $scope.session_name = UserVideoService.get()
+    console.log($scope.session_name)
   }
 
-  $scope.getVideoByName = function (session_name) {
-    if ($scope.session) {
-      $scope.session.disconnect()
-    }
+//  $scope.getVideoByName = function () {
+  $scope.togglePublish = function(publishHD) {
+    $scope.publishing = !$scope.publishing;
+  };
 
-    VideoService.getNewToken(session_name)
-      .then(function (result_token) {
+  UserVideoService.getToken()
+    .then(function (result_token) {
+      if ($scope.session) {
+        $scope.session.disconnect()
+        return;
+      }
 
-        OTSession.init($scope.apiKey, result_token.sessionId, result_token.tokenId, function(err, session) {
-          if(err) {
-            console.log('sessionId: ' + result_token.sessionId + ' tokenId: ' + result_token.tokenId)
-            $scope.$broadcast('otError', {message: 'initialize session error'})
-            return
-          }
+      OTSession.init($scope.apiKey, result_token.sessionId, result_token.tokenId, function(err, session) {
+        if(err) {
+          console.log('sessionId: ' + result_token.sessionId + ' tokenId: ' + result_token.tokenId)
+          $scope.$broadcast('otError', {message: 'initialize session error'})
+          return
+        }
 
-          $scope.session = session
-          $scope.sessionName = session_name
+        $scope.session = session
+        console.log('videoCtrl:'+$scope.session)
+        $scope.sessionName = $scope.session_name
 
-          var connectDisconnect = function (connected) {
-            $scope.$apply(function () {
-              $scope.connected = connected
-              $scope.reconnecting = false
-              if (!connected) {
-                $scope.publishing = false
-              }
-            })
-          }
+        var connectDisconnect = function (connected) {
+          $scope.$apply(function () {
+            $scope.connected = connected
+            $scope.reconnecting = false
+            if (!connected) {
+              $scope.publishing = false
+            }
+          })
+        }
 
-          var reconnecting = function (isReconnecting) {
-            $scope.$apply(function () {
-              $scope.reconnecting = isReconnecting
-            })
-          }
+        var reconnecting = function (isReconnecting) {
+          $scope.$apply(function () {
+            $scope.reconnecting = isReconnecting
+          })
+        }
 
-          if ((session.is && session.is('connected')) || session.connected) {
-            connectDisconnect(true)
-          }
+        if ((session.is && session.is('connected')) || session.connected) {
+          connectDisconnect(true)
+        }
 
-          $scope.session.on('sessionConnected', connectDisconnect.bind($scope.session, true))
-          $scope.session.on('sessionDisconnected', connectDisconnect.bind($scope.session, false))
+        $scope.session.on('sessionConnected', connectDisconnect.bind($scope.session, true))
+        $scope.session.on('sessionDisconnected', connectDisconnect.bind($scope.session, false))
 
-          $scope.session.on('sessionReconnecting', reconnecting.bind($scope.session, true))
-          $scope.session.on('sessionReconnected', reconnecting.bind($scope.session, false))
-        })
-
-        $scope.publishing = true
-        return result_token
+        $scope.session.on('sessionReconnecting', reconnecting.bind($scope.session, true))
+        $scope.session.on('sessionReconnected', reconnecting.bind($scope.session, false))
       })
-  }
+
+      $scope.publishing = true
+      console.log($scope.publishing)
+    })
 
   $scope.$on('$destroy', function () {
     if ($scope.session && $scope.connected) {
