@@ -23,8 +23,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
     console.log($scope.session_name)
   }
 
-//  $scope.getVideoByName = function () {
-  $scope.togglePublish = function(publishHD) {
+  $scope.togglePublish = function() {
     $scope.publishing = !$scope.publishing;
   };
 
@@ -73,7 +72,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
         $scope.session.on('sessionReconnected', reconnecting.bind($scope.session, false))
       })
 
-      $scope.publishing = true
+      //$scope.publishing = true
       console.log($scope.publishing)
     })
 
