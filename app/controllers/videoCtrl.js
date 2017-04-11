@@ -1,5 +1,5 @@
-app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService', 'UserVideoService',
-  function ($scope, $http, $window, $log, OTSession, VideoService, UserVideoService) {
+app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService', 'UserVideoService','UserService',
+  function ($scope, $http, $window, $log, OTSession, VideoService, UserVideoService, UserService) {
 // app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService',
 //   function ($scope, $http, $window, $log, OTSession, VideoService) {
 
@@ -90,6 +90,12 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
       $scope.leaving = true
       $scope.session.disconnect() //Disconnects and unpublishes
     }
+    $scope.session.on('sessionDisconnected', function() {
+      $scope.$apply(function() {
+        //$window.location.href = 'https://aqueous-stream-90183.herokuapp.com/#/user'
+        $window.location.href = UserService.baseInterfaceUrl + '/#/user'
+      })
+    })
   }
 
   $scope.getSessionName()
