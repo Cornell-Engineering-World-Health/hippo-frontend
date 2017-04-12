@@ -23,6 +23,7 @@
     "angular-ui-router": "^0.4.2",
     "connect": "^3.6.0",
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
+    "express": "^4.15.2",
     "opentok-angular": "^1.2.3",
     "opentok-layout-js": "^0.5.1",
     "satellizer": "^0.15.5",
