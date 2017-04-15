@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css?family=Lato|Open+Sans:400,300');
+
+html, body {
+  height: 100%;
+}
+
+#wrapper {
+  width: 100%;
+  min-height: 100%;
+  margin-bottom: -200px;
+}
+
+#wrapper:after {
+  content: "";
+  display: block;
+}
+
+footer {
+  margin: 40px 0 0 0;
+  padding: 40px 0 0 0;
+  height: 200px;
+  background: transparent;
+  border-top: 1px solid #D5D9E5;
+}
+
+.footer-default {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 600px;
+}
+
+.footer-col {
+  width: 100px;
+  text-decoration: none;
+}
+
+.footer-col ul {
+  text-decoration: none;
+  list-style: none;
+  padding: 0px;
+  font-size: 13px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.footer-col ul li {
+  margin-bottom: 5px;
+}
+
+.navbar-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-default {
+  background-color: #2E4057;
+  border-color: transparent;
+  padding: 10px 50px;
+  border-radius: 0px;
+  box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+}
+
+.navbar-txt {
+  color: #AFC9EA;
+  font-size: 14px;
+}
+
+#hippo-logo {
+
+}
+
+#hippo-brand {
+  font-size: 30px;
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+}
+
+.navbar-header:hover {
+  text-decoration: none;
+}
+
+.btn-standard {
+  white-space: nowrap;
+  display: inline-block;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 14px;
+  box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+  background: #fff;
+  border-radius: 5px;
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .025em;
+  color: #2d83ff;
+  text-decoration: none;
+  transition: all .15s ease;
+  border: none;
+}
+
+.btn-small {
+  height: 34px;
+  line-height: 30px;
+  text-transform: none;
+  font-weight: 500;
+}
+
+.btn-hop:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+}
+
+.btn-transparent {
+  background: transparent;
+  color: #fff;
+  box-shadow: none;
+}
+
+.btn-deep-blue {
+  background: #7795f8;
+  color: #fff;
+}
+
+.txt {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  line-height: 24px;
+  font-size: 16px;
+}
+
+.white {
+  color: #fff;
+}
+
+.spaced {
+  padding-top: 30px;
+}
