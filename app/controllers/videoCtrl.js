@@ -25,7 +25,12 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
 
   $scope.getSessionName = function() {
     $scope.session_name = UserVideoService.get()
+    console.log($scope.session_name)
+    //TODO determine if this is helpful
+    SocketService.emit("enteringSession",{session_name: $scope.session_name})
   }
+
+  $scope.getSessionName()
 
   $scope.getVideoByName = function (session_name) {
     console.log("getVideoByName: " +$scope.session)
@@ -34,7 +39,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
       return
     }
 
-    VideoService.getNewToken(session_name)
+    VideoService.getNewToken($scope.session_name)
       .then(function (result_token) {
 
         OTSession.init($scope.apiKey, result_token.sessionId, result_token.tokenId, function(err, session) {
@@ -313,5 +318,4 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
     console.log("endVideo: leaving = "+$scope.leaving+" connected = "+$scope.connected+" session = "+$scope.session)
   }
 
-  $scope.getSessionName()
 }])
