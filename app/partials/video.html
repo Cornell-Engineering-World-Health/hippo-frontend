@@ -1,13 +1,12 @@
-<div class="container contentContainer">
+<div ng-controller="VideoCtrl" class="container contentContainer">
   <div class="row">
     <div class="col-md-12 col-sm-12">
       <div id="wrapper" class="text-center">
         {{sessionName}}
         <div class="btnGroup">
-          <span><a href="#/videocall" class="btn btn-success" id="start-call" ng-click="togglePublish()">Publish</a></span>
-          <span><a href="#/videocall" class="btn btn-danger" id="end-call" ng-click="endVideo()">End Call</a></span>
+          <span><button class="btn btn-success" id="start-call" ng-click="getVideoByName()">Start call</button></span>
+          <span><button class="btn btn-danger" id="end-call" ng-click="endVideo()">End call</button></span>
         </div>
-
         <ot-layout props="{animate:true}">
           <ot-subscriber style="width: 792px; height: 594px;" ng-repeat="stream in streams"
             stream="stream"

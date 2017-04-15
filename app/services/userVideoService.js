@@ -1,7 +1,8 @@
 // Used for transfer of information from session view to videocall
-app.factory('UserVideoService', ['$http', 'UserService', function($http, UserService) {
+app.factory('UserVideoService', ['$http', function($http) {
+  // var sessionID = $scope.session_name || ""
   var sessionID
-  var baseURL = UserService.baseUrlAPI
+  console.log(sessionID)
   function set(data) {
     sessionID = data
   }
