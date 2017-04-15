@@ -52,7 +52,17 @@ label:active, {
 }
 
 
-/*************************************/
+ot-publisher,ot-subscriber,ot-layout {
+                 display: block;
+                 overflow: hidden;
+             }
+             ot-layout {
+                 position: absolute;
+                 top: 0;
+                 left: 0;
+                 right: 0;
+                 bottom: 0;
+             }
 /*********** SESSION FORM ************/
 /*************************************/
 .sessionForm {
