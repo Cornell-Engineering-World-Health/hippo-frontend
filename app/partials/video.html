@@ -17,7 +17,10 @@
         </ot-layout>
 
         <div id="facePublisher" ng-if="publishing" draggable="true">
-          <ot-publisher style="width: 792px; height: 594px;" id="facePublisher">
+          <ot-publisher 
+            style="width: 792px; height: 594px;" 
+            id="facePublisher"
+            props="{style: {nameDisplayMode: 'off'}, name:'Me', showControls:'true'}">
           </ot-publisher>
           <mute-video publisher-id="facePublisher" mute-publisher></mute-video>
         </div>

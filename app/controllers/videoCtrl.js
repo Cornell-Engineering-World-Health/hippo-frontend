@@ -1,7 +1,5 @@
 app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService', 'UserVideoService','UserService',
   function ($scope, $http, $window, $log, OTSession, VideoService, UserVideoService, UserService) {
-// app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService',
-//   function ($scope, $http, $window, $log, OTSession, VideoService) {
 
   $scope.streams = OTSession.streams
   $scope.connections = OTSession.connections
@@ -11,7 +9,6 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
   $scope.connected = false
   $scope.reconnecting = false
   $scope.leaving = false
-  $scope.deleted = false
 
   // Wrap in VideoService?
   $http.get('./config.json').success(function(data) {
@@ -71,9 +68,6 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
         $scope.session.on('sessionReconnecting', reconnecting.bind($scope.session, true))
         $scope.session.on('sessionReconnected', reconnecting.bind($scope.session, false))
       })
-
-      //$scope.publishing = true
-      console.log($scope.publishing)
     })
 
   $scope.$on('$destroy', function () {
@@ -92,7 +86,6 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
     }
     $scope.session.on('sessionDisconnected', function() {
       $scope.$apply(function() {
-        //$window.location.href = 'https://aqueous-stream-90183.herokuapp.com/#/user'
         $window.location.href = UserService.baseInterfaceUrl + '/#/user'
       })
     })

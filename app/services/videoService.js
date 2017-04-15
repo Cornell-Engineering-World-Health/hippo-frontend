@@ -4,7 +4,7 @@ app.factory('VideoService', ['$http', 'UserService', function($http, UserService
     createSession: function(sessionData) {
       return $http.post(baseURL + '/videos', sessionData)
     },
-    // TODO: BELOW NEEDS UPDATE
+    
     getNewToken: function(session_name) {
       return $http.get(baseURL+ '/videos/' + session_name)
         .then(function (response) {
@@ -14,7 +14,7 @@ app.factory('VideoService', ['$http', 'UserService', function($http, UserService
           console.error('Failed to get token. Error: ' + error.data);
         })
     },
-    // TODO: why are we not using session_name.
+    
     deleteSession: function(session_name) {
       return $http.delete(baseURL+ '/videos/' + session_name)
         .then( function (response){
