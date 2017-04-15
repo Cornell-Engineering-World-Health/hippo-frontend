@@ -108,7 +108,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
               var time = d.getTime()
               var sessionDisconnectedJSON = {
                 eventType : "sessionDisconnected",
-                sessionName : $scope.session_name,
+                session_name : $scope.session_name,
                 timestamp : time,
                 userId : $scope.userId,
                 reason: event.reason
