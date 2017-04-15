@@ -29,8 +29,8 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
     .catch(function (error) {
       console.log(error)
       return error
-    }) 
-  
+    })
+
 
   $scope.togglePublish = function() {
     $scope.publishing = !$scope.publishing;
@@ -43,13 +43,15 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
         return;
       }
 
+      console.log(result_token)
+      console.log($scope.apiKey)
+
       OTSession.init($scope.apiKey, result_token.sessionId, result_token.tokenId, function(err, session) {
         if(err) {
           console.log('sessionId: ' + result_token.sessionId + ' tokenId: ' + result_token.tokenId)
           $scope.$broadcast('otError', {message: 'initialize session error'})
           return
         }
-
         $scope.session = session
         console.log('videoCtrl:'+$scope.session)
         $scope.sessionName = $scope.session_name

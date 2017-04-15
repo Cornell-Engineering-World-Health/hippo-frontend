@@ -1,0 +1,169 @@
+<!-- <!DOCTYPE html>
+<html ng-app="demo">
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <title>OpenTok-Angular Demo</title>
+         <style type="text/css" media="screen">
+             ot-publisher,ot-subscriber,ot-layout {
+                 display: block;
+                 overflow: hidden;
+             }
+             ot-layout {
+                 position: absolute;
+                 top: 0;
+                 left: 0;
+                 right: 0;
+                 bottom: 0;
+             }
+         </style>
+    </head>
+    <body>
+        <div ng-controller="MyCtrl">
+            <ot-layout props="{animate:true}">
+                <ot-subscriber ng-repeat="stream in streams"
+                    stream="stream"
+                    props="{style: {nameDisplayMode: 'off'}}">
+                </ot-subscriber>
+                <ot-publisher id="publisher"
+                    props="{style: {nameDisplayMode: 'off'}, resolution: '1280x720', frameRate: 30}">
+                </ot-publisher>
+            </ot-layout>
+        </div>
+
+        <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="node_modules/angular/angular.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="node_modules/opentok-layout-js/opentok-layout.js" type="text/javascript" charset="utf-8"></script>
+        <script src="opentok-angular.min.js" type="text/javascript" charset="utf-8"></script>
+
+        <script type="text/javascript" charset="utf-8">
+            angular.module('demo', ['opentok'])
+            .controller('MyCtrl', ['$scope', 'OTSession', 'apiKey', 'sessionId', 'token', function($scope, OTSession, apiKey, sessionId, token) {
+                OTSession.init(apiKey, sessionId, token);
+                $scope.streams = OTSession.streams;
+            }]).value({
+                apiKey: '45817732',
+                sessionId: '1_MX40NTgxNzczMn5-MTQ5MjI4NzAyOTM1OH40dzVYaFI2TEsyNVRHbWh2RVk3OVZ3ZjJ-UH4',
+                token: "T1==cGFydG5lcl9pZD00NTgxNzczMiZzaWc9MTk2Yjc2MzFhODFiMzY3ZjhlOWU4YmQ5NjEzNWY3ZjdhM2FlY2FiNDpzZXNzaW9uX2lkPTFfTVg0ME5UZ3hOemN6TW41LU1UUTVNakk0TnpBeU9UTTFPSDQwZHpWWWFGSTJURXN5TlZSSGJXaDJSVmszT1ZaM1pqSi1VSDQmY3JlYXRlX3RpbWU9MTQ5MjI4OTI5NCZub25jZT0wLjAyMzQzOTE4NTc0MzQ1MjgzJnJvbGU9cHVibGlzaGVyJmV4cGlyZV90aW1lPTE0OTIzNzU2OTQ="
+            });
+        </script>
+    </body>
+</html> -->
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <title>Layout Test</title>
+        <!-- <script src="https://swww.tokbox.com/v2/js/opentok.min.js"></script> -->
+        <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.6.2.min.js"></script>
+        <script src="opentok-layout.min.js"></script>
+
+        <style type="text/css" media="screen">
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            #layout {
+                position: absolute;
+                top: 100px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #DDD;
+            }
+
+            #layout > div {
+                background-color: #000;
+                display: inline-block;
+                border: 1px solid #fff;
+            }
+
+            body > div#description {
+                color: #333;
+                margin: 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            input {
+                width: 100px;
+                height: 25px;
+                border: none;
+                border-radius: 5px;
+                color: white;
+                margin-right: 5px;
+                font-size: 14px;
+            }
+
+            input#add {
+                background-color: #67AB4D;
+            }
+
+            input#remove {
+                background-color: #C24442;
+            }
+
+            #buttons {
+                margin-top: 10px;
+                width: 100%;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="layout"></div>
+        <div id="description">Click the Add/Remove buttons to add and remove video windows. Go ahead and resize the window and see it lay out automatically!<br>
+            Double-click on elements to make them bigger or smaller</div>
+        <div id="buttons">
+            <input type="button" name="add" value="Add" id="add" onclick="addElement()">
+            <input type="button" name="remove" value="Remove" id="remove" onclick="removeElement()">
+        </div>
+    </body>
+    <script type="text/javascript" charset="utf-8">
+        var layoutEl = document.getElementById("layout");
+        var layout = initLayoutContainer(layoutEl, {
+            animate: {
+                duration: 500,
+                easing: "swing"
+            },
+            bigFixedRatio: false
+        }).layout;
+
+        function addElement() {
+            var el = document.createElement("div");
+            OT.initPublisher(el, {
+                resolution: "1280x720"
+            }, function (err) {
+                layout();
+            });
+            layoutEl.appendChild(el);
+            layout();
+        }
+
+        function removeElement() {
+            layoutEl.removeChild(layoutEl.firstChild);
+            layout();
+        }
+
+        var resizeTimeout;
+        window.onresize = function() {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(function () {
+            layout();
+          }, 20);
+        };
+
+        $("#layout>*").live("dblclick", function () {
+            if ($(this).hasClass("OT_big")) {
+                $(this).removeClass("OT_big");
+            } else {
+                $(this).addClass("OT_big");
+            }
+            layout();
+        });
+    </script>
+</html>
