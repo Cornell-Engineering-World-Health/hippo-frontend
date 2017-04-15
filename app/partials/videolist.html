@@ -7,6 +7,7 @@
           <tr>
             <th>Start Time</th>
             <th>End Time</th>
+            <th>Participants</th>
             <th>Session Name</th>
           </tr>
         </thead>
@@ -15,8 +16,9 @@
           <!-- check active data -->
             <td>{{session.startTime | date:'MMMM dd HH:mm'}}</td>
             <td>{{session.endTime | date:'MMMM dd HH:mm'}}</td>
+            <td></td>
             <td>{{session.name}}</td>
-            <td><a class="btn btn-success" ng-click="setSessionName(session.name)"" href="/#/videocall">Join Call</a></td>
+            <td><a class="btn btn-success" ng-click="setSessionName(session.name)" ui-sref="video({session_name: session.name})">Join Call</a></td>
           </tr>
         </tbody>
       </table>

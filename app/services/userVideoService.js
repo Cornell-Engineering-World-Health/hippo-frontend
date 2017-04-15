@@ -2,6 +2,7 @@
 app.factory('UserVideoService', ['$http', 'UserService', function($http, UserService) {
   var sessionID
   var baseURL = UserService.baseUrlAPI
+
   function set(data) {
     sessionID = data
   }

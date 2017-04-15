@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+  <head>
+    <meta charset="utf-8">
+    <title>Angular Demo</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      auto-size-children {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+      }
+      auto-size-children > * {
+        background-color: grey;
+        border: 1px solid white;
+        transition-property: all;
+        transition-duration: 0.5s;
+      }
+    </style>
+    <script src="flex-box-layout.js" charset="utf-8"></script>
+    <script src="bower_components/angular/angular.min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      var $ = angular.element;
+      var getCSSNumber = function (elem, prop) {
+        var cssStr = getComputedStyle(elem)[prop];
+        return cssStr ? parseInt(cssStr, 10) : 0;
+      };
+      var getWidthPadding = function (elem) {
+        return getCSSNumber(elem, "paddingLeft") +
+          getCSSNumber(elem, "paddingRight") +
+          getCSSNumber(elem, "marginLeft") +
+          getCSSNumber(elem, "marginRight") +
+          getCSSNumber(elem, "borderLeftWidth") +
+          getCSSNumber(elem, "borderRightWidth");
+      };
+      var getHeightPadding = function (elem) {
+        return getCSSNumber(elem, "paddingTop") +
+          getCSSNumber(elem, "paddingBottom") +
+          getCSSNumber(elem, "marginTop") +
+          getCSSNumber(elem, "marginBottom") +
+          getCSSNumber(elem, "borderTopWidth") +
+          getCSSNumber(elem, "borderBottomWidth");
+      };
+
+      angular.module('opentok', [])
+        .directive('autoSizeChildren', ['$window', function($window) {
+          return {
+            link: function(scope, element, attrs) {
+              var sizeChildren = function () {
+                var width = element[0].clientWidth;
+                var height = element[0].clientHeight;
+                var dims = getBestDimensions(9/16, 3/2, element.children().length, width, height);
+                for (var i=0; i < element.children().length; i++) {
+                  var child = element.children()[i];
+                  var actualWidth = dims.targetWidth - getWidthPadding(child);
+                  var actualHeight = dims.targetHeight - getHeightPadding(child);
+
+                  $(child).css({
+                    width: actualWidth + 'px',
+                    height: actualHeight + 'px'
+                  });
+                };
+              };
+              scope.$watch(function() {
+                return element.children().length;
+              }, sizeChildren);
+              $window.addEventListener('resize', sizeChildren);
+              scope.$on('otLayout', sizeChildren);
+              sizeChildren();
+            }
+          };
+        }
+      ]);
+
+      angular.module('MyApp', ['opentok']);
+    </script>
+  </head>
+  <body>
+    <auto-size-children class="container">
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el big"></div>
+      <div class="el"></div>
+    </auto-size-children>
+  </body>
+</html>
