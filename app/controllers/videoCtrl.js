@@ -1,5 +1,5 @@
-app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService', 'UserVideoService','UserService',
-  function ($scope, $http, $window, $log, OTSession, VideoService, UserVideoService, UserService) {
+app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService', 'UserVideoService','UserService', 'User',
+  function ($scope, $http, $window, $log, OTSession, VideoService, UserVideoService, UserService, User) {
 // app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService',
 //   function ($scope, $http, $window, $log, OTSession, VideoService) {
 
@@ -18,10 +18,19 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
     $scope.apiKey = data.apiKey;
   });
 
-  $scope.getSessionName = function() {
-    $scope.session_name = UserVideoService.get()
-    console.log($scope.session_name)
-  }
+  $scope.session_name = UserVideoService.get()
+
+  User.getUser()
+    .then(function (response) {
+      $scope.user = response.data
+      $scope.userName = response.data.firstName + " " + response.data.lastName
+      console.log($scope.userName)
+    })
+    .catch(function (error) {
+      console.log(error)
+      return error
+    }) 
+  
 
   $scope.togglePublish = function() {
     $scope.publishing = !$scope.publishing;
@@ -98,5 +107,4 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
     })
   }
 
-  $scope.getSessionName()
 }])

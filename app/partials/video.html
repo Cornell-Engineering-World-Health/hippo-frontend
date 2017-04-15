@@ -15,10 +15,12 @@
             props="{style: {nameDisplayMode: 'off'}}">
           </ot-subscriber>
         </ot-layout>
-
+        {{userName}}
         <div id="facePublisher" ng-if="publishing" draggable="true">
+          
           <ot-publisher style="width: 792px; height: 594px;" id="facePublisher">
           </ot-publisher>
+
           <mute-video publisher-id="facePublisher" mute-publisher></mute-video>
         </div>
 
