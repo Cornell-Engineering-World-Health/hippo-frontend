@@ -96,4 +96,6 @@ label:active, {
   float:right;
   width:30%;
 }
+td {
+  vertical-align: middle!important;
 }
