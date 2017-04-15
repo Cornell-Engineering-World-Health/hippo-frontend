@@ -1,15 +1,3 @@
-// angular.module('demo', ['opentok'])
-//   .controller('MyCtrl', ['$scope', 'OTSession', 'apiKey', 'sessionId', 'token', function($scope, OTSession, apiKey, sessionId, token) {
-//       console.log(OTSession)
-//       OTSession.init(apiKey, sessionId, token);
-//       $scope.streams = OTSession.streams;
-//   }]).value({
-//       apiKey: 'YOUR_APIKEY',
-//       sessionId: 'YOUR_SESSION_ID',
-//       token: 'YOUR_TOKEN'
-//   });
-
-
 var app = angular.module( "myApp", ['opentok', 'ui.router', 'satellizer'] );
 
 app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
@@ -74,7 +62,7 @@ app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
       controller: 'UserCtrl'
     })
     .state('video', {
-      url: '/videocall',
+      url: '/videocall?:session_name',
       templateUrl: 'partials/video.html',
       controller: 'VideoCtrl'
     })

@@ -1,0 +1,67 @@
+20150911 165020.181 [42684] Sauce Connect 4.3.11, build 1760 53519d5
+20150911 165020.182 [42684] Trying to autodetect proxy settings
+20150911 165020.187 [42684] Starting up; pid 42684
+20150911 165020.187 [42684] Command line arguments: ./sc-4.3.11-osx/bin/sc -i saucey -f sauce-connect-ready25358 -l sauce-connect.log -B all -t localhost
+20150911 165020.188 [42684] Using no proxy for connecting to Sauce Labs REST API.
+20150911 165020.204 [42684] Resolving saucelabs.com to 162.222.73.28 took 15 ms.
+20150911 165021.076 [42684] PROXY *** scproxy started ***
+20150911 165021.082 [42684] PROXY found DNS server 10.150.1.1
+20150911 165021.129 [42684] Started scproxy on port 62336.
+20150911 165021.129 [42684] Please wait for 'you may start your tests' to start your tests.
+20150911 165021.129 [42684] Starting secure remote tunnel VM...
+20150911 165030.128 [42684] Secure remote tunnel VM provisioned.
+20150911 165030.128 [42684] Tunnel ID: 5d48c65cdcfa4a3cb900943826599841
+20150911 165031.268 [42684] Secure remote tunnel VM is now: booting
+20150911 165042.685 [42684] Secure remote tunnel VM is now: running
+20150911 165042.685 [42684] Remote tunnel host is: maki79151.miso.saucelabs.com
+20150911 165042.685 [42684] Using no proxy for connecting to tunnel VM.
+20150911 165042.700 [42684] Resolving tunnel hostname to 162.222.79.151 took 14ms.
+20150911 165042.700 [42684] Starting Selenium listener...
+20150911 165042.700 [42684] Establishing secure TLS connection to tunnel...
+20150911 165042.701 [42684] [EVDNS] Added nameserver 10.150.1.1:53 as 0x7fcf7142af00
+20150911 165042.701 [42684] Selenium listener started on port 4445.
+20150911 165042.898 [42684] MAIN connecting to KGP server maki79151.miso.saucelabs.com took 197 ms
+20150911 165042.913 [42684] MAIN warning, failed to set KGP bufferevent priority to 0
+20150911 165044.733 [42684] Sauce Connect is up, you may start your tests.
+20150911 165052.883 [42684] PROXY resolved 'localhost' to '127.0.0.1'
+20150911 165052.883 [42684] PROXY 127.0.0.1:62359 -> GET http://localhost:9878/?id=1007188 (338 bytes)
+20150911 165052.890 [42684] PROXY 127.0.0.1:62359 <- 200 localhost:9878 (2909 bytes)
+20150911 165053.091 [42684] PROXY 127.0.0.1:62359 -> GET http://localhost:9878/socket.io/socket.io.js (391 bytes)
+20150911 165053.095 [42684] PROXY 127.0.0.1:62359 <- 200 localhost:9878 (174139 bytes)
+20150911 165053.287 [42684] PROXY resolved 'localhost' to '127.0.0.1'
+20150911 165053.288 [42684] PROXY 127.0.0.1:62361 -> GET http://localhost:9878/karma.js (377 bytes)
+20150911 165053.291 [42684] PROXY 127.0.0.1:62361 <- 200 localhost:9878 (92010 bytes)
+20150911 165054.464 [42684] PROXY 127.0.0.1:62361 -> GET http://localhost:9878/socket.io/?EIO=3&transport=polling&t=1441954252056-0 (389 bytes)
+20150911 165054.464 [42684] PROXY 127.0.0.1:62359 -> GET http://localhost:9878/favicon.ico (282 bytes)
+20150911 165054.470 [42684] PROXY 127.0.0.1:62361 <- 200 localhost:9878 (332 bytes)
+20150911 165054.475 [42684] PROXY 127.0.0.1:62359 <- 200 localhost:9878 (5579 bytes)
+20150911 165054.843 [42684] PROXY 127.0.0.1:62359 -> GET http://localhost:9878/socket.io/?EIO=3&transport=polling&t=1441954252408-1&sid=ES9vv2f3trrpgxwPAAAA (447 bytes)
+20150911 165054.844 [42684] PROXY 127.0.0.1:62363 -> CONNECT localhost:9878
+20150911 165054.850 [42684] PROXY resolved 'localhost' to '127.0.0.1'
+20150911 165054.850 [42684] PROXY 127.0.0.1:62363 <- 200 localhost:9878 (19 bytes)
+20150911 165054.850 [42684] PROXY 127.0.0.1:62359 <- 200 localhost:9878 (234 bytes)
+20150911 165055.055 [42684] PROXY 127.0.0.1:62361 -> GET http://localhost:9878/socket.io/?EIO=3&transport=polling&t=1441954252785-3&sid=ES9vv2f3trrpgxwPAAAA (447 bytes)
+20150911 165055.242 [42684] PROXY resolved 'localhost' to '127.0.0.1'
+20150911 165055.242 [42684] PROXY 127.0.0.1:62365 -> POST http://localhost:9878/socket.io/?EIO=3&transport=polling&t=1441954252785-2&sid=ES9vv2f3trrpgxwPAAAA (660 bytes)
+20150911 165055.252 [42684] PROXY 127.0.0.1:62361 <- 200 localhost:9878 (317 bytes)
+20150911 165055.253 [42684] PROXY 127.0.0.1:62365 <- 200 localhost:9878 (216 bytes)
+20150911 165055.619 [42684] PROXY 127.0.0.1:62365 -> GET http://localhost:9878/socket.io/?EIO=3&transport=polling&t=1441954253274-4&sid=ES9vv2f3trrpgxwPAAAA (447 bytes)
+20150911 165055.620 [42684] PROXY 127.0.0.1:62365 <- 200 localhost:9878 (386 bytes)
+20150911 165055.926 [42684] PROXY 127.0.0.1:62365 -> GET http://localhost:9878/context.html (385 bytes)
+20150911 165055.932 [42684] PROXY 127.0.0.1:62365 <- 200 localhost:9878 (2935 bytes)
+20150911 165056.128 [42684] PROXY 127.0.0.1:62365 -> GET http://localhost:9878/absolute/Users/adamu/src/opentok-layout-js/node_modules/karma-jasmine/lib/jasmine.js?dc3780c73c9598d515a7f1911078142f3f4b029e (493 bytes)
+20150911 165056.131 [42684] PROXY 127.0.0.1:62365 <- 200 localhost:9878 (63035 bytes)
+20150911 165056.141 [42684] PROXY 127.0.0.1:62361 -> GET http://localhost:9878/absolute/Users/adamu/src/opentok-layout-js/node_modules/karma-jasmine/lib/boot.js?925440973c97e93b99c71f4b1091e4ef4a713597 (490 bytes)
+20150911 165056.148 [42684] PROXY resolved 'localhost' to '127.0.0.1'
+20150911 165056.148 [42684] PROXY 127.0.0.1:62368 -> GET http://localhost:9878/absolute/Users/adamu/src/opentok-layout-js/node_modules/karma-jasmine/lib/adapter.js?7ee59a2c0ba91fffef258ef34e4953cc4ca2a6c0 (493 bytes)
+20150911 165056.148 [42684] PROXY 127.0.0.1:62361 <- 200 localhost:9878 (3914 bytes)
+20150911 165056.149 [42684] PROXY 127.0.0.1:62368 <- 200 localhost:9878 (4158 bytes)
+20150911 165056.326 [42684] PROXY resolved 'localhost' to '127.0.0.1'
+20150911 165056.326 [42684] PROXY 127.0.0.1:62369 -> GET http://localhost:9878/absolute/Users/adamu/src/opentok-layout-js/opentok-layout.js?934808fa9f8e4edea8e50f9c37f27a92c67c7283 (469 bytes)
+20150911 165056.332 [42684] PROXY resolved 'localhost' to '127.0.0.1'
+20150911 165056.332 [42684] PROXY 127.0.0.1:62370 -> GET http://localhost:9878/base/unit/opentok-layout-spec.js?a1d116950ac5c4af171a08ba54611bb7c09391da (441 bytes)
+20150911 165056.333 [42684] PROXY 127.0.0.1:62369 <- 200 localhost:9878 (9001 bytes)
+20150911 165056.333 [42684] PROXY 127.0.0.1:62370 <- 200 localhost:9878 (18369 bytes)
+20150911 165102.519 [42684] Cleaning up.
+20150911 165104.988 [42684] Shutting down named tunnel saucey (5d48c65cdcfa4a3cb900943826599841).
+20150911 165110.019 [42684] Goodbye.

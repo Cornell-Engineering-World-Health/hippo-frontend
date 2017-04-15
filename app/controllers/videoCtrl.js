@@ -1,8 +1,5 @@
-app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService', 'UserVideoService',
-  function ($scope, $http, $window, $log, OTSession, VideoService, UserVideoService) {
-// app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 'VideoService',
-//   function ($scope, $http, $window, $log, OTSession, VideoService) {
-
+app.controller('VideoCtrl', ['$stateParams', '$scope', '$http', '$window', '$log', 'OTSession', 'VideoService',
+  function ($stateParams, $scope, $http, $window, $log, OTSession, VideoService) {
   $scope.streams = OTSession.streams
   $scope.connections = OTSession.connections
   $scope.publishing = false
@@ -12,23 +9,27 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
   $scope.reconnecting = false
   $scope.leaving = false
   $scope.deleted = false
+  $scope.session_name = $stateParams.session_name
 
   // Wrap in VideoService?
   $http.get('./config.json').success(function(data) {
     $scope.apiKey = data.apiKey;
   });
 
-  $scope.getSessionName = function() {
-    $scope.session_name = UserVideoService.get()
+// UNEEDED
+  $scope.getSessionName = function () {
+    $scope.session_name = $stateParams.session_name
   }
 
-  $scope.getVideoByName = function (session_name) {
+  $scope.getVideoByName = function () {
     if ($scope.session) {
       $scope.session.disconnect()
     }
+    session_name = $scope.session_name
 
     VideoService.getNewToken(session_name)
       .then(function (result_token) {
+
 
         OTSession.init($scope.apiKey, result_token.sessionId, result_token.tokenId, function(err, session) {
           if(err) {
@@ -36,6 +37,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
             $scope.$broadcast('otError', {message: 'initialize session error'})
             return
           }
+          console.log(OTSession)
 
           $scope.session = session
           $scope.sessionName = session_name
@@ -88,5 +90,5 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
     }
   }
 
-  $scope.getSessionName()
+  // $scope.getSessionName()
 }])

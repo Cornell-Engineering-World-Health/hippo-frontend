@@ -13,7 +13,7 @@
         </select>
         <h4>Start Time and Date</h4>
         <div class='input-group date' id='startDatetimepicker'>
-          <input type='text' class="form-control" ng-model="session.startTime" datetimepicker required/>
+          <input type='text' class="form-control" ng-model="session.startTime" datetimepicker ng-model="current_time" max-date='current_time' required/>
           <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
           </span>
@@ -35,7 +35,15 @@ $(".select-participants").select2();
 </script>
 <script type="text/javascript">
   $(function () {
-      $('#startDatetimepicker').datetimepicker();
-      $('#endDatetimepicker').datetimepicker();
+      $('#startDatetimepicker').datetimepicker({ useCurrent: false }).data("DateTimePicker").minDate(new Date())
+      $('#endDatetimepicker').datetimepicker({
+        useCurrent: false
+      });
+      $("#startDatetimepicker").on("dp.change", function (e) {
+        $('#endDatetimepicker').data("DateTimePicker").minDate(e.date);
+      });
+      $("#endDatetimepicker").on("dp.change", function (e) {
+        $('#startDatetimepicker').data("DateTimePicker").maxDate(e.date);
+      });
   });
 </script>
