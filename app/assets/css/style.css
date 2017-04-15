@@ -91,3 +91,9 @@ label:active, {
 #profileContainer {
   margin-left: 30px;
 }
+
+.notifications-bar{
+  float:right;
+  width:30%;
+}
+}
