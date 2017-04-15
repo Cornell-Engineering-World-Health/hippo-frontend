@@ -29,7 +29,8 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
     //TODO determine if this is helpful
     SocketService.emit("enteringSession",{session_name: $scope.session_name})
   }
-
+  
+  $scope.getSessionName()
   $scope.togglePublish = function() {
     $scope.publishing = !$scope.publishing;
   }
@@ -62,7 +63,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
             }
             else {
               console.log('connectDisconnect: sessionConnected.')
-              var sessionConnectedJSON = {sessionName : $scope.session_name}
+              var sessionConnectedJSON = {session_name : $scope.session_name}
               SocketService.emit("sessionConnected", sessionConnectedJSON)
             }
               
@@ -107,7 +108,7 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
             var time = d.getTime()
             var sessionDisconnectedJSON = {
               eventType : "sessionDisconnected",
-              sessionName : $scope.session_name,
+              session_name : $scope.session_name,
               timestamp : time,
               userId : $scope.userId,
               reason: event.reason
