@@ -13,7 +13,6 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
   $scope.deleted = false
   $scope.connectionCount = 0
 
-  // Wrap in VideoService?
   $http.get('./config.json').success(function(data) {
     $scope.apiKey = data.apiKey;
   });
@@ -26,274 +25,272 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
   $scope.getSessionName = function() {
     $scope.session_name = UserVideoService.get()
     console.log($scope.session_name)
+
     //TODO determine if this is helpful
     SocketService.emit("enteringSession",{session_name: $scope.session_name})
   }
 
-  $scope.getSessionName()
+  $scope.togglePublish = function() {
+    $scope.publishing = !$scope.publishing;
+  }
 
-  $scope.getVideoByName = function (session_name) {
-    console.log("getVideoByName: " +$scope.session)
-    if ($scope.session) {
-      console.log('You are already connected.')
-      return
-    }
+  UserVideoService.getToken()
+    .then(function (result_token) {
+      if ($scope.session) {
+        console.log('You are already connected.')
+        $scope.session.disconnect()
+        return;
+      }
 
-    VideoService.getNewToken($scope.session_name)
-      .then(function (result_token) {
+      OTSession.init($scope.apiKey, result_token.sessionId, result_token.tokenId, function(err, session) {
+        if(err) {
+          console.log('sessionId: ' + result_token.sessionId + ' tokenId: ' + result_token.tokenId)
+          $scope.$broadcast('otError', {message: 'initialize session error'})
+          return
+        }
 
-        OTSession.init($scope.apiKey, result_token.sessionId, result_token.tokenId, function(err, session) {
-          if(err) {
-            console.log('sessionId: ' + result_token.sessionId + ' tokenId: ' + result_token.tokenId)
-            $scope.$broadcast('otError', {message: 'initialize session error'})
-            return
-          }
+        $scope.session = session
 
-          $scope.session = session
-          $scope.session_name = session_name
-          
-          var connectDisconnect = function (connected) {
+        var connectDisconnect = function (connected) {
+          $scope.$apply(function () {
+            console.log("connectDisconnect: connected = "+connected)
+            $scope.connected = connected
+            $scope.reconnecting = false
+            if (!connected) {
+              $scope.publishing = false
+              console.log('connectDisconnect: sessionDisconnected.')
+            }
+            else {
+              console.log('connectDisconnect: sessionConnected.')
+              var sessionConnectedJSON = {sessionName : $scope.session_name}
+              SocketService.emit("sessionConnected", sessionConnectedJSON)
+            }
+              
+
+          })
+        }
+
+        var reconnecting = function (isReconnecting) {
+          if (isReconnecting)
+            console.log('Client ' + event.connection.connectionId + ' is reconnecting...')
+          else
+            console.log('Client ' + event.connection.connectionId + ' has reconnected.')
+          $scope.$apply(function () {
+            $scope.reconnecting = isReconnecting
+          })
+        }
+
+        if (($scope.session.is && $scope.session.is('connected')) || $scope.session.connected) {
+          connectDisconnect(true)
+        }
+
+        $scope.session.on('sessionConnected', connectDisconnect.bind($scope.session, true))
+        //$scope.session.on('sessionDisconnected', connectDisconnect.bind($scope.session, false))            
+
+        $scope.session.on('sessionReconnecting', reconnecting.bind($scope.session, true))
+        $scope.session.on('sessionReconnected', reconnecting.bind($scope.session, false))
+
+        $scope.session.on({
+          sessionDisconnected: function (event) {
+            console.log("sessionDisconnected for reason "+ event.reason)
             $scope.$apply(function () {
-              console.log("connectDisconnect: connected = "+connected)
-              $scope.connected = connected
+              $scope.connected = false
               $scope.reconnecting = false
-              if (!connected) {
-                $scope.publishing = false
-                console.log('connectDisconnect: sessionDisconnected.')
-              }
-              else {
-                console.log('connectDisconnect: sessionConnected.')
-                var sessionConnectedJSON = {session_name : $scope.session_name}
-                SocketService.emit("sessionConnected", sessionConnectedJSON)
-              }
-                
-
+              $scope.publishing = false
             })
-          }
 
-          var reconnecting = function (isReconnecting) {
-            if (isReconnecting)
-              console.log('Client ' + event.connection.connectionId + ' is reconnecting...')
-            else
-              console.log('Client ' + event.connection.connectionId + ' has reconnected.')
-            $scope.$apply(function () {
-              $scope.reconnecting = isReconnecting
-            })
-          }
+            console.log("connected = "+$scope.connected+
+            " reconnecting = "+$scope.reconnecting+
+            " publishing = "+$scope.publishing)
 
-          if (($scope.session.is && $scope.session.is('connected')) || $scope.session.connected) {
-            connectDisconnect(true)
-          }
+            var d = new Date()
+            var time = d.getTime()
+            var sessionDisconnectedJSON = {
+              eventType : "sessionDisconnected",
+              sessionName : $scope.session_name,
+              timestamp : time,
+              userId : $scope.userId,
+              reason: event.reason
+            }
+            SocketService.emit("sessionDisconnected", sessionDisconnectedJSON)
+          },
+          connectionCreated: function (event) {
+            $scope.connectionCount++;
+            console.log('connectionCreated Client ' + event.connection.connectionId + ' connected. ' 
+              + $scope.connectionCount + ' connections total. userId = ' + $scope.userId);
 
-          $scope.session.on('sessionConnected', connectDisconnect.bind($scope.session, true))
-          //$scope.session.on('sessionDisconnected', connectDisconnect.bind($scope.session, false))            
+            var d = new Date()
+            var time = d.getTime()
 
-          $scope.session.on('sessionReconnecting', reconnecting.bind($scope.session, true))
-          $scope.session.on('sessionReconnected', reconnecting.bind($scope.session, false))
+            var connectionCreatedJSON = {
+              eventType : 'connectionCreated',
+              sessionName : $scope.session_name,
+              timestamp : time,
+              clientId : $scope.userId,
+              userConnectionId : event.connection.connectionId
+            }
+            SocketService.emit("connectionCreated", connectionCreatedJSON)
+          },
+          connectionDestroyed: function (event) {
+            $scope.connectionCount--;
+            console.log('connectionDestroyed Client ' + event.connection.connectionId + ' disconnected for reason: '
+               + event.reason + '. ' + $scope.connectionCount + ' connections total. userId = ' + $scope.userId);
 
-          $scope.session.on({
-            sessionDisconnected: function (event) {
-              console.log("sessionDisconnected for reason "+ event.reason)
-              $scope.$apply(function () {
-                $scope.connected = false
-                $scope.reconnecting = false
-                $scope.publishing = false
-              })
+            var d = new Date()
+            var time = d.getTime()
 
-              console.log("connected = "+$scope.connected+
-              " reconnecting = "+$scope.reconnecting+
-              " publishing = "+$scope.publishing)
+            var connectionDestroyedJSON = {
+              eventType : 'connectionDestroyed',
+              sessionName : $scope.session_name,
+              timestamp : time,
+              clientId : $scope.userId,
+              userConnectionId : event.connection.connectionId,
+              reason: event.reason
+            }
+            //console.log(JSON.stringify(connectionDestroyedJSON))
+            SocketService.emit("connectionDestroyed", connectionDestroyedJSON)
+          },
+          streamCreated: function(event) {
+            console.log('streamCreated: Connection ' + event.stream.connection.connectionId + 
+              ' created.')
+            console.log(
+              'frameRate: ' + event.stream.frameRate +
+              ' hasAudio: ' + event.stream.hasAudio + 
+              ' hasVideo: ' + event.stream.hasVideo + 
+              ' videoDimensions: width = ' + event.stream.videoDimensions.width + 
+                               ' height = ' + event.stream.videoDimensions.height +
+              ' videoType: ' + event.stream.videoType)
+           
+            var d = new Date()
+            var time = d.getTime()
 
-              var d = new Date()
-              var time = d.getTime()
-              var sessionDisconnectedJSON = {
-                eventType : "sessionDisconnected",
-                session_name : $scope.session_name,
-                timestamp : time,
-                userId : $scope.userId,
-                reason: event.reason
-              }
-              SocketService.emit("sessionDisconnected", sessionDisconnectedJSON)
-            },
-            connectionCreated: function (event) {
-              $scope.connectionCount++;
-              console.log('connectionCreated Client ' + event.connection.connectionId + ' connected. ' 
-                + $scope.connectionCount + ' connections total. userId = ' + $scope.userId);
+            var streamCreatedJSON = {
+              eventType : "streamCreated",
+              sessionName : $scope.session_name,
+              timestamp : new Date(event.stream.creationTime),
+              clientId : $scope.userId,
+              userConnectionId : event.stream.connection.connectionId,
+            }
+            SocketService.emit('streamCreated', streamCreatedJSON)
 
-              var d = new Date()
-              var time = d.getTime()
+            var frameRateJSON = {
+              eventType : "frameRate",
+              sessionName : $scope.session_name,
+              timestamp : time,
+              clientId : $scope.userId,
+              userConnectionId : event.stream.connection.connectionId,
+              frameRate : event.stream.frameRate
+            }
+            SocketService.emit('frameRate', frameRateJSON)
 
-              var connectionCreatedJSON = {
-                eventType : 'connectionCreated',
-                sessionName : $scope.session_name,
-                timestamp : time,
-                clientId : $scope.userId,
-                userConnectionId : event.connection.connectionId
-              }
-              SocketService.emit("connectionCreated", connectionCreatedJSON)
-            },
-            connectionDestroyed: function (event) {
-              $scope.connectionCount--;
-              console.log('connectionDestroyed Client ' + event.connection.connectionId + ' disconnected for reason: '
-                 + event.reason + '. ' + $scope.connectionCount + ' connections total. userId = ' + $scope.userId);
+            var audioJSON = {
+              eventType : "hasAudio",
+              sessionName : $scope.session_name,
+              timestamp : time,
+              clientId : $scope.userId,
+              userConnectionId : event.stream.connection.connectionId,
+              hasAudio : event.stream.hasAudio
+            }
+            SocketService.emit('hasAudio', audioJSON)
 
-              var d = new Date()
-              var time = d.getTime()
+            var videoJSON = {
+              eventType : "hasVideo",
+              sessionName : $scope.session_name,
+              timestamp : time,
+              clientId : $scope.userId,
+              userConnectionId : event.stream.connection.connectionId,
+              hasVideo : event.stream.hasVideo
+            }
+            SocketService.emit('hasVideo', videoJSON)
 
-              var connectionDestroyedJSON = {
-                eventType : 'connectionDestroyed',
-                sessionName : $scope.session_name,
-                timestamp : time,
-                clientId : $scope.userId,
-                userConnectionId : event.connection.connectionId,
-                reason: event.reason
-              }
-              //console.log(JSON.stringify(connectionDestroyedJSON))
-              SocketService.emit("connectionDestroyed", connectionDestroyedJSON)
-            },
-            streamCreated: function(event) {
-              console.log('streamCreated: Connection ' + event.stream.connection.connectionId + 
-                ' created.')
-              console.log(
-                'frameRate: ' + event.stream.frameRate +
-                ' hasAudio: ' + event.stream.hasAudio + 
-                ' hasVideo: ' + event.stream.hasVideo + 
-                ' videoDimensions: width = ' + event.stream.videoDimensions.width + 
-                                 ' height = ' + event.stream.videoDimensions.height +
-                ' videoType: ' + event.stream.videoType)
-             
-              var d = new Date()
-              var time = d.getTime()
+            var videoDimensionsJSON = {
+              eventType : "videoDimensions",
+              sessionName : $scope.session_name,
+              timestamp : time,
+              clientId : $scope.userId,
+              userConnectionId : event.stream.connection.connectionId,
+              width : event.stream.videoDimensions.width,
+              height : event.stream.videoDimensions.height
+            }
+            SocketService.emit('videoDimensions', videoDimensionsJSON)
 
-              var streamCreatedJSON = {
-                eventType : "streamCreated",
-                sessionName : $scope.session_name,
-                timestamp : new Date(event.stream.creationTime),
-                clientId : $scope.userId,
-                userConnectionId : event.stream.connection.connectionId,
-              }
-              SocketService.emit('streamCreated', streamCreatedJSON)
+            var videoTypeJSON = {
+              eventType : "videoType",
+              sessionName : $scope.session_name,
+              timestamp : time,
+              clientId : $scope.userId,
+              userConnectionId : event.stream.connection.connectionId,
+              videoType : event.stream.videoType
+            }
+            SocketService.emit('videoType', videoTypeJSON)
+          },
+          streamDestroyed: function(event) {
+            console.log('streamDestroyed: Connection ' + event.stream.connection.connectionId + 
+              ' destroyed for reason ' + event.reason + '.')
+            
+            var d = new Date()
+            var time = d.getTime()
 
-              var frameRateJSON = {
-                eventType : "frameRate",
-                sessionName : $scope.session_name,
-                timestamp : time,
-                clientId : $scope.userId,
-                userConnectionId : event.stream.connection.connectionId,
-                frameRate : event.stream.frameRate
-              }
-              SocketService.emit('frameRate', frameRateJSON)
-
+            var streamDestroyedJSON = {
+              eventType : "streamDestroyed",
+              sessionName : $scope.session_name,
+              timestamp : time,
+              clientId : $scope.userId,
+              userConnectionId : event.stream.connection.connectionId,
+              reason : event.reason
+            }
+            SocketService.emit('streamDestroyed', streamDestroyedJSON)
+          },
+          streamPropertyChanged: function(event) {
+            console.log('streamPropertyChanged: Connection ' + event.target.stream.connection.connectionId + 
+              ' changedProperty: ' +event.changedProperty+ ' newValue: '+event.newValue+
+              ' oldValue: ' +event.oldValue+ ' connectionId: ' +event.target.stream.connection.connectionId)
+            
+            var d = new Date()
+            var time = d.getTime()
+            
+            if (event.changedProperty == "hasAudio") {
               var audioJSON = {
                 eventType : "hasAudio",
                 sessionName : $scope.session_name,
                 timestamp : time,
                 clientId : $scope.userId,
                 userConnectionId : event.stream.connection.connectionId,
-                hasAudio : event.stream.hasAudio
+                hasAudio : event.newValue
               }
               SocketService.emit('hasAudio', audioJSON)
-
+            }
+            else if (event.changedProperty == "hasVideo") {
               var videoJSON = {
-                eventType : "hasVideo",
+                eventType : "hasAudio",
                 sessionName : $scope.session_name,
                 timestamp : time,
                 clientId : $scope.userId,
                 userConnectionId : event.stream.connection.connectionId,
-                hasVideo : event.stream.hasVideo
+                hasVideo : event.newValue
               }
               SocketService.emit('hasVideo', videoJSON)
-
+            }
+            else {
               var videoDimensionsJSON = {
                 eventType : "videoDimensions",
                 sessionName : $scope.session_name,
                 timestamp : time,
                 clientId : $scope.userId,
                 userConnectionId : event.stream.connection.connectionId,
-                width : event.stream.videoDimensions.width,
-                height : event.stream.videoDimensions.height
+                width : event.newValue.videoDimensions.width,
+                height : event.newValue.videoDimensions.height
               }
               SocketService.emit('videoDimensions', videoDimensionsJSON)
-
-              var videoTypeJSON = {
-                eventType : "videoType",
-                sessionName : $scope.session_name,
-                timestamp : time,
-                clientId : $scope.userId,
-                userConnectionId : event.stream.connection.connectionId,
-                videoType : event.stream.videoType
-              }
-              SocketService.emit('videoType', videoTypeJSON)
-            },
-            streamDestroyed: function(event) {
-              console.log('streamDestroyed: Connection ' + event.stream.connection.connectionId + 
-                ' destroyed for reason ' + event.reason + '.')
-              
-              var d = new Date()
-              var time = d.getTime()
-
-              var streamDestroyedJSON = {
-                eventType : "streamDestroyed",
-                sessionName : $scope.session_name,
-                timestamp : time,
-                clientId : $scope.userId,
-                userConnectionId : event.stream.connection.connectionId,
-                reason : event.reason
-              }
-              SocketService.emit('streamDestroyed', streamDestroyedJSON)
-            },
-            streamPropertyChanged: function(event) {
-              console.log('streamPropertyChanged: Connection ' + event.target.stream.connection.connectionId + 
-                ' changedProperty: ' +event.changedProperty+ ' newValue: '+event.newValue+
-                ' oldValue: ' +event.oldValue+ ' connectionId: ' +event.target.stream.connection.connectionId)
-              
-              var d = new Date()
-              var time = d.getTime()
-              
-              if (event.changedProperty == "hasAudio") {
-                var audioJSON = {
-                  eventType : "hasAudio",
-                  sessionName : $scope.session_name,
-                  timestamp : time,
-                  clientId : $scope.userId,
-                  userConnectionId : event.stream.connection.connectionId,
-                  hasAudio : event.newValue
-                }
-                SocketService.emit('hasAudio', audioJSON)
-              }
-              else if (event.changedProperty == "hasVideo") {
-                var videoJSON = {
-                  eventType : "hasAudio",
-                  sessionName : $scope.session_name,
-                  timestamp : time,
-                  clientId : $scope.userId,
-                  userConnectionId : event.stream.connection.connectionId,
-                  hasVideo : event.newValue
-                }
-                SocketService.emit('hasVideo', videoJSON)
-              }
-              else {
-                var videoDimensionsJSON = {
-                  eventType : "videoDimensions",
-                  sessionName : $scope.session_name,
-                  timestamp : time,
-                  clientId : $scope.userId,
-                  userConnectionId : event.stream.connection.connectionId,
-                  width : event.newValue.videoDimensions.width,
-                  height : event.newValue.videoDimensions.height
-                }
-                SocketService.emit('videoDimensions', videoDimensionsJSON)
-              }
             }
-          })
+          }
         })
-
-        $scope.publishing = true
-        return result_token
       })
-  }
 
-  // For when all streams have disconnected and html goes away?
+      //$scope.publishing = true
+      return result_token
+    })
+
   $scope.$on('$destroy', function () {
     if ($scope.session && $scope.connected) {
       $scope.session.disconnect()
@@ -306,16 +303,13 @@ app.controller('VideoCtrl', ['$scope', '$http', '$window', '$log', 'OTSession', 
   $scope.endVideo = function () {
     if (!$scope.leaving) {
       $scope.leaving = true
-      $scope.session.disconnect() //Disconnects and unpublishes
-
-      // $scope.session.on('sessionDisconnected', function() {
-      //   $scope.$apply(function() {
-      //     $window.location.href = 'http://localhost:8080/#/user'
-      //   })
-      // })
-
+      $scope.session.disconnect() 
     }
-    console.log("endVideo: leaving = "+$scope.leaving+" connected = "+$scope.connected+" session = "+$scope.session)
+    $scope.session.on('sessionDisconnected', function() {
+      $scope.$apply(function() {
+        //$window.location.href = 'https://aqueous-stream-90183.herokuapp.com/#/user'
+        $window.location.href = UserService.baseInterfaceUrl + '/#/user'
+      })
+    })
   }
-
 }])
