@@ -1,28 +1,33 @@
 <div class="container contentContainer">
   <div class="row">
     <div class="col-md-12 col-sm-12">
+
       <div id="wrapper" class="text-center">
         {{sessionName}}
+
         <div class="btnGroup">
           <span><a href="#/videocall" class="btn btn-success" id="start-call" ng-click="togglePublish()">Publish</a></span>
           <span><a href="#/videocall" class="btn btn-danger" id="end-call" ng-click="endVideo()">End Call</a></span>
         </div>
 
         <ot-layout props="{animate:true}">
-          <ot-subscriber style="width: 792px; height: 594px;" ng-repeat="stream in streams"
+
+          <ot-subscriber ng-repeat="stream in streams"
             stream="stream"
             session="session"
             props="{style: {nameDisplayMode: 'off'}}">
           </ot-subscriber>
-        </ot-layout>
-        {{userName}}
-        <div id="facePublisher" ng-if="publishing" draggable="true">
-          
-          <ot-publisher style="width: 792px; height: 594px;" id="facePublisher">
-          </ot-publisher>
 
-          <mute-video publisher-id="facePublisher" mute-publisher></mute-video>
-        </div>
+        </ot-layout>
+        
+          {{userName}}
+        
+        <ot-publisher id="facePublisher" ng-if="publishing"
+          props="{style: {nameDisplayMode: 'off'}, resolution: '1280x720', frameRate: 30}">
+        </ot-publisher>
+
+         <!--  <mute-video publisher-id="facePublisher" mute-publisher></mute-video> -->
+        
 
       </div>
     </div>
