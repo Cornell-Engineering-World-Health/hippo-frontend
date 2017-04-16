@@ -49,6 +49,26 @@ footer {
   margin-bottom: 5px;
 }
 
+.footer-col ul li a {
+  cursor: pointer;
+  color: #2d83ff;
+}
+
+.footer-col ul li a:hover {
+  text-decoration: none;
+  color: #246ACC;
+}
+
+.footer-txt {
+  font-size: 11px;
+  font-family: 'Lato', sans-serif;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 20px 0 0 0;
+}
+
 .navbar-flex {
   display: flex;
   flex-direction: row;
