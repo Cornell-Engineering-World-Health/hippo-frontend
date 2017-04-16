@@ -48,9 +48,18 @@ label:active, {
 }
 
 .btnGroup {
+  background-color: rgba(0,0,0,0);
   padding: 40px;
   z-index: 1000;
   position: absolute;
+  padding: 15px!important;
+  /*display: none;*/
+}
+
+.btnGroup:hover {
+  background-color: rgba(0,0,0,0.6);
+  border-radius: 5px;
+  -webkit-transition: background .3s ease 0s;
 }
 
 
