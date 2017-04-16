@@ -49,8 +49,48 @@ label:active, {
 
 .btnGroup {
   padding: 40px;
+  z-index: 1000;
+  position: absolute;
 }
 
+
+ot-publisher {
+  width:100% !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  top: 0px !important;
+  height: 100% !important;
+}
+
+.OT_publisher, .OT_subscriber {
+  position: absolute !important;
+  /* min-width: 48px; */
+  /* min-height: 48px; */
+  /* height: 400px!important; */
+  bottom: 0 !important;
+  /* max-width: 400px; */
+}
+
+.OT_subscriber {
+  width:100% !important;
+  height: 100% !important;
+}
+
+.OT_mirrored .OT_root .OT_publisher .OT_fit-mode-cover {
+  position: absolute !important;
+}
+
+ot-layout {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+ot-subscriber{
+  width:200px !important;
+  height:200px !important;
+}
 
 /*************************************/
 /*********** SESSION FORM ************/
@@ -96,6 +136,7 @@ label:active, {
   float:right;
   width:30%;
 }
+
 td {
   vertical-align: middle!important;
 }
