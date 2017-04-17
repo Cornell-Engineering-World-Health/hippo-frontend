@@ -24,7 +24,7 @@ app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
   $stateProvider
     .state('home', {
       url: '/',
-      templateUrl: 'index.html',
+      templateUrl: 'partials/landing.html',
       controller: 'LoginCtrl',
       resolve: {
         skipIfLoggedIn: skipIfLoggedIn
@@ -78,4 +78,9 @@ app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
     $authProvider.google({
       clientId: '789185821228-jkliab3iscephfdr47h9184kn1bh2t1j.apps.googleusercontent.com'
     })
+  })
+  .run(function($rootScope, $window, $auth) {
+    if ($auth.isAuthenticated()) {
+      $rootScope.currentUser = JSON.parse($window.localStorage.currentUser)
+    }
   })
