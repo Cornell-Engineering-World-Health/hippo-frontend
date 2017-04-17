@@ -79,3 +79,8 @@ app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
       clientId: '789185821228-jkliab3iscephfdr47h9184kn1bh2t1j.apps.googleusercontent.com'
     })
   })
+  .run(function($rootScope, $window, $auth) {
+    if ($auth.isAuthenticated()) {
+      $rootScope.currentUser = JSON.parse($window.localStorage.currentUser)
+    }
+  })

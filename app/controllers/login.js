@@ -2,7 +2,7 @@ angular.module('myApp')
   // .controller('LoginCtrl', ['$timeout',
   //   function($scope, $location, $auth, $timeout) {
   // Error with dependency; but dependency needed for minification
-    .controller('LoginCtrl', function($scope, $location, $auth, $timeout) {
+    .controller('LoginCtrl', ['$rootScope', '$scope', '$location', '$auth', '$timeout', '$window', 'User', function($rootScope, $scope, $location, $auth, $timeout, $window, User) {
     $scope.login = function() {
       $auth.login($scope.user)
         .then(function() {
@@ -15,13 +15,37 @@ angular.module('myApp')
           console.log(error.data.message, error.status);
         })
     }
+    $scope.getUser = function() {
+      User.getUser()
+          .then(function (response) {
+            return response.data
+          })
+          .catch(function (error) {
+              console.log(error)
+              return error
+          })
+    }
     $scope.authenticate = function(provider) {
       $auth.authenticate(provider)
-        .then(function() {
-          console.log('You have successfully signed in with ' + provider);
-          $timeout(function() {
-            $location.path('/user').replace()
+        .then(function(response) {
+          User.getUser()
+          .then(function (response) {
+            $window.localStorage.currentUser = JSON.stringify(response.data)
+            $rootScope.currentUser = response.data
+            console.log(response.data)
+            console.log('You have successfully signed in with ' + provider);
+            $timeout(function() {
+              $location.path('/user').replace()
+            })
           })
+          .catch(function (error) {
+              console.log(error)
+              return error
+          })
+          // console.log('You have successfully signed in with ' + provider);
+          // $timeout(function() {
+          //   $location.path('/user').replace()
+          // })
         })
         .catch(function(error) {
           if (error.message) {
@@ -35,4 +59,4 @@ angular.module('myApp')
           }
         })
     }
-  })
+  }])

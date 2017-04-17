@@ -4,6 +4,7 @@ angular.module('myApp')
     $auth.logout()
       .then(function() {
         console.log('You have been logged out');
+        delete $window.localStorage.currentUser
         $location.path('/login');
       })
   })
