@@ -28,13 +28,13 @@
               <li><button class="btn-standard btn-small btn-deep-blue" ng-click="authenticate('google')">Log In</a></li>
               <li><button class="btn-standard btn-small btn-transparent" ng-click="authenticate('google')">Sign Up</a></li>
             </ul>
-            <div ng-if="isAuthenticated()" class="dropdown" style="position: relative;">
+            <div ng-if="isAuthenticated() && currentUser.firstName" class="dropdown" style="position: relative;">
               <button ng-if="isAuthenticated()" class="btn-standard btn-small btn-transparent dropdown-toggle ng-cloak" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <img class="img-circle navbar-pic" ng-src="{{user.picture || 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=200'}}" /> 
-                {{user.firstName + ' ' + user.lastName}}
+                <img class="img-circle navbar-pic" ng-src="{{user.picture || 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=200'}}" />
+                {{currentUser.firstName + ' ' + currentUser.lastName}}
                 <span class="caret"></span>
               </button>
-              <ul ng-if="isAuthenticated()" class=" dropdown-menu" aria-labelledby="dropdownMenu1">
+              <ul class=" dropdown-menu" aria-labelledby="dropdownMenu1">
                 <li><a class="navbar-txt" href="/#/user">Sessions</a></li>
                 <li><a class="navbar-txt" href="/#/profile">Profile</a></li>
                 <li><a class="navbar-txt" href="/#/logout">Logout</a></li>
