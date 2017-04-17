@@ -10,7 +10,8 @@ html, body {
 #wrapper {
   width: 100%;
   min-height: 100%;
-  margin-bottom: -200px;
+  padding-bottom: 240px;
+  position: relative;
 }
 
 #wrapper:after {
@@ -24,6 +25,10 @@ footer {
   height: 200px;
   background: transparent;
   border-top: 1px solid #D5D9E5;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
 }
 
 .footer-default {
@@ -84,12 +89,25 @@ footer {
   border-color: transparent;
   padding: 10px 50px;
   border-radius: 0px;
+  color: #fff;
   box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
 }
 
+.navbar-default .navbar-nav>li>a {
+  color: #fff;
+}
+
 .navbar-txt {
-  color: #AFC9EA;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 14px;
+  font-weight: 600;
+  color: #000;
+  text-decoration: none;
+}
+
+.navbar-pic {
+  height: 80%;
+  margin: auto 5px;
 }
 
 #hippo-logo {

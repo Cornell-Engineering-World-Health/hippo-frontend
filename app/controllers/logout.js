@@ -4,6 +4,6 @@ angular.module('myApp')
     $auth.logout()
       .then(function() {
         console.log('You have been logged out');
-        $location.path('/login');
+        $location.path('/');
       })
   })
