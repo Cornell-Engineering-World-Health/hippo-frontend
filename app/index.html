@@ -30,6 +30,7 @@
             <ul ng-if="isAuthenticated()" class="nav navbar-nav pull-right">
               <li ng-if="isAuthenticated()"><a href="/#/user">Sessions</a></li>
               <li ng-if="isAuthenticated()"><a href="/#/profile">Profile</a></li>
+              <li ng-if="isAuthenticated() && currentUser.firstName"><a href="/#/profile">{{currentUser.firstName}}</a></li>
               <li><a href="/#/logout">Logout</a></li>
             </ul>
           </div>
