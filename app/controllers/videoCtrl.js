@@ -26,7 +26,7 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
   $scope.getUser = function() {
     User.getUser()
         .then(function (response) {
-          $scope.userId = data.userId
+          $scope.userId = response.data.userId
         })
         .catch(function (error) {
             console.log(error)
@@ -59,7 +59,7 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
 
       OTSession.init($scope.apiKey, result_token.sessionId, result_token.tokenId, function(err, session) {
         if(err) {
-          console.log('sessionId: ' + result_token.sessionId + ' tokenId: ' + result_token.tokenId)
+          //console.log('sessionId: ' + result_token.sessionId + ' tokenId: ' + result_token.tokenId)
           $scope.$broadcast('otError', {message: 'initialize session error'})
           return
         }
@@ -328,4 +328,6 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
       })
     })
   }
+
+  $scope.getUser()
 }])
