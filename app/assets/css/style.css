@@ -100,7 +100,95 @@ ot-subscriber{
   width:200px !important;
   height:200px !important;
 }
+.alert-container {
+  position: absolute;
+/*  left: 0;*/
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
 
+.alert {
+  position: relative;
+  z-index: 999999;
+  width: 400px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 8px 35px 8px 14px;
+  margin-bottom: 5px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  background-color: #fcf8e3;
+  border: 1px solid #fbeed5;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+.alert-warning {
+  background-color: #dff0d8;
+  border-color: #468847;
+  color: #468847;
+}
+
+.fadeout {
+  /*
+  -webkit-transition: opacity 0.30s linear;
+  -moz-transition: opacity 0.30s linear;
+  -o-transition: opacity 0.30s linear;
+  transition: opacity 0.30s linear;
+  -webkit-transition-delay: 5s
+  -moz-transition-delay: 5s; 
+  -o-transition:-delay:5s
+  transition-delay: 5s
+ */
+  opacity: 0;
+  animation: fadeOut 5s; 
+  /*-webkit-animation: fadeOut2 1s fowards;*/
+  animation-fill-mode: fowards;
+  /*animation-timing-function:ease-in;*/
+  /*animation-timing-function: step-end;*/
+  animation-timing-function: cubic-bezier(0.95, 0.05, 0.795, 0.035)
+  /*animation-delay: 3s;*/
+}
+@keyframes fadeOut{
+  0% {
+    opacity:1;
+  }
+  100%{
+    opacity:0;
+  }
+}
+@keyframes fadeOut2 {
+  from {opacity:1;}
+  to {opacity:0;}
+}
+
+.hideMe {
+    -moz-animation: cssAnimation 0s ease-in 5s forwards;
+    /* Firefox */
+    -webkit-animation: cssAnimation 0s ease-in 5s forwards;
+    /* Safari and Chrome */
+    -o-animation: cssAnimation 0s ease-in 5s forwards;
+    /* Opera */
+    animation: cssAnimation 0s ease-in 5s forwards;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+}
+@keyframes cssAnimation {
+    to {
+        width:0;
+        height:0;
+        overflow:hidden;
+    }
+}
+@-webkit-keyframes cssAnimation {
+    to {
+        width:0;
+        height:0;
+        visibility:hidden;
+    }
+}
 /*************************************/
 /*********** SESSION FORM ************/
 /*************************************/
