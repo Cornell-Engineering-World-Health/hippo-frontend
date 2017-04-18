@@ -1,7 +1,5 @@
 app.controller('UserCtrl', ['$scope', '$log', '$http', '$location', '$timeout', 'User', 'UserService', 'VideoService', 'UserVideoService',
   function ($scope, $log, $http, $location, $timeout, User, UserService, VideoService, UserVideoService) {
-// app.controller('UserCtrl', ['$scope', '$log', '$http', '$location', '$timeout', 'User', 'UserService', 'VideoService',
-//   function ($scope, $log, $http, $location, $timeout, User, UserService, VideoService) {
 
   var baseURL = UserService.baseUrlAPI
   $scope.session = {
@@ -25,9 +23,9 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$location', '$timeout', 
       return user.firstName + " " + user.lastName
     })
     particp = particp.filter(function(user) {
-      return user != $scope.user.firstName + " " + $scope.user.lastName
+      return user != $scope.user.firstName + ' ' + $scope.user.lastName
     })
-    session.participants = particp.join(", ")
+    session.participants = particp.join(', ')
   }
 
   $scope.setSessionName = function(session_name) {

@@ -21,5 +21,5 @@ app.controller('NotificationsCtrl', ['$scope', '$log', 'SocketService', function
   })
   
   $scope.clearNotifications = function(){$scope.notifications = []}
-  setInterval(function(){ $scope.clearNotifications();}, 5000)
+  setInterval(function(){ $scope.clearNotifications();}, 7000)
 }])
