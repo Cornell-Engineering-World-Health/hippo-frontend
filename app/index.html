@@ -30,7 +30,7 @@
             </ul>
             <div ng-if="isAuthenticated() && currentUser.firstName" class="dropdown" style="position: relative;">
               <button ng-if="isAuthenticated()" class="btn-standard btn-small btn-transparent dropdown-toggle ng-cloak" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <img class="img-circle navbar-pic" ng-src="{{user.picture || 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=200'}}" />
+                <img class="img-circle navbar-pic" ng-src="{{currentUser.picture || 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=200'}}" />
                 {{currentUser.firstName + ' ' + currentUser.lastName}}
                 <span class="caret"></span>
               </button>
