@@ -12,15 +12,22 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$location', '$timeout', 
 
   function checkActiveSession(session) {
     var d = new Date()
-    return session.endTime > d.toISOString() // || session.active
+    return session.endTime > d.toISOString() || session.active
   }
 
   function checkSelf(user) {
     return user.email != $scope.user.email
   }
 
-    function convertParticId(id) {
-
+  function parseParticipants(session) {
+    var particp = session.participants
+    particp = particp.map(function(user) {
+      return user.firstName + " " + user.lastName
+    })
+    particp = particp.filter(function(user) {
+      return user != $scope.user.firstName + " " + $scope.user.lastName
+    })
+    session.participants = particp.join(", ")
   }
 
   $scope.setSessionName = function(session_name) {
@@ -35,6 +42,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$location', '$timeout', 
           $scope.user = response.data
           $scope.userSessions = response.data.calls
           $scope.userSessions = $scope.userSessions.filter(checkActiveSession)
+          $scope.userSessions.map(parseParticipants)
           $scope.getAllUsers()
         })
         .catch(function (error) {
@@ -46,9 +54,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$location', '$timeout', 
   $scope.getAllUsers = function() {
     User.getAllUsers()
     .then(function (response) {
-      //console.log(response)
       $scope.allUsers = response.data.users
-      //console.log($scope.allUsers)
       $scope.allUsers = $scope.allUsers.filter(checkSelf)
 
     })
@@ -74,5 +80,4 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$location', '$timeout', 
     })
   }
   $scope.getUser()
-  // $scope.getAllUsers()
 }])
