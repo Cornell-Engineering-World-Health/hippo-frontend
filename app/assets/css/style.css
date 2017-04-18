@@ -68,7 +68,107 @@ label:active, {
 /*************************************/
 
 .btnGroup {
-  padding: 40px;
+  background-color: rgba(0,0,0,0);
+  z-index: 1000;
+  position: absolute;
+  padding: 15px!important;
+  left: 0;
+  top: 15px;
+}
+
+.btnGroup:hover {
+  background-color: rgba(0,0,0,0.6);
+  border-radius: 5px;
+  -webkit-transition: background .3s ease 0s;
+}
+
+.callBtn, .callBtn.active {
+  background: #323232;
+  border-color: #323232;
+}
+
+.startVideoBtn {
+  border-right-color: #757575;
+  border-color: #323232;
+}
+
+.btn.btn-default.callBtn.startVideoBtn.active {
+  background: #323232;
+  border-color: #323232;
+  border-right-color: #757575;
+}
+
+.btn.btn-default.callBtn.endVideoBtn.active {
+  background: #323232;
+  border-color: #323232;
+  border-left-color: #757575;
+}
+
+.hangup {
+  width: 15px;
+  height: 6px;
+  transform: scale(1.5)
+}
+
+.endVideoBtn {
+  border-left-color: #757575;
+}
+
+.callBtn:hover {
+  background: #4c4c4c;
+  border-color: #4c4c4c;
+  -webkit-transition: background .3s ease 0s;
+}
+
+ot-publisher {
+  width:100% !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  top: 0px !important;
+  height: 100% !important;
+}
+
+.OT_publisher {
+  position: absolute !important;
+  bottom: 40px !important;
+  left: 40px !important;
+  border-radius: 5px !important;
+}
+
+.OT_widget-container {
+  border-radius: 5px !important;
+}
+
+.OT_subscriber {
+  position: absolute !important;
+  bottom: 0px !important;
+  left: 0px !important;
+  width:100% !important;
+  height: 100% !important;
+}
+
+.OT_mirrored .OT_root .OT_publisher .OT_fit-mode-cover {
+  position: absolute !important;
+}
+
+ot-layout {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+/*ot-subscriber{
+  width:200px !important;
+  height:200px !important;
+}*/
+
+.callBtn {
+  outline: none!important;
+}
+
+.callBtn:hover, .callBtn:active {
+  outline: none!important;
 }
 
 
@@ -112,10 +212,19 @@ label:active, {
   margin-left: 30px;
 }
 
+
 .notifications-bar{
   float:right;
   width:30%;
 }
+
 td {
   vertical-align: middle!important;
+}
+
+/*************************************/
+/************** OVERALL **************/
+/*************************************/
+.white {
+  color: #fff;
 }
