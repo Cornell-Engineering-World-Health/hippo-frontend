@@ -17,7 +17,7 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
   $scope.session_name = $stateParams.session_name
 
   //TODO determine if this is helpful
-  SocketService.emit("enteringSession",{session_name: $scope.session_name})
+  SocketService.emit("enteringSession",{sessioName: $scope.session_name})
 
   $http.get('./config.json').success(function(data) {
     $scope.apiKey = data.apiKey;
@@ -77,7 +77,7 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
             }
             else {
               console.log('connectDisconnect: sessionConnected.')
-              var sessionConnectedJSON = {session_name : $scope.session_name}
+              var sessionConnectedJSON = {sessionName : $scope.session_name}
               SocketService.emit("sessionConnected", sessionConnectedJSON)
             }
 
@@ -123,7 +123,7 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
             var time = d.getTime()
             var sessionDisconnectedJSON = {
               eventType : "sessionDisconnected",
-              session_name : $scope.session_name,
+              sessionName : $scope.session_name,
               timestamp : time,
               userId : $scope.userId,
               reason: event.reason

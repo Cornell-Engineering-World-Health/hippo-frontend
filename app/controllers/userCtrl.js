@@ -12,6 +12,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$location', '$timeout', 
 
   function checkActiveSession(session) {
     var d = new Date()
+    //TODO display notification in boolean is false
     return session.endTime > d.toISOString() // || session.active
   }
 
