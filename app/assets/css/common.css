@@ -146,6 +146,10 @@ footer {
   border: none;
 }
 
+.btn-standard:hover {
+  text-decoration: none;
+}
+
 .btn-small {
   height: 34px;
   line-height: 30px;
