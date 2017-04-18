@@ -48,7 +48,7 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
       })
   }
 
- $scope.getToken()
+  $scope.getToken()
     .then(function (result_token) {
       console.log(result_token)
       if ($scope.session) {
