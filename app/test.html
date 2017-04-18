@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html ng-app="demo">
     <head>
         <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -48,9 +48,9 @@
             });
         </script>
     </body>
-</html> -->
+</html>
 
-
+<!--
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
     "http://www.w3.org/TR/html4/strict.dtd">
 
@@ -61,6 +61,10 @@
         <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
         <script src="https://code.jquery.com/jquery-1.6.2.min.js"></script>
         <script src="opentok-layout.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="assets/css/style.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
         <style type="text/css" media="screen">
             body {
@@ -121,6 +125,14 @@
             <input type="button" name="add" value="Add" id="add" onclick="addElement()">
             <input type="button" name="remove" value="Remove" id="remove" onclick="removeElement()">
         </div>
+        <div class="btnGroup btn-group" role="group">
+          <button type="button" class="btn btn-default" id="start-call" ng-click="togglePublish()">
+            <span class="glyphicon glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="btn btn-default" id="end-call" ng-click="endVideo()">
+            <span class="glyphicon glyphicon glyphicon-earphone" aria-hidden="true"></span>
+          </button>
+        </div>
     </body>
     <script type="text/javascript" charset="utf-8">
         var layoutEl = document.getElementById("layout");
@@ -166,3 +178,4 @@
         });
     </script>
 </html>
+ -->

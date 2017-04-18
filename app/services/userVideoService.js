@@ -1,3 +1,5 @@
+// NO LONGER USED
+
 // Used for transfer of information from session view to videocall
 app.factory('UserVideoService', ['$http', 'UserService', function($http, UserService) {
   var sessionID
