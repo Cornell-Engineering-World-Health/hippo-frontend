@@ -1,26 +1,33 @@
-<div ng-controller="VideoCtrl" class="contentContainer">
+<div class="container contentContainer">
   <div class="row">
     <div class="col-md-12 col-sm-12">
       <div id="wrapper" class="text-center">
         {{session_name}}
         <div class="btnGroup btn-group" role="group">
-          <button type="button" class="btn btn-secondary" id="start-call" ng-click="togglePublish()">HERE</button>
-          <button type="button" class="btn btn-secondary" id="end-call" ng-click="endVideo()">HERE</button>
+          <button type="button" class="btn btn-default callBtn startVideoBtn" id="start-call" ng-click="togglePublish()">
+            <span class="glyphicon glyphicon glyphicon-facetime-video white" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="btn btn-default callBtn endVideoBtn" id="end-call" ng-click="endVideo()">
+            <span aria-hidden="true"><img class="hangup white" src="../assets/images/hangup.png"></span>
+          </button>
         </div>
+        <ot-layout props="{animate:true}">
+          <div id="facePublisher" ng-if="publishing" draggable="true">
+            <ot-publisher style="width: 792px; height: 594px;" id="facePublisher">
+            </ot-publisher>
+            <mute-video publisher-id="facePublisher" mute-publisher></mute-video>
+          </div>
+        </ot-layout>
       </div>
     </div>
   </div>
-  <div id = 'video'>
-    <ot-layout props="{animate:true}">
-      <ot-subscriber ng-repeat="stream in streams"
-          stream="stream"
-          props="{style: {nameDisplayMode: 'off'}}">
-      </ot-subscriber>
-      <ot-publisher id="publisher"
-          props="{style: {nameDisplayMode: 'off'}, resolution: '1280x720', frameRate: 30}">
-      </ot-publisher>
-    </ot-layout>
-  </div>
+  <ot-layout props="{animate:true}">
+    <ot-subscriber style="width: 792px; height: 594px;" ng-repeat="stream in streams"
+      stream="stream"
+      session="session"
+      props="{style: {nameDisplayMode: 'off'}}">
+    </ot-subscriber>
+  </ot-layout>
 </div>
 
 <div ng-controller ="NotificationsCtrl" class = "alert-container">
@@ -28,3 +35,13 @@
     <div class = "alert alert-warning alert-dismissible fadeout" role ="alert"><button type ="button" class = "close" data-dismiss= "alert" aria-label="Close"><span class = aria-hidden ="true">&times;</span></button>{{notification}}</div>
   </div>
 </div>
+
+<script type="text/javascript">
+  footer = document.querySelector("footer")
+  footer.style.display = "None"
+  $(".btn-group > .btn").click(function(){
+    $(this).addClass("active").siblings().removeClass("active")
+  })
+  header = document.querySelector("nav")
+  header.style.zIndex = "1000"
+</script>

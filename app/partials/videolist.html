@@ -1,15 +1,15 @@
-<div class="container contentContainer">
+<div class="container spaced">
   <div class="row">
-    <div class="col-md-12 col-sm-12">
-      <h1>Upcoming Calls</h1>
+    <div class="col-md-2 col-sm-2"></div>
+    <div class="col-md-8 col-sm-8">
+      <h1 class="header">Upcoming Calls</h1>
       <table class="table table-hover">
         <thead>
           <tr>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Participants</th>
-            <th>Session Name</th>
-            <th></th>
+            <th><h5>Start Time</h5></th>
+            <th><h5>End Time</h5></th>
+            <th><h5>Participants</h5></th>
+            <th><h5>Session Name</h5></th>
           </tr>
         </thead>
         <tbody>
@@ -19,13 +19,19 @@
             <td>{{session.endTime | date:'MMMM dd HH:mm'}}</td>
             <td></td>
             <td>{{session.name}}</td>
-            <td><a class="btn btn-success" ng-click="setSessionName(session.name)" ui-sref="video({session_name: session.name})">Join Call</a></td>
+            <td><a class="btn-standard btn-hop" ng-click="setSessionName(session.name)" ui-sref="video({session_name: session.name})">Join Call</a></td>
           </tr>
         </tbody>
       </table>
       <div class="btnContainer text-center">
-      <a href="/#/schedule" class="btn btn-info" role="button">Schedule A Call</a>
+      <a href="/#/schedule" class="btn-standard btn-hop" role="button">Schedule A Call</a>
       </div>
     </div>
+    <div class="col-md-2 col-sm-2"></div>
   </div>
 </div>
+
+<script type="text/javascript">
+  footer = document.querySelector("footer")
+  footer.style.display = ""
+</script>

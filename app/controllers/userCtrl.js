@@ -47,9 +47,9 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$location', '$timeout', 
   $scope.getAllUsers = function() {
     User.getAllUsers()
     .then(function (response) {
-      console.log(response)
+      //console.log(response)
       $scope.allUsers = response.data.users
-      console.log($scope.allUsers)
+      //console.log($scope.allUsers)
       $scope.allUsers = $scope.allUsers.filter(checkSelf)
 
     })
