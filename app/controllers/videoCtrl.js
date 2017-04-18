@@ -26,7 +26,7 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
   $scope.getUser = function() {
     User.getUser()
         .then(function (response) {
-          $scope.userId = data.userId
+          $scope.userId = response.data.userId
         })
         .catch(function (error) {
             console.log(error)
@@ -48,7 +48,7 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
       })
   }
 
- $scope.getToken()
+  $scope.getToken()
     .then(function (result_token) {
       console.log(result_token)
       if ($scope.session) {
@@ -59,7 +59,7 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
 
       OTSession.init($scope.apiKey, result_token.sessionId, result_token.tokenId, function(err, session) {
         if(err) {
-          console.log('sessionId: ' + result_token.sessionId + ' tokenId: ' + result_token.tokenId)
+          //console.log('sessionId: ' + result_token.sessionId + ' tokenId: ' + result_token.tokenId)
           $scope.$broadcast('otError', {message: 'initialize session error'})
           return
         }
@@ -77,7 +77,7 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
             }
             else {
               console.log('connectDisconnect: sessionConnected.')
-              var sessionConnectedJSON = {session_name : $scope.session_name}
+              var sessionConnectedJSON = {sessionName : $scope.session_name}
               SocketService.emit("sessionConnected", sessionConnectedJSON)
             }
 
@@ -115,19 +115,20 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
               $scope.publishing = false
             })
 
-            console.log("connected = "+$scope.connected+
-            " reconnecting = "+$scope.reconnecting+
-            " publishing = "+$scope.publishing)
+            // //console.log("connected = "+$scope.connected+
+            // " reconnecting = "+$scope.reconnecting+
+            // " publishing = "+$scope.publishing)
 
             var d = new Date()
             var time = d.getTime()
             var sessionDisconnectedJSON = {
               eventType : "sessionDisconnected",
-              session_name : $scope.session_name,
+              sessionName : $scope.session_name,
               timestamp : time,
               userId : $scope.userId,
               reason: event.reason
             }
+            console.log(sessionDisconnectedJSON)
             SocketService.emit("sessionDisconnected", sessionDisconnectedJSON)
           },
           connectionCreated: function (event) {
@@ -302,7 +303,6 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
           }
         })
       })
-
       //$scope.publishing = true
       return result_token
     })
@@ -328,4 +328,6 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
       })
     })
   }
+
+  $scope.getUser()
 }])

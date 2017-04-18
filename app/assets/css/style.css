@@ -14,10 +14,32 @@ label:active, {
   outline: none!important;
 }
 
+.header {
+  letter-spacing: 1px;
+  padding-bottom: 15px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 600;
+}
+
+@media (max-width: 1280px) {
+    .navbar-default {
+      width: 100%
+    }
+}
+
+@media (min-width: 1281px) {
+  .navbar-default {
+    width: 1140px;
+  }
+}
 
 /*************************************/
 /************** NAV BAR **************/
 /*************************************/
+.navbar-default {
+    float: none;
+}
+
 .navbar-header img {
   height: 30px;
   width: 30px;
@@ -30,22 +52,20 @@ label:active, {
   transform: scale(1.7);
 }
 
+/*************************************/
+/*********** LANDING VIEW ************/
+/*************************************/
+#landingImg {
+  margin-top: 50px;
+}
 
 /*************************************/
 /************ LOGIN VIEW *************/
 /*************************************/
 
-.loginContainer {
-  padding-top: 100px;
-}
-
 /*************************************/
 /************ VIDEO VEIW *************/
 /*************************************/
-
-.contentContainer {
-  padding-top: 70px;
-}
 
 .btnGroup {
   padding: 40px;
