@@ -10,7 +10,7 @@ button:active,
 .btn-default:focus,
 .btn.active.focus,
 label:focus,
-label:active, {
+label:active {
   outline: none!important;
 }
 
