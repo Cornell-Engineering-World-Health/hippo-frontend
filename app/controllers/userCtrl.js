@@ -64,6 +64,15 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     date.setSeconds(parseInt(cdr.callDuration)/1000.0)
     cdr.callDuration = date.toISOString().substr(11, 8)
 
+    cdr.userIds = cdr.userIds.map(function (_id) {
+      return $scope.userDict[parseInt(_id)]
+    })
+
+    cdr.userIds = cdr.userIds.filter(function (name) {
+      return name.trim() != $scope.user.firstName + ' ' + $scope.user.lastName
+    })
+    cdr.userIds = cdr.userIds.join(', ')
+
     cdr.connections = cdr.connections.map(function (conn) {
       connArr = conn.split(",")
       var dateObj = new Date(connArr[2])
