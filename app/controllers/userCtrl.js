@@ -72,7 +72,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       return $scope.userDict[parseInt(connArr[1])] + ': ' + connArr[2]
     })
     if (cdr.connections.length == 0) {
-      cdr.connections = 'N/A'
+      cdr.connections = 'None'
     }
     else {
       cdr.connections = cdr.connections.join(", ")
@@ -91,7 +91,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       return connArr[2]
     })
     if (cdr.disconnections.length == 0) {
-      cdr.disconnections = 'N/A'
+      cdr.disconnections = 'None'
     }
     else {
       cdr.disconnections = cdr.disconnections.join(", ")
@@ -110,7 +110,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       return $scope.userDict[parseInt(connArr[0])] + ": " + connArr[1]
     })
     if (cdr.streamCreations.length == 0) {
-      cdr.streamCreations = 'None'
+      cdr.streamCreations = 'N/A'
     }
     else {
       cdr.streamCreations = cdr.streamCreations.join(", ")
