@@ -28,8 +28,9 @@ label:active, {
 }
 
 @media (min-width: 1281px) {
-  .navbar-default {
+  .navbar-flex {
     width: 1140px;
+    margin: 0 auto;
   }
 }
 
@@ -205,13 +206,13 @@ ot-layout {
 .fadeout {
   opacity: 0;
   animation: fadeOut 5s;
-  -moz-animation: fadeOut 5s fowards; /*firefox*/ 
+  -moz-animation: fadeOut 5s fowards; /*firefox*/
   -webkit-animation: fadeOut 5s fowards; /*safari and chrome*/
   -o-animation: fadeOut 5s forwards; /*Opera */
   animation-fill-mode: fowards;
   /*animation-timing-function: step-end;*/
   animation-timing-function: cubic-bezier(0.95, 0.05, 0.795, 0.035)
-  
+
 }
 @keyframes fadeOut{
   0% {
