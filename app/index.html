@@ -16,7 +16,7 @@
   </head>
 
   <body ng-app="myApp">
-    <div id="wrapper">
+    <div id="wrapper container">
       <nav ng-controller="NavbarCtrl" class="navbar navbar-default">
           <!-- Brand and toggle get grouped for better mobile display -->
           <div class="navbar-flex">
@@ -25,8 +25,8 @@
               <a id='hippo-brand' class='navbar-brand page-scroll bold' href='/#/home'>hippo</a>
             </div>
             <ul ng-if="!isAuthenticated()" ng-controller="LoginCtrl" class="nav navbar-nav pull-right">
-              <li><button class="btn-standard btn-small btn-deep-blue" ng-click="authenticate('google')">Log In</a></li>
-              <li><button class="btn-standard btn-small btn-transparent" ng-click="authenticate('google')">Sign Up</a></li>
+              <li><button class="btn-standard btn-small btn-deep-blue" ng-click="authenticate('google')">Log In</button></li>
+              <li><button class="btn-standard btn-small btn-transparent" ng-click="authenticate('google')">Sign Up</button></li>
             </ul>
             <div ng-if="isAuthenticated() && currentUser.firstName" class="dropdown" style="position: relative;">
               <button ng-if="isAuthenticated()" class="btn-standard btn-small btn-transparent dropdown-toggle ng-cloak" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
