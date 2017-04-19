@@ -172,6 +172,11 @@ ot-layout {
   outline: none!important;
 }
 .session_name{
+ position: absolute;
+ padding: 15px!important;
+ left: -65px;
+ top: -28px;
+ z-index: 999998;
  color: #2e4057;
  font-size: 20px;
  font-family: 'Lato', sans-serif;
