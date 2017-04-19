@@ -16,15 +16,56 @@
         </div>
         <div id='profileContainer' class='col-md-6 col-sm-6'>
             <form id="user_form" class="form" name="userForm">
-            <label class='update-label' for='name' class='name'>First Name</label><br>
-            <input class='long-field' id='name-field' type='text' name='name' maxlength='100' placeholder="{{user.firstName}}" /><br>
-            <label class='update-label' for='name' class='name'>Last Name</label><br>
-            <input class='long-field' id='name-field' type='text' name='name' maxlength='100' placeholder="{{user.lastName}}" /><br>
-            <label class='update-label' for='email' class='email'>Email</label><br>
-            <input class='long-field' id='email-field' type='text' name='email' placeholder='{{user.email}}' /><br/><br/>
-            <!-- <input class="btn submit-update pull-right" type="submit" name="submit" value="Save"> -->
+                <label class='update-label' for='name' class='name'>First Name</label><br>
+                <input class='long-field' id='name-field' type='text' name='name' maxlength='100' placeholder="{{user.firstName}}" /><br>
+                <label class='update-label' for='name' class='name'>Last Name</label><br>
+                <input class='long-field' id='name-field' type='text' name='name' maxlength='100' placeholder="{{user.lastName}}" /><br>
+                <label class='update-label' for='email' class='email'>Email</label><br>
+                <input class='long-field' id='email-field' type='text' name='email' placeholder='{{user.email}}' /><br/><br/>
+                <!-- <input class="btn submit-update pull-right" type="submit" name="submit" value="Save"> -->
             </form>
         </div>
         <div class='col-md-3 col-sm-3'></div>
+    </div>
+    <br/>
+    <hr/>
+    <br/>
+    <div class="row">
+        <div class='col-md-12 col-sm-12'>
+            <h1 class="header">Call History Record</h1>
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th><h5>Session Name</h5></th>
+                    <th><h5>Creation Time</h5></th>
+                    <th><h5>Destroy Time</h5></th>
+                    <th><h5>Call Duration</h5></th>
+                    <th><h5>Connections</h5></th>
+                    <th><h5>Disconnections</h5></th>
+                    <th><h5>Stream Creations</h5></th>
+                    <th><h5>Frame Rates</h5></th>
+                    <th><h5>Audio Use Avaliable</h5></th>
+                    <th><h5>Video Use Avaliable</h5></th>
+                    <th><h5>Video Types</h5></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="cdr in cdrs | orderBy:'cdr.creationTime'">
+                  <!-- check active data -->
+                    <td>{{cdr.sessionName}}</td>
+                    <td>{{cdr.creationTime | date:'MMMM dd HH:mm'}}</td>
+                    <td>{{cdr.destroyTime | date:'MMMM dd HH:mm'}}</td>
+                    <td>{{cdr.callDuration}}</td>
+                    <td>{{cdr.connections}}</td>
+                    <td>{{cdr.disconnections}}</td>
+                    <td>{{cdr.streamCreations}}</td>
+                    <td>{{cdr.frameRates}}</td>
+                    <td>{{cdr.hasAudios}}</td>
+                    <td>{{cdr.hasVideos}}</td>
+                    <td>{{cdr.videoTypes}}</td>
+                  </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
