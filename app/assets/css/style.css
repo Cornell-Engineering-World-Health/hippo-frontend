@@ -73,7 +73,7 @@ label:active, {
   z-index: 1000;
   position: absolute;
   padding: 15px!important;
-  left: 0;
+  left: -65px;
   top: 15px;
 }
 
