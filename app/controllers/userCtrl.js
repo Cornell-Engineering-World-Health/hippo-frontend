@@ -59,6 +59,11 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     var monthNames = ["January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"
     ]
+
+    var date = new Date(null)
+    date.setSeconds(parseInt(cdr.callDuration)/1000.0)
+    cdr.callDuration = date.toISOString().substr(11, 8)
+
     cdr.connections = cdr.connections.map(function (conn) {
       connArr = conn.split(",")
       var dateObj = new Date(connArr[2])
@@ -72,7 +77,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       return $scope.userDict[parseInt(connArr[1])] + ': ' + connArr[2]
     })
     if (cdr.connections.length == 0) {
-      cdr.connections = 'N/A'
+      cdr.connections = 'Noneuserna'
     }
     else {
       cdr.connections = cdr.connections.join(", ")
@@ -91,7 +96,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       return connArr[2]
     })
     if (cdr.disconnections.length == 0) {
-      cdr.disconnections = 'N/A'
+      cdr.disconnections = 'None'
     }
     else {
       cdr.disconnections = cdr.disconnections.join(", ")
@@ -110,7 +115,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       return $scope.userDict[parseInt(connArr[0])] + ": " + connArr[1]
     })
     if (cdr.streamCreations.length == 0) {
-      cdr.streamCreations = 'None'
+      cdr.streamCreations = 'N/A'
     }
     else {
       cdr.streamCreations = cdr.streamCreations.join(", ")
