@@ -171,7 +171,17 @@ ot-layout {
 .callBtn:hover, .callBtn:active {
   outline: none!important;
 }
-
+.session_name{
+ position: absolute;
+ padding: 15px!important;
+ left: -65px;
+ top: -28px;
+ z-index: 999998;
+ color: #2e4057;
+ font-size: 20px;
+ font-family: 'Lato', sans-serif;
+ font-weight: 600;	
+}
 .alert-container {
   position: absolute;
 /*  left: 0;*/
@@ -195,7 +205,7 @@ ot-layout {
   /*background-color: #fcf8e3;
   border: 1px solid #fbeed5;*/
   background-color:#7795f8;
-  border: 1px solid #2e4057;
+  /*border: 1px solid #2e4057;*/
   color: white;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
