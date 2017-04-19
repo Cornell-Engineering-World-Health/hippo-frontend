@@ -12,6 +12,14 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
+  function makeUserDict(allUsers) {
+    dict = {}
+    for (var i = allUsers.length - 1; i >= 0; i--) {
+      dict[allUsers[i].userId] = allUsers[i].firstName + ' ' + allUsers[i].lastName
+    }
+    return dict
+  }
+
   function checkActiveSession(session) {
     var d = new Date()
     return session.endTime > d.toISOString() || session.active
@@ -44,7 +52,6 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     //   console.log(res)
     //   return res
     // })
-    console.log(promises)
     return $q.all([promises])
   }
 
@@ -54,7 +61,6 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     ]
     cdr.connections = cdr.connections.map(function (conn) {
       connArr = conn.split(",")
-      console.log(connArr[2])
       var dateObj = new Date(connArr[2])
       var month = dateObj.getUTCMonth() + 1
       var day = dateObj.getUTCDate()
@@ -63,7 +69,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       var minutes = dateObj.getUTCMinutes()
       var seconds = dateObj.getUTCSeconds()
       connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
-      return connArr[2]
+      return $scope.userDict[parseInt(connArr[1])] + ': ' + connArr[2]
     })
     if (cdr.connections.length == 0) {
       cdr.connections = 'N/A'
@@ -74,7 +80,6 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
 
     cdr.disconnections = cdr.disconnections.map(function (conn) {
       connArr = conn.split(",")
-      console.log(connArr[2])
       var dateObj = new Date(connArr[2])
       var month = dateObj.getUTCMonth() + 1
       var day = dateObj.getUTCDate()
@@ -94,7 +99,6 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
 
     cdr.streamCreations = cdr.streamCreations.map(function (conn) {
       connArr = conn.split(",")
-      console.log(connArr[1])
       var dateObj = new Date(connArr[1])
       var month = dateObj.getUTCMonth() + 1
       var day = dateObj.getUTCDate()
@@ -103,7 +107,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       var minutes = dateObj.getUTCMinutes()
       var seconds = dateObj.getUTCSeconds()
       connArr[1] = monthNames[month] + " " + day + " " + hours + ":" + minutes
-      return connArr[0] + ": " + connArr[1]
+      return $scope.userDict[parseInt(connArr[0])] + ": " + connArr[1]
     })
     if (cdr.streamCreations.length == 0) {
       cdr.streamCreations = 'None'
@@ -122,7 +126,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       var minutes = dateObj.getUTCMinutes()
       var seconds = dateObj.getUTCSeconds()
       connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
-      return connArr[0] + ": " + connArr[1] + " at " + connArr[2]
+      return $scope.userDict[parseInt(connArr[0])] + ": " + connArr[1] + " at " + connArr[2]
     })
     if (cdr.frameRates.length == 0) {
       cdr.frameRates = 'N/A'
@@ -141,15 +145,13 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       var minutes = dateObj.getUTCMinutes()
       var seconds = dateObj.getUTCSeconds()
       connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
-      console.log(connArr[1])
-      console.log(connArr[1].includes('true'))
       if (connArr[1].includes('true')) {
         connArr[1] = 'Yes'
       }
       else {
         connArr[1] = 'No'
       }
-      return connArr[0] + ": " + connArr[1] + " at " + connArr[2]
+      return $scope.userDict[parseInt(connArr[0])] + ": " + connArr[1] + " at " + connArr[2]
     })
     if (cdr.hasAudios.length == 0) {
       cdr.hasAudios = 'N/A'
@@ -168,15 +170,13 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       var minutes = dateObj.getUTCMinutes()
       var seconds = dateObj.getUTCSeconds()
       connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
-      console.log(connArr[1])
-      console.log(connArr[1].includes('true'))
       if (connArr[1].includes('true')) {
         connArr[1] = 'Yes'
       }
       else {
         connArr[1] = 'No'
       }
-      return connArr[0] + ": " + connArr[1] + " at " + connArr[2]
+      return $scope.userDict[parseInt(connArr[0])] + ": " + connArr[1] + " at " + connArr[2]
     })
     if (cdr.hasVideos.length == 0) {
       cdr.hasVideos = 'N/A'
@@ -196,7 +196,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       var seconds = dateObj.getUTCSeconds()
       connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
       connArr[1] = capitalizeFirstLetter(connArr[1].trim())
-      return connArr[0] + ": " + connArr[1] + " at " + connArr[2]
+      return $scope.userDict[parseInt(connArr[0])] + ": " + connArr[1] + " at " + connArr[2]
     })
     if (cdr.videoTypes.length == 0) {
       cdr.videoTypes = 'N/A'
@@ -234,6 +234,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     User.getAllUsers()
     .then(function (response) {
       $scope.allUsers = response.data.users
+      $scope.userDict = makeUserDict($scope.allUsers)
       $scope.allUsers = $scope.allUsers.filter(checkSelf)
 
     })
@@ -258,7 +259,6 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       // console.log(userDict)
       $scope.cdrs.map(parseConnections)
       $scope.cdrs.map(parseConnections)
-      console.log($scope.cdrs)
     })
     .catch(function (error) {
       console.log(error)
