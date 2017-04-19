@@ -23,7 +23,7 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
     $scope.apiKey = data.apiKey;
   });
 
-  $scope.getUser = function() {
+  $scope.getSelf = function() {
     User.getSelf()
         .then(function (response) {
           $scope.userId = response.data.userId
@@ -329,5 +329,5 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
     })
   }
 
-  $scope.getUser()
+  $scope.getSelf()
 }])
