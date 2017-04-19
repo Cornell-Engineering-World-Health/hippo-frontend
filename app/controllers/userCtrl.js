@@ -82,7 +82,6 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     else {
       cdr.connections = cdr.connections.join(", ")
     }
-    console.log(cdr.disconnections)
     cdr.disconnections = cdr.disconnections.map(function (conn) {
       connArr = conn.split(",")
       var dateObj = new Date(connArr[2])
