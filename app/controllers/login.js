@@ -19,7 +19,7 @@ angular.module('myApp')
     $scope.authenticate = function(provider) {
       $auth.authenticate(provider)
         .then(function() {
-          User.getUser()
+          User.getSelf()
           .then(function (response) {
             $window.localStorage.currentUser = JSON.stringify(response.data)
             $rootScope.currentUser = response.data

@@ -24,7 +24,7 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
   });
 
   $scope.getUser = function() {
-    User.getUser()
+    User.getSelf()
         .then(function (response) {
           $scope.userId = response.data.userId
         })
