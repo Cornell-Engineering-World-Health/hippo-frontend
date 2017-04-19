@@ -52,7 +52,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     //   console.log(res)
     //   return res
     // })
-    return $q.all([promises])
+    return $q.all(promises)
   }
 
   function parseConnections(cdr) {
@@ -63,6 +63,15 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     var date = new Date(null)
     date.setSeconds(parseInt(cdr.callDuration)/1000.0)
     cdr.callDuration = date.toISOString().substr(11, 8)
+
+    cdr.userIds = cdr.userIds.map(function (_id) {
+      return $scope.userDict[parseInt(_id)]
+    })
+
+    cdr.userIds = cdr.userIds.filter(function (name) {
+      return name.trim() != $scope.user.firstName + ' ' + $scope.user.lastName
+    })
+    cdr.userIds = cdr.userIds.join(', ')
 
     cdr.connections = cdr.connections.map(function (conn) {
       connArr = conn.split(",")
@@ -77,7 +86,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       return $scope.userDict[parseInt(connArr[1])] + ': ' + connArr[2]
     })
     if (cdr.connections.length == 0) {
-      cdr.connections = 'Noneuserna'
+      cdr.connections = 'None'
     }
     else {
       cdr.connections = cdr.connections.join(", ")

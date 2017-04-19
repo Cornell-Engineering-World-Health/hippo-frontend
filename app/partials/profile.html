@@ -37,6 +37,7 @@
                 <thead>
                   <tr>
                     <th><h5>Session Name</h5></th>
+                    <th><h5>Participants</h5></th>
                     <th><h5>Creation Time</h5></th>
                     <th><h5>Destroy Time</h5></th>
                     <th><h5>Call Duration (HH:MM:SS)</h5></th>
@@ -53,6 +54,7 @@
                   <tr ng-repeat="cdr in cdrs | orderBy:'cdr.creationTime'">
                   <!-- check active data -->
                     <td>{{cdr.sessionName}}</td>
+                    <td>{{cdr.userIds}}</td>
                     <td>{{cdr.creationTime | date:'MMMM dd HH:mm'}}</td>
                     <td>{{cdr.destroyTime | date:'MMMM dd HH:mm'}}</td>
                     <td>{{cdr.callDuration}}</td>
