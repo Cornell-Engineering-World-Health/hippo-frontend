@@ -106,7 +106,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       return connArr[0] + ": " + connArr[1]
     })
     if (cdr.streamCreations.length == 0) {
-      cdr.streamCreations = 'N/A'
+      cdr.streamCreations = 'None'
     }
     else {
       cdr.streamCreations = cdr.streamCreations.join(", ")
