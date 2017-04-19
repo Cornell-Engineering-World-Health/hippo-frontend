@@ -82,7 +82,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     else {
       cdr.connections = cdr.connections.join(", ")
     }
-
+    console.log(cdr.disconnections)
     cdr.disconnections = cdr.disconnections.map(function (conn) {
       connArr = conn.split(",")
       var dateObj = new Date(connArr[2])
@@ -93,7 +93,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       var minutes = dateObj.getUTCMinutes()
       var seconds = dateObj.getUTCSeconds()
       connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
-      return connArr[2]
+      return $scope.userDict[parseInt(connArr[0])] + ': ' + connArr[2]
     })
     if (cdr.disconnections.length == 0) {
       cdr.disconnections = 'None'
@@ -262,7 +262,6 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       //   userDict[val[$$state].value[0].data.userId] = val[$$state].value[0].data.firstName + ' ' + val.$$state.value[0].data.lastName
       // }
       // console.log(userDict)
-      $scope.cdrs.map(parseConnections)
       $scope.cdrs.map(parseConnections)
     })
     .catch(function (error) {
