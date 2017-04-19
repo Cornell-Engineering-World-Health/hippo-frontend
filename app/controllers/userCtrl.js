@@ -72,7 +72,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
       return $scope.userDict[parseInt(connArr[1])] + ': ' + connArr[2]
     })
     if (cdr.connections.length == 0) {
-      cdr.connections = 'N/A'
+      cdr.connections = 'None'
     }
     else {
       cdr.connections = cdr.connections.join(", ")
