@@ -22,7 +22,23 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
 
   function checkActiveSession(session) {
     var d = new Date()
-    return session.endTime > d.toISOString() || session.active
+    if(session.endTime > d.toISOString() || session.active){
+      return true
+    } else {
+	  console.log(session)
+	  console.log("A session you were in expired at " + session.endTime)
+	  
+	  var test = session.participants
+	  test = test.map(function(user) {
+		return user.firstName + " " + user.lastName
+	  })
+	  test = test.filter(function(user) {
+		return user != $scope.user.firstName + ' ' + $scope.user.lastName
+	  })
+      $scope.notifications.push("You missed the session " + session.name + " with " + test.join(', '))
+	  console.log($scope.notifications)
+      return false
+    }
   }
 
   function checkSelf(user) {

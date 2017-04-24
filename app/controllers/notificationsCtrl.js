@@ -1,5 +1,5 @@
 app.controller('NotificationsCtrl', ['$scope', '$log', 'SocketService', function ($scope, $log, SocketService) {
-  $scope.notifications = ['You are the first to join the session!']
+  $scope.notifications = ['You have successfully joined the room!'];
   // console.log($scope.notifications)
   SocketService.on('user-has-connected', function (data) {
     console.log("joiner is " + data.joiner)
@@ -15,8 +15,8 @@ app.controller('NotificationsCtrl', ['$scope', '$log', 'SocketService', function
   })
   SocketService.on('confirmation', function (data) {
     // console.log(data.msg)
-    $scope.notifications.push('confirmation has been recieved')
-    $scope.$apply()
+    //$scope.notifications.push('confirmation has been recieved')
+    //$scope.$apply()
    // $scope.notifications = []
   })
   
