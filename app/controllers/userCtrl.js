@@ -35,7 +35,8 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
 	  test = test.filter(function(user) {
 		return user != $scope.user.firstName + ' ' + $scope.user.lastName
 	  })
-      $scope.notifications.push("You missed the session " + session.name + " with " + test.join(', '))
+	  // TODO: Throwing error as $scope.notifications is undefined
+      // $scope.notifications.push("You missed the session " + session.name + " with " + test.join(', '))
 	  console.log($scope.notifications)
       return false
     }
