@@ -7,6 +7,8 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     startTime: "null",
     endTime: "null"
   }
+  
+  $scope.notifications = []
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
