@@ -75,13 +75,14 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
 
     cdr.connections = cdr.connections.map(function (conn) {
       connArr = conn.split(",")
+      console.log("date: ", connArr[2])
       var dateObj = new Date(connArr[2])
-      var month = dateObj.getUTCMonth() + 1
-      var day = dateObj.getUTCDate()
-      var year = dateObj.getUTCFullYear()
-      var hours = dateObj.getUTCHours()
-      var minutes = dateObj.getUTCMinutes()
-      var seconds = dateObj.getUTCSeconds()
+      var month = dateObj.getMonth() + 1
+      var day = dateObj.getDate()
+      var year = dateObj.getFullYear()
+      var hours = dateObj.getHours()
+      var minutes = dateObj.getMinutes()
+      var seconds = dateObj.getSeconds()
       connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
       return $scope.userDict[parseInt(connArr[1])] + ': ' + connArr[2]
     })
@@ -94,12 +95,12 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     cdr.disconnections = cdr.disconnections.map(function (conn) {
       connArr = conn.split(",")
       var dateObj = new Date(connArr[2])
-      var month = dateObj.getUTCMonth() + 1
-      var day = dateObj.getUTCDate()
-      var year = dateObj.getUTCFullYear()
-      var hours = dateObj.getUTCHours()
-      var minutes = dateObj.getUTCMinutes()
-      var seconds = dateObj.getUTCSeconds()
+      var month = dateObj.getMonth() + 1
+      var day = dateObj.getDate()
+      var year = dateObj.getFullYear()
+      var hours = dateObj.getHours()
+      var minutes = dateObj.getMinutes()
+      var seconds = dateObj.getSeconds()
       connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
       return $scope.userDict[parseInt(connArr[0])] + ': ' + connArr[2]
     })
@@ -113,12 +114,12 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     cdr.streamCreations = cdr.streamCreations.map(function (conn) {
       connArr = conn.split(",")
       var dateObj = new Date(connArr[1])
-      var month = dateObj.getUTCMonth() + 1
-      var day = dateObj.getUTCDate()
-      var year = dateObj.getUTCFullYear()
-      var hours = dateObj.getUTCHours()
-      var minutes = dateObj.getUTCMinutes()
-      var seconds = dateObj.getUTCSeconds()
+      var month = dateObj.getMonth() + 1
+      var day = dateObj.getDate()
+      var year = dateObj.getFullYear()
+      var hours = dateObj.getHours()
+      var minutes = dateObj.getMinutes()
+      var seconds = dateObj.getSeconds()
       connArr[1] = monthNames[month] + " " + day + " " + hours + ":" + minutes
       return $scope.userDict[parseInt(connArr[0])] + ": " + connArr[1]
     })
@@ -132,12 +133,12 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     cdr.frameRates = cdr.frameRates.map(function (conn) {
       connArr = conn.split(",")
       var dateObj = new Date(connArr[2])
-      var month = dateObj.getUTCMonth() + 1
-      var day = dateObj.getUTCDate()
-      var year = dateObj.getUTCFullYear()
-      var hours = dateObj.getUTCHours()
-      var minutes = dateObj.getUTCMinutes()
-      var seconds = dateObj.getUTCSeconds()
+      var month = dateObj.getMonth() + 1
+      var day = dateObj.getDate()
+      var year = dateObj.getFullYear()
+      var hours = dateObj.getHours()
+      var minutes = dateObj.getMinutes()
+      var seconds = dateObj.getSeconds()
       connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
       return $scope.userDict[parseInt(connArr[0])] + ": " + connArr[1] + " at " + connArr[2]
     })
@@ -151,12 +152,12 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     cdr.hasAudios = cdr.hasAudios.map(function (conn) {
       connArr = conn.split(",")
       var dateObj = new Date(connArr[2])
-      var month = dateObj.getUTCMonth() + 1
-      var day = dateObj.getUTCDate()
-      var year = dateObj.getUTCFullYear()
-      var hours = dateObj.getUTCHours()
-      var minutes = dateObj.getUTCMinutes()
-      var seconds = dateObj.getUTCSeconds()
+      var month = dateObj.getMonth() + 1
+      var day = dateObj.getDate()
+      var year = dateObj.getFullYear()
+      var hours = dateObj.getHours()
+      var minutes = dateObj.getMinutes()
+      var seconds = dateObj.getSeconds()
       connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
       if (connArr[1].includes('true')) {
         connArr[1] = 'Yes'
@@ -176,12 +177,12 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     cdr.hasVideos = cdr.hasVideos.map(function (conn) {
       connArr = conn.split(",")
       var dateObj = new Date(connArr[2])
-      var month = dateObj.getUTCMonth() + 1
-      var day = dateObj.getUTCDate()
-      var year = dateObj.getUTCFullYear()
-      var hours = dateObj.getUTCHours()
-      var minutes = dateObj.getUTCMinutes()
-      var seconds = dateObj.getUTCSeconds()
+      var month = dateObj.getMonth() + 1
+      var day = dateObj.getDate()
+      var year = dateObj.getFullYear()
+      var hours = dateObj.getHours()
+      var minutes = dateObj.getMinutes()
+      var seconds = dateObj.getSeconds()
       connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
       if (connArr[1].includes('true')) {
         connArr[1] = 'Yes'
@@ -201,12 +202,12 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     cdr.videoTypes = cdr.videoTypes.map(function (conn) {
       connArr = conn.split(",")
       var dateObj = new Date(connArr[2])
-      var month = dateObj.getUTCMonth() + 1
-      var day = dateObj.getUTCDate()
-      var year = dateObj.getUTCFullYear()
-      var hours = dateObj.getUTCHours()
-      var minutes = dateObj.getUTCMinutes()
-      var seconds = dateObj.getUTCSeconds()
+      var month = dateObj.getMonth() + 1
+      var day = dateObj.getDate()
+      var year = dateObj.getFullYear()
+      var hours = dateObj.getHours()
+      var minutes = dateObj.getMinutes()
+      var seconds = dateObj.getSeconds()
       connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
       connArr[1] = capitalizeFirstLetter(connArr[1].trim())
       return $scope.userDict[parseInt(connArr[0])] + ": " + connArr[1] + " at " + connArr[2]
