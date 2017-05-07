@@ -1,10 +1,12 @@
+/* Service for making http requests to the restAPI related to video sessions*/
 app.factory('VideoService', ['$http', 'UserService', function($http, UserService) {
   var baseURL = UserService.baseUrlAPI
   var service = {
+    /* creates a session with the given user */
     createSession: function(sessionData) {
       return $http.post(baseURL + '/videos', sessionData)
     },
-    // TODO: BELOW NEEDS UPDATE
+    /* Returns information about a session with the given sesion_name including a new token for joining that session*/
     getNewToken: function(session_name) {
       return $http.get(baseURL+ '/videos/' + session_name)
         .then(function (response) {
@@ -14,7 +16,7 @@ app.factory('VideoService', ['$http', 'UserService', function($http, UserService
           console.error('Failed to get token. Error: ' + error.data);
         })
     },
-    // TODO: why are we not using session_name.
+    /* Deletes the session with given session_name*/
     deleteSession: function(session_name) {
       return $http.delete(baseURL+ '/videos/' + session_name)
         .then( function (response){
