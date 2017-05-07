@@ -1,3 +1,6 @@
+/*
+ * Controller responsible for user functionality.
+ */
 app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$timeout', 'User', 'UserService', 'VideoService', 'UserVideoService',
   function ($scope, $log, $http, $q, $location, $timeout, User, UserService, VideoService, UserVideoService) {
 
@@ -7,7 +10,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     startTime: "null",
     endTime: "null"
   }
-  
+
   $scope.notifications = []
 
   function capitalizeFirstLetter(string) {
@@ -27,9 +30,8 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     if(session.endTime > d.toISOString() || session.active){
       return true
     } else {
-	  console.log(session)
 	  console.log("A session you were in expired at " + session.endTime)
-	  
+
 	  var test = session.participants
 	  test = test.map(function(user) {
 		return user.firstName + " " + user.lastName
@@ -37,9 +39,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
 	  test = test.filter(function(user) {
 		return user != $scope.user.firstName + ' ' + $scope.user.lastName
 	  })
-	  // TODO: Throwing error as $scope.notifications is undefined
       $scope.notifications.push("You missed the session " + session.name + " with " + test.join(', '))
-	  console.log($scope.notifications)
       return false
     }
   }
@@ -63,21 +63,28 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     var promises = cdr.userIds.map(function (userId) {
         return User.getUser(userId)
           .then(function (response) {
-            // console.log(response)
             return response
           })
       })
-    // $q.all(promises).then(function (res) {
-    //   console.log(res)
-    //   return res
-    // })
     return $q.all(promises)
   }
 
-  function parseConnections(cdr) {
+  function parseTimes(connArr, ind) {
     var monthNames = ["January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"
     ]
+    var dateObj = new Date(connArr[ind])
+    var month = dateObj.getMonth() + 1
+    var day = dateObj.getDate()
+    var year = dateObj.getFullYear()
+    var hours = dateObj.getHours()
+    var minutes = dateObj.getMinutes()
+    var seconds = dateObj.getSeconds()
+    return monthNames[month] + " " + day + " " + hours + ":" + minutes
+  }
+
+  // Data parsing to display CDR records.
+  function parseConnections(cdr) {
 
     var date = new Date(null)
     date.setSeconds(parseInt(cdr.callDuration)/1000.0)
@@ -94,14 +101,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
 
     cdr.connections = cdr.connections.map(function (conn) {
       connArr = conn.split(",")
-      var dateObj = new Date(connArr[2])
-      var month = dateObj.getMonth() + 1
-      var day = dateObj.getDate()
-      var year = dateObj.getFullYear()
-      var hours = dateObj.getHours()
-      var minutes = dateObj.getMinutes()
-      var seconds = dateObj.getSeconds()
-      connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
+      connArr[2] = parseTimes(connArr, 2)
       return $scope.userDict[parseInt(connArr[1])] + ': ' + connArr[2]
     })
     if (cdr.connections.length == 0) {
@@ -112,14 +112,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     }
     cdr.disconnections = cdr.disconnections.map(function (conn) {
       connArr = conn.split(",")
-      var dateObj = new Date(connArr[2])
-      var month = dateObj.getMonth() + 1
-      var day = dateObj.getDate()
-      var year = dateObj.getFullYear()
-      var hours = dateObj.getHours()
-      var minutes = dateObj.getMinutes()
-      var seconds = dateObj.getSeconds()
-      connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
+      connArr[2] = parseTimes(connArr, 2)
       return $scope.userDict[parseInt(connArr[0])] + ': ' + connArr[2]
     })
     if (cdr.disconnections.length == 0) {
@@ -131,14 +124,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
 
     cdr.streamCreations = cdr.streamCreations.map(function (conn) {
       connArr = conn.split(",")
-      var dateObj = new Date(connArr[1])
-      var month = dateObj.getMonth() + 1
-      var day = dateObj.getDate()
-      var year = dateObj.getFullYear()
-      var hours = dateObj.getHours()
-      var minutes = dateObj.getMinutes()
-      var seconds = dateObj.getSeconds()
-      connArr[1] = monthNames[month] + " " + day + " " + hours + ":" + minutes
+      connArr[1] = parseTimes(connArr, 1)
       return $scope.userDict[parseInt(connArr[0])] + ": " + connArr[1]
     })
     if (cdr.streamCreations.length == 0) {
@@ -150,14 +136,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
 
     cdr.frameRates = cdr.frameRates.map(function (conn) {
       connArr = conn.split(",")
-      var dateObj = new Date(connArr[2])
-      var month = dateObj.getMonth() + 1
-      var day = dateObj.getDate()
-      var year = dateObj.getFullYear()
-      var hours = dateObj.getHours()
-      var minutes = dateObj.getMinutes()
-      var seconds = dateObj.getSeconds()
-      connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
+      connArr[2] = parseTimes(connArr, 2)
       return $scope.userDict[parseInt(connArr[0])] + ": " + connArr[1] + " at " + connArr[2]
     })
     if (cdr.frameRates.length == 0) {
@@ -169,14 +148,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
 
     cdr.hasAudios = cdr.hasAudios.map(function (conn) {
       connArr = conn.split(",")
-      var dateObj = new Date(connArr[2])
-      var month = dateObj.getMonth() + 1
-      var day = dateObj.getDate()
-      var year = dateObj.getFullYear()
-      var hours = dateObj.getHours()
-      var minutes = dateObj.getMinutes()
-      var seconds = dateObj.getSeconds()
-      connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
+      connArr[2] = parseTimes(connArr, 2)
       if (connArr[1].includes('true')) {
         connArr[1] = 'Yes'
       }
@@ -194,14 +166,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
 
     cdr.hasVideos = cdr.hasVideos.map(function (conn) {
       connArr = conn.split(",")
-      var dateObj = new Date(connArr[2])
-      var month = dateObj.getMonth() + 1
-      var day = dateObj.getDate()
-      var year = dateObj.getFullYear()
-      var hours = dateObj.getHours()
-      var minutes = dateObj.getMinutes()
-      var seconds = dateObj.getSeconds()
-      connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
+      connArr[2] = parseTimes(connArr, 2)
       if (connArr[1].includes('true')) {
         connArr[1] = 'Yes'
       }
@@ -219,14 +184,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
 
     cdr.videoTypes = cdr.videoTypes.map(function (conn) {
       connArr = conn.split(",")
-      var dateObj = new Date(connArr[2])
-      var month = dateObj.getMonth() + 1
-      var day = dateObj.getDate()
-      var year = dateObj.getFullYear()
-      var hours = dateObj.getHours()
-      var minutes = dateObj.getMinutes()
-      var seconds = dateObj.getSeconds()
-      connArr[2] = monthNames[month] + " " + day + " " + hours + ":" + minutes
+      connArr[2] = parseTimes(connArr, 2)
       connArr[1] = capitalizeFirstLetter(connArr[1].trim())
       return $scope.userDict[parseInt(connArr[0])] + ": " + connArr[1] + " at " + connArr[2]
     })
@@ -244,7 +202,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
   }
 
 
-  // Returns user information for the User profile
+  // Gets user information for the User profile
   $scope.getSelf = function() {
     User.getSelf()
         .then(function (response) {
@@ -262,6 +220,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
         })
   }
 
+  // Gets all users in database
   $scope.getAllUsers = function() {
     User.getAllUsers()
     .then(function (response) {
@@ -276,19 +235,12 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     })
   }
 
+  // Gets CDR record for logged in user
   $scope.getCDR = function() {
     User.getCDR($scope.user.userId)
     .then(function (response) {
       $scope.cdrs = response.data
       var deferreds = $scope.cdrs.map(parseUsers)
-      // console.log(deferreds)
-      // var userDict = {}
-      // for (var i = 0; i < deferreds.length; i++) {
-      //   var data = deferreds[i].$$state.value
-      //   console.log(data)
-      //   userDict[val[$$state].value[0].data.userId] = val[$$state].value[0].data.firstName + ' ' + val.$$state.value[0].data.lastName
-      // }
-      // console.log(userDict)
       $scope.cdrs.map(parseConnections)
     })
     .catch(function (error) {
@@ -297,6 +249,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     })
   }
 
+  // Create OpenTok Session when session is scheduled
   $scope.createSession = function() {
     $scope.session.invitedUserIds = $scope.session.invitedUserIds.map(Number);
     $scope.session.startTime = $scope.session.startTime._d
@@ -314,5 +267,4 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     })
   }
   $scope.getSelf()
-  // $scope.getCDR()
 }])
