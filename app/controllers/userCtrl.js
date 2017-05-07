@@ -1,4 +1,4 @@
-app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$timeout', 'User', 'UserService', 'VideoService', 'UserVideoService',
+app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$timeout', 'User', 'UserService', 'VideoService',
   function ($scope, $log, $http, $q, $location, $timeout, User, UserService, VideoService, UserVideoService) {
 
   var baseURL = UserService.baseUrlAPI
