@@ -1,5 +1,5 @@
 app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$timeout', 'User', 'UserService', 'VideoService',
-  function ($scope, $log, $http, $q, $location, $timeout, User, UserService, VideoService, UserVideoService) {
+  function ($scope, $log, $http, $q, $location, $timeout, User, UserService, VideoService) {
 
   var baseURL = UserService.baseUrlAPI
   $scope.session = {
