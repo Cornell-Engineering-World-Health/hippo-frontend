@@ -1,8 +1,8 @@
 /*
  * Controller responsible for user functionality.
  */
-app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$timeout', 'User', 'UserService', 'VideoService', 'UserVideoService',
-  function ($scope, $log, $http, $q, $location, $timeout, User, UserService, VideoService, UserVideoService) {
+app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$timeout', 'User', 'UserService', 'VideoService',
+  function ($scope, $log, $http, $q, $location, $timeout, User, UserService, VideoService) {
 
   var baseURL = UserService.baseUrlAPI
   $scope.session = {
@@ -27,20 +27,20 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
 
   function checkActiveSession(session) {
     var d = new Date()
-    if(session.endTime > d.toISOString() || session.active){
+    if (session.endTime > d.toISOString() || session.active) {
       return true
-    } else {
-	  console.log("A session you were in expired at " + session.endTime)
-
-	  var test = session.participants
-	  test = test.map(function(user) {
-		return user.firstName + " " + user.lastName
-	  })
-	  test = test.filter(function(user) {
-		return user != $scope.user.firstName + ' ' + $scope.user.lastName
-	  })
-      $scope.notifications.push("You missed the session " + session.name + " with " + test.join(', '))
-      return false
+    }
+    else {
+  	  console.log("A session you were in expired at " + session.endTime)
+  	  var test = session.participants
+  	  test = test.map(function(user) {
+  		return user.firstName + " " + user.lastName
+  	  })
+  	  test = test.filter(function(user) {
+  		return user != $scope.user.firstName + ' ' + $scope.user.lastName
+  	  })
+        $scope.notifications.push("You missed the session " + session.name + " with " + test.join(', '))
+        return false
     }
   }
 
@@ -197,11 +197,6 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
 
   }
 
-  $scope.setSessionName = function(session_name) {
-    UserVideoService.set(session_name)
-  }
-
-
   // Gets user information for the User profile
   $scope.getSelf = function() {
     User.getSelf()
@@ -209,7 +204,6 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
           $scope.user = response.data
           $scope.userSessions = response.data.calls
           $scope.userSessions = $scope.userSessions.filter(checkActiveSession)
-          // console.log($scope.user)
           $scope.userSessions.map(parseParticipants)
           $scope.getAllUsers()
           $scope.getCDR()

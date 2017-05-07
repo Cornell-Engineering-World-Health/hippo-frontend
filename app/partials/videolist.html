@@ -1,6 +1,6 @@
-<class = "alert-container">
+<div class = "alert-container">
   <div ng-repeat ="notification in notifications">
-    <div class = "alert alert-info alert-dismissible fadeout" role ="alert"><button type ="button" class = "close" data-dismiss= "alert" aria-label="Close"><span class = aria-hidden ="true">&times;</span></button>{{notification}}</div>
+    <div class = "alert alert-warning alert-dismissible fadeout alert-video-list" role ="alert"><button type ="button" class = "close" data-dismiss= "alert" aria-label="Close"><span class = aria-hidden ="true">&times;</span></button>{{notification}}</div>
   </div>
 </div>
 <div class="container spaced">
@@ -25,7 +25,7 @@
             <td>{{session.endTime | date:'MMMM dd HH:mm'}}</td>
             <td>{{session.participants}}</td>
             <td>{{session.name}}</td>
-            <td><a class="btn-standard btn-deep-blue btn-small" ng-click="setSessionName(session.name)" ui-sref="video({session_name: session.name})">Join Call</a></td>
+            <td><a class="btn-standard btn-deep-blue btn-small" ui-sref="video({session_name: session.name})">Join Call</a></td>
           </tr>
         </tbody>
       </table>

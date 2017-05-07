@@ -1,3 +1,6 @@
+/*
+* User is a factory that modularizes all calls related to retrieving a user's information.
+*/
 angular.module('myApp')
   .factory('User', ['$http', '$q', '$timeout', 'UserService', function($http, $q, $timeout, UserService) {
     var selfUrl = UserService.baseUrlAPI + '/self'
@@ -24,7 +27,6 @@ angular.module('myApp')
             deferred.reject(error)
         })
         return deferred.promise
-        // return $http.get(userUrl + _id)
       }
     }
   }])
