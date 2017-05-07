@@ -7,7 +7,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     startTime: "null",
     endTime: "null"
   }
-  
+
   $scope.notifications = []
 
   function capitalizeFirstLetter(string) {
@@ -24,18 +24,17 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
 
   function checkActiveSession(session) {
     var d = new Date()
-    if(session.endTime > d.toISOString() || session.active){
+    if (session.endTime > d.toISOString() || session.active) {
       return true
-    } else {
-	  console.log(session)
-	  console.log("A session you were in expired at " + session.endTime)
-	  
-	  var test = session.participants
-	  test = test.map(function(user) {
-		return user.firstName + " " + user.lastName
-	  })
-	  test = test.filter(function(user) {
-		return user != $scope.user.firstName + ' ' + $scope.user.lastName
+    }
+    else {
+  	  console.log("A session you were in expired at " + session.endTime)
+  	  var test = session.participants
+  	  test = test.map(function(user) {
+  		return user.firstName + " " + user.lastName
+  	  })
+  	  test = test.filter(function(user) {
+  		return user != $scope.user.firstName + ' ' + $scope.user.lastName
 	  })
 	  // TODO: Throwing error as $scope.notifications is undefined
       $scope.notifications.push("You missed the session " + session.name + " with " + test.join(', '))
@@ -239,11 +238,6 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
 
   }
 
-  $scope.setSessionName = function(session_name) {
-    UserVideoService.set(session_name)
-  }
-
-
   // Returns user information for the User profile
   $scope.getSelf = function() {
     User.getSelf()
@@ -251,7 +245,6 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
           $scope.user = response.data
           $scope.userSessions = response.data.calls
           $scope.userSessions = $scope.userSessions.filter(checkActiveSession)
-          // console.log($scope.user)
           $scope.userSessions.map(parseParticipants)
           $scope.getAllUsers()
           $scope.getCDR()

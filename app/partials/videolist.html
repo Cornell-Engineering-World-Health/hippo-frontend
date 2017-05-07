@@ -25,7 +25,7 @@
             <td>{{session.endTime | date:'MMMM dd HH:mm'}}</td>
             <td>{{session.participants}}</td>
             <td>{{session.name}}</td>
-            <td><a class="btn-standard btn-deep-blue btn-small" ng-click="setSessionName(session.name)" ui-sref="video({session_name: session.name})">Join Call</a></td>
+            <td><a class="btn-standard btn-deep-blue btn-small" ui-sref="video({session_name: session.name})">Join Call</a></td>
           </tr>
         </tbody>
       </table>
