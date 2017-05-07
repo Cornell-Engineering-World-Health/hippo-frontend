@@ -1,3 +1,6 @@
+/*
+ * Controller responsible for user functionality.
+ */
 app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$timeout', 'User', 'UserService', 'VideoService', 'UserVideoService',
   function ($scope, $log, $http, $q, $location, $timeout, User, UserService, VideoService, UserVideoService) {
 
@@ -80,6 +83,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     return monthNames[month] + " " + day + " " + hours + ":" + minutes
   }
 
+  // Data parsing to display CDR records.
   function parseConnections(cdr) {
 
     var date = new Date(null)
@@ -198,7 +202,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
   }
 
 
-  // Returns user information for the User profile
+  // Gets user information for the User profile
   $scope.getSelf = function() {
     User.getSelf()
         .then(function (response) {
@@ -216,6 +220,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
         })
   }
 
+  // Gets all users in database
   $scope.getAllUsers = function() {
     User.getAllUsers()
     .then(function (response) {
@@ -230,6 +235,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     })
   }
 
+  // Gets CDR record for logged in user
   $scope.getCDR = function() {
     User.getCDR($scope.user.userId)
     .then(function (response) {
@@ -243,6 +249,7 @@ app.controller('UserCtrl', ['$scope', '$log', '$http', '$q', '$location', '$time
     })
   }
 
+  // Create OpenTok Session when session is scheduled
   $scope.createSession = function() {
     $scope.session.invitedUserIds = $scope.session.invitedUserIds.map(Number);
     $scope.session.startTime = $scope.session.startTime._d

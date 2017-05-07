@@ -1,7 +1,7 @@
+/*
+ * Controller to login user.
+ */
 angular.module('myApp')
-  // .controller('LoginCtrl', ['$timeout',
-  //   function($scope, $location, $auth, $timeout) {
-  // Error with dependency; but dependency needed for minification
     .controller('LoginCtrl', ['$rootScope', '$scope', '$location', '$auth', '$timeout', '$window', 'User',
       function($rootScope, $scope, $location, $auth, $timeout, $window, User) {
     $scope.login = function() {
@@ -16,6 +16,7 @@ angular.module('myApp')
           console.log(error.data.message, error.status);
         })
     }
+    // Authentication using OAuth.
     $scope.authenticate = function(provider) {
       $auth.authenticate(provider)
         .then(function() {
@@ -23,7 +24,6 @@ angular.module('myApp')
           .then(function (response) {
             $window.localStorage.currentUser = JSON.stringify(response.data)
             $rootScope.currentUser = response.data
-            console.log(response.data)
             console.log('You have successfully signed in with ' + provider);
             $timeout(function() {
               $location.path('/user').replace()
