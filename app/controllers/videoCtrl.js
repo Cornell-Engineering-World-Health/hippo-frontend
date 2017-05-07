@@ -1,5 +1,10 @@
-app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log', 'OTSession', 'VideoService', 'UserVideoService', 'SocketService', 'UserService', 'User',
-  function ($scope, $stateParams, $http, $window, $log, OTSession, VideoService, UserVideoService, SocketService, UserService, User) {
+/*
+* Controller for all video interface functionalities from initialization to ending call.
+*/
+app.controller('VideoCtrl',['$scope', '$stateParams', '$http', '$window','$log', 
+  'OTSession', 'VideoService', 'UserVideoService', 'SocketService', 'UserService', 'User',
+  function ($scope, $stateParams, $http, $window, $log, OTSession, VideoService, 
+    UserVideoService, SocketService, UserService, User) {
 
   var baseURL = UserService.baseUrlAPI
 
@@ -14,15 +19,16 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
   $scope.leaving = false
   $scope.deleted = false
   $scope.connectionCount = 0
-  $scope.session_name = $stateParams.session_name
+  $scope.session_name = $stateParams.session_name // session_name passed from URL
 
-  //TODO determine if this is helpful
   SocketService.emit("enteringSession",{sessioName: $scope.session_name})
 
+  // Get project API key from config to initiate OpenTok session.
   $http.get('./config.json').success(function(data) {
     $scope.apiKey = data.apiKey;
   });
 
+  // Get userId from /self endpoint to send in all CDRs.
   $scope.getSelf = function() {
     User.getSelf()
         .then(function (response) {
@@ -34,10 +40,12 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
         })
   }
 
+  // Toggle video publishing. Called on click of toggle-video button.
   $scope.togglePublish = function() {
     $scope.publishing = !$scope.publishing;
   }
 
+  // Gets newly generated, unique token for this session.
   $scope.getToken = function () {
     return $http.get(baseURL+ '/videos/' + $scope.session_name)
       .then(function (response) {
@@ -48,79 +56,78 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
       })
   }
 
+  // Initialize OTSession object upon success of getToken().
   $scope.getToken()
     .then(function (result_token) {
-      console.log(result_token)
+
+      // Stop clients from connecting to session more than once.
       if ($scope.session) {
         console.log('You are already connected.')
         $scope.session.disconnect()
         return;
       }
 
-      OTSession.init($scope.apiKey, result_token.sessionId, result_token.tokenId, function(err, session) {
+      // Initialize OTSession.
+      OTSession.init($scope.apiKey, result_token.sessionId, result_token.tokenId,
+        function(err, session) {
         if(err) {
-          //console.log('sessionId: ' + result_token.sessionId + ' tokenId: ' + result_token.tokenId)
-          $scope.$broadcast('otError', {message: 'initialize session error'})
+          $scope.$broadcast('otError', {message: 'Initialize session error.'})
           return
         }
 
+        // Bind session object to scope.
         $scope.session = session
 
+        // Called when listener detects a connection/disconnect.
+        // [connected] is true on connection and false on disconnect.
         var connectDisconnect = function (connected) {
           $scope.$apply(function () {
-            console.log("connectDisconnect: connected = "+connected)
             $scope.connected = connected
             $scope.reconnecting = false
+
             if (!connected) {
               $scope.publishing = false
-              console.log('connectDisconnect: sessionDisconnected.')
             }
             else {
-              console.log('connectDisconnect: sessionConnected.')
+              // Emit sessionConnected CDR.
               var sessionConnectedJSON = {sessionName : $scope.session_name}
               SocketService.emit("sessionConnected", sessionConnectedJSON)
             }
-
-
           })
         }
 
-
+        // Called when client is attempting to recconect. 
+        // [isReconnecting] is true when client is reconnecting.
         var reconnecting = function (isReconnecting) {
-          if (isReconnecting)
-            console.log('Client ' + event.connection.connectionId + ' is reconnecting...')
-          else
-            console.log('Client ' + event.connection.connectionId + ' has reconnected.')
           $scope.$apply(function () {
+            // Bind new reconnecting boolean.
             $scope.reconnecting = isReconnecting
           })
         }
 
+        // Maintain connection.
         if (($scope.session.is && $scope.session.is('connected')) || $scope.session.connected) {
           connectDisconnect(true)
         }
 
+        // Listeners for events that don't emit CDR logs.
         $scope.session.on('sessionConnected', connectDisconnect.bind($scope.session, true))
-        //$scope.session.on('sessionDisconnected', connectDisconnect.bind($scope.session, false))
-
         $scope.session.on('sessionReconnecting', reconnecting.bind($scope.session, true))
         $scope.session.on('sessionReconnected', reconnecting.bind($scope.session, false))
 
+        // Listeners for events that emit CDR logs.
         $scope.session.on({
+          // A Client emits one sessionDisconnected event to itself on disconnect.
           sessionDisconnected: function (event) {
-            console.log("sessionDisconnected for reason "+ event.reason)
             $scope.$apply(function () {
               $scope.connected = false
               $scope.reconnecting = false
               $scope.publishing = false
             })
 
-            // //console.log("connected = "+$scope.connected+
-            // " reconnecting = "+$scope.reconnecting+
-            // " publishing = "+$scope.publishing)
-
             var d = new Date()
             var time = d.getTime()
+
             var sessionDisconnectedJSON = {
               eventType : "sessionDisconnected",
               sessionName : $scope.session_name,
@@ -131,10 +138,11 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
             console.log(sessionDisconnectedJSON)
             SocketService.emit("sessionDisconnected", sessionDisconnectedJSON)
           },
+          // A Client emits connectionCreated event to itself and every other
+          // client who connects to the call for the duration of this Client's
+          // connection.
           connectionCreated: function (event) {
             $scope.connectionCount++;
-            console.log('connectionCreated Client ' + event.connection.connectionId + ' connected. '
-              + $scope.connectionCount + ' connections total. userId = ' + $scope.userId);
 
             var d = new Date()
             var time = d.getTime()
@@ -148,10 +156,11 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
             }
             SocketService.emit("connectionCreated", connectionCreatedJSON)
           },
+          // A Client emits connectionDestroyed event upon disconnecting from
+          // the session to everyone connected to the session at the 
+          // time of the event.
           connectionDestroyed: function (event) {
             $scope.connectionCount--;
-            console.log('connectionDestroyed Client ' + event.connection.connectionId + ' disconnected for reason: '
-               + event.reason + '. ' + $scope.connectionCount + ' connections total. userId = ' + $scope.userId);
 
             var d = new Date()
             var time = d.getTime()
@@ -164,20 +173,12 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
               userConnectionId : event.connection.connectionId,
               reason: event.reason
             }
-            //console.log(JSON.stringify(connectionDestroyedJSON))
             SocketService.emit("connectionDestroyed", connectionDestroyedJSON)
           },
+          // A Client emits streamCreated event to every other client besides 
+          // itself who connects to the call for the duration of this Client's
+          // connection.
           streamCreated: function(event) {
-            console.log('streamCreated: Connection ' + event.stream.connection.connectionId +
-              ' created.')
-            console.log(
-              'frameRate: ' + event.stream.frameRate +
-              ' hasAudio: ' + event.stream.hasAudio +
-              ' hasVideo: ' + event.stream.hasVideo +
-              ' videoDimensions: width = ' + event.stream.videoDimensions.width +
-                               ' height = ' + event.stream.videoDimensions.height +
-              ' videoType: ' + event.stream.videoType)
-
             var d = new Date()
             var time = d.getTime()
 
@@ -241,9 +242,10 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
             }
             SocketService.emit('videoType', videoTypeJSON)
           },
+          // A Client emits a streamDestroyed event to everyone connected to 
+          // the session at the time of the event besides itself upon 
+          // unpublishing from a stream.
           streamDestroyed: function(event) {
-            console.log('streamDestroyed: Connection ' + event.stream.connection.connectionId +
-              ' destroyed for reason ' + event.reason + '.')
 
             var d = new Date()
             var time = d.getTime()
@@ -258,10 +260,10 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
             }
             SocketService.emit('streamDestroyed', streamDestroyedJSON)
           },
+          // A Client emits a streamProperty changed to everyone connected to
+          // the session at the time of the event besides itself upon
+          // changing a stream property.
           streamPropertyChanged: function(event) {
-            console.log('streamPropertyChanged: Connection ' + event.target.stream.connection.connectionId +
-              ' changedProperty: ' +event.changedProperty+ ' newValue: '+event.newValue+
-              ' oldValue: ' +event.oldValue+ ' connectionId: ' +event.target.stream.connection.connectionId)
 
             var d = new Date()
             var time = d.getTime()
@@ -307,15 +309,16 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
       return result_token
     })
 
+  // Listens for call disconnects.
   $scope.$on('$destroy', function () {
     if ($scope.session && $scope.connected) {
       $scope.session.disconnect()
       $scope.connected = false
     }
     $scope.session = null
-    console.log("DESTROY: connected = " +$scope.connected+" session = "+$scope.session)
   })
 
+  // Called on click of end call button.
   $scope.endVideo = function () {
     if (!$scope.leaving) {
       $scope.leaving = true
@@ -323,7 +326,6 @@ app.controller('VideoCtrl', ['$scope', '$stateParams', '$http', '$window', '$log
     }
     $scope.session.on('sessionDisconnected', function() {
       $scope.$apply(function() {
-        //$window.location.href = 'https://aqueous-stream-90183.herokuapp.com/#/user'
         $window.location.href = UserService.baseInterfaceUrl + '/#/user'
       })
     })

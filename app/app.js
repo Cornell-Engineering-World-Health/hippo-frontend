@@ -1,3 +1,7 @@
+/*
+* Defines app and configures routing. 
+*/
+
 var app = angular.module( "myApp", ['opentok', 'ui.router', 'satellizer'] );
 
 app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
@@ -74,7 +78,6 @@ app.config( function ( $stateProvider, $urlRouterProvider, $authProvider ) {
 
     $urlRouterProvider.otherwise('/');
     $authProvider.baseUrl = "https://ewh-hippo.herokuapp.com"
-    // $authProvider.baseUrl = "http://localhost:3000"
     $authProvider.google({
       clientId: '789185821228-jkliab3iscephfdr47h9184kn1bh2t1j.apps.googleusercontent.com'
     })
