@@ -1,10 +1,10 @@
 /*
 * Controller for all video interface functionalities from initialization to ending call.
 */
-app.controller('VideoCtrl',['$scope', '$stateParams', '$http', '$window','$log', 
-  'OTSession', 'VideoService', 'UserVideoService', 'SocketService', 'UserService', 'User',
-  function ($scope, $stateParams, $http, $window, $log, OTSession, VideoService, 
-    UserVideoService, SocketService, UserService, User) {
+app.controller('VideoCtrl',['$scope', '$stateParams', '$http', '$window','$log',
+  'OTSession', 'VideoService', 'SocketService', 'UserService', 'User',
+  function ($scope, $stateParams, $http, $window, $log, OTSession, VideoService,
+   SocketService, UserService, User) {
 
   var baseURL = UserService.baseUrlAPI
 
@@ -96,7 +96,7 @@ app.controller('VideoCtrl',['$scope', '$stateParams', '$http', '$window','$log',
           })
         }
 
-        // Called when client is attempting to recconect. 
+        // Called when client is attempting to recconect.
         // [isReconnecting] is true when client is reconnecting.
         var reconnecting = function (isReconnecting) {
           $scope.$apply(function () {
@@ -157,7 +157,7 @@ app.controller('VideoCtrl',['$scope', '$stateParams', '$http', '$window','$log',
             SocketService.emit("connectionCreated", connectionCreatedJSON)
           },
           // A Client emits connectionDestroyed event upon disconnecting from
-          // the session to everyone connected to the session at the 
+          // the session to everyone connected to the session at the
           // time of the event.
           connectionDestroyed: function (event) {
             $scope.connectionCount--;
@@ -175,7 +175,7 @@ app.controller('VideoCtrl',['$scope', '$stateParams', '$http', '$window','$log',
             }
             SocketService.emit("connectionDestroyed", connectionDestroyedJSON)
           },
-          // A Client emits streamCreated event to every other client besides 
+          // A Client emits streamCreated event to every other client besides
           // itself who connects to the call for the duration of this Client's
           // connection.
           streamCreated: function(event) {
@@ -242,8 +242,8 @@ app.controller('VideoCtrl',['$scope', '$stateParams', '$http', '$window','$log',
             }
             SocketService.emit('videoType', videoTypeJSON)
           },
-          // A Client emits a streamDestroyed event to everyone connected to 
-          // the session at the time of the event besides itself upon 
+          // A Client emits a streamDestroyed event to everyone connected to
+          // the session at the time of the event besides itself upon
           // unpublishing from a stream.
           streamDestroyed: function(event) {
 
