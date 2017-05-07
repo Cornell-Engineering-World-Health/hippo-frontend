@@ -1,3 +1,6 @@
+/*
+ * Controller to logout user. Clears user data from local storage.
+ */
 angular.module('myApp')
   .controller('LogoutCtrl', ['$location', '$auth', '$window',
    function($location, $auth, $window) {
