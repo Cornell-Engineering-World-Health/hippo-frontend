@@ -20,14 +20,18 @@ For local deployment, follow these instructions:
 
 ## Setup
 
-1. Configure the backend repo according to [hippo-backend](https://github.com/Cornell-Engineering-World-Health/hippo-backend)
+1. Configure the backend repo according to [hippo-backend](https://github.com/Cornell-Engineering-World-Health/hippo-backend).
 
-2. Clone this repository (outside of hippo-backend)
+2. Clone this repository (outside of hippo-backend).
 
-3. Run `npm install` in the root directory
+3. Run `npm install` in the root directory.
 
 4. Replace `apiKey` and `apiSecret` with your own keys in `app/config.json`. Make sure to use the same OpenTok API key and secret key as you used in your hippo-backend `.env` file.
 
+5. Replace `baseInterfaceUrl` with `http://localhost:8080` in `app/services/userService.js`.
+
 ## Run
 
-1. Run `npm start` in the root directory
+1. Run `npm start` in the root directory.
+
+2. Navigate to http://localhost:8080.
