@@ -1,6 +1,6 @@
 # hippo-frontend
 
-The web-interface for hippo, a HIPAA-compliant video conferencing system. Powered by [hippo-backend](https://github.com/Cornell-Engineering-World-Health/hippo-backend "hippo-backend")'s REST API. Built with OpenTok, AngularJS, Socket.io, Google OAth, and Javascript. 
+The web-interface for hippo, a HIPAA-compliant video conferencing system. Powered by [hippo-backend](https://github.com/Cornell-Engineering-World-Health/hippo-backend "hippo-backend")'s REST API. Built with OpenTok, AngularJS, NodeJS, Socket.io, and Google OAth. 
 
 Features include:
 * Secure video calls
